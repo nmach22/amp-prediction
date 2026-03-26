@@ -1,0 +1,27 @@
+# Experiment: SVM + Word2Vec (3-mer) Embeddings
+experiment_name: svm_word2vec
+mlflow_experiment_group: embedding-based
+
+tags:
+  author: nika          # change to your name when running
+  approach: embedding-based
+  feature_type: word2vec
+
+features:
+  name: word2vec
+  params:
+    k: 3
+    vector_size: 100
+    window: 5
+    min_count: 1
+    epochs: 10
+
+model:
+  name: svm
+  params:
+    C: 1.0
+    kernel: rbf
+    random_state: 42
+
+seed: 42
+

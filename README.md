@@ -37,3 +37,54 @@ approaches and identify potential directions for improvement.
 
 ### *Project Supervisor:*
 - *Giorgi Zaalishvili*
+
+# Project sructure
+```aiignore
+amp-prediction/
+├── data/
+│   ├── raw/                    ← git-ignored, put DBAASP exports here
+│   ├── interim/                ← git-ignored, intermediate cleaned files
+│   └── processed/
+│       ├── splits/             ← ✅ committed (train.csv, val.csv, test.csv)
+│       └── embeddings/         ← git-ignored, large cached PLM vectors
+├── notebooks/
+│   ├── 01_eda/
+│   ├── 02_feature_engineering/
+│   └── 03_analysis/
+├── src/
+│   ├── data/
+│   │   ├── loader.py           ← load_raw(), load_split()
+│   │   └── cleaner.py          ← clean_sequences() (length, non-std AA, dedup)
+│   ├── features/
+│   │   ├── onehot.py           ← OneHotEncoder
+│   │   ├── physicochemical.py  ← PhysicochemicalEncoder (biopython)
+│   │   ├── word2vec.py         ← Word2VecEncoder (gensim k-mers)
+│   │   └── plm.py              ← PLMEncoder (ESM-2, cached to disk)
+│   ├── models/
+│   │   ├── base.py             ← BaseModel ABC (fit/predict/predict_proba)
+│   │   └── sklearn_wrapper.py  ← SklearnModel (RF, SVM, LR, GB, KNN)
+│   ├── evaluation/
+│   │   ├── metrics.py          ← compute_metrics() → AUC, MCC, F1, …
+│   │   └── plots.py            ← ROC curves, confusion matrix, comparison bar
+│   └── utils/
+│       ├── config.py           ← load_config() YAML loader + validator
+│       ├── seed.py             ← set_seed() (Python, NumPy, PyTorch)
+│       └── logger.py           ← get_logger() consistent format
+├── experiments/
+│   ├── rf_physicochemical.yml  ← Random Forest + physicochemical
+│   ├── svm_word2vec.yml        ← SVM + Word2Vec k-mers
+│   └── esm2_lr.yml             ← Logistic Regression + ESM-2
+├── scripts/
+│   └── make_splits.py          ← run once → writes data/processed/splits/
+├── run_experiment.py           ← main CLI entry-point (loads config → MLflow)
+└── env.yml                     ← updated with mlflow, biopython, transformers…
+```
+
+###### 1. Build splits once (both collaborators commit the output)
+`python scripts/make_splits.py --input dbaasp_export.csv`
+
+###### 2. Run any experiment
+`python run_experiment.py --config experiments/rf_physicochemical.yml`
+
+###### 3. Compare all runs visually
+`mlflow ui`

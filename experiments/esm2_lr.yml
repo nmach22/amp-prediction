@@ -1,0 +1,27 @@
+# Experiment: Logistic Regression + ESM-2 PLM Embeddings
+# NOTE: requires GPU (or patience). Pre-compute embeddings first:
+#   python scripts/make_embeddings.py --config experiments/esm2_lr.yml
+experiment_name: esm2_lr
+mlflow_experiment_group: plm-based
+
+tags:
+  author: nika
+  approach: plm-based
+  feature_type: plm
+  plm_model: facebook/esm2_t6_8M_UR50D
+
+features:
+  name: plm
+  params:
+    model_name: facebook/esm2_t6_8M_UR50D
+    device: cpu           # change to 'cuda' or 'mps' if available
+
+model:
+  name: logistic_regression
+  params:
+    C: 1.0
+    max_iter: 1000
+    random_state: 42
+
+seed: 42
+

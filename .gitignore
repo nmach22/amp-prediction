@@ -469,3 +469,28 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,linux,python,pycharm+all,jupyternotebooks,pycharm,visualstudiocode,vim
+
+# ── AMP Prediction project-specific ─────────────────────────────────────────
+
+# Raw DBAASP exports (large, not committed)
+data/raw/*
+!data/raw/.gitkeep
+
+# Interim data (intermediate outputs, reproducible from raw)
+data/interim/*
+!data/interim/.gitkeep
+
+# Pre-computed PLM embeddings (large binary files)
+data/processed/embeddings/*
+!data/processed/embeddings/.gitkeep
+
+# Fixed splits ARE committed – do NOT ignore data/processed/splits/
+
+# MLflow local tracking store
+mlruns/
+
+# Results – figures and tables are reproducible; ignore to keep repo clean
+results/figures/*
+!results/figures/.gitkeep
+results/tables/*
+!results/tables/.gitkeep
