@@ -86,6 +86,9 @@ amp-prediction/
 ###### Activate the new environment:
 `conda activate amp`
 
+###### To deactivate an active environment, use
+`conda deactivate`
+
 ###### 1. Build splits once (both collaborators commit the output)
 `python scripts/make_splits.py --input dbaasp_export.csv`
 
