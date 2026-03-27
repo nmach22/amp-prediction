@@ -80,6 +80,12 @@ amp-prediction/
 └── env.yml                     ← updated with mlflow, biopython, transformers…
 ```
 
+###### Create an environment with dependencies specified in env.yml:
+`conda env create -f env.yml`
+
+###### Activate the new environment:
+`conda activate amp`
+
 ###### 1. Build splits once (both collaborators commit the output)
 `python scripts/make_splits.py --input dbaasp_export.csv`
 
