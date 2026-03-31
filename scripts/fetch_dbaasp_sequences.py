@@ -1,5 +1,5 @@
 """
-scripts/download_dbaasp.py
+scripts/fetch_dbaasp_sequences.py
 ==========================
 Downloads all peptide sequences from the DBAASP REST API (v4) and saves a
 flat CSV to data/raw/ ready for make_splits.py.
@@ -27,11 +27,11 @@ Output CSV  (data/raw/<out>)
 Usage
 -----
   # recommended: start here to confirm field names
-  python scripts/download_dbaasp.py --dry-run
+  python scripts/fetch_dbaasp_sequences.py --dry-run
   # full download (~24k peptides, ~5 min at --delay 0.2)
-  python scripts/download_dbaasp.py
+  python scripts/fetch_dbaasp_sequences.py
   # custom output / page size / delay
-  python scripts/download_dbaasp.py --out dbaasp_raw.csv --page-size 500 --delay 0.1
+  python scripts/fetch_dbaasp_sequences.py --out dbaasp_raw.csv --page-size 500 --delay 0.1
 """
 from __future__ import annotations
 import argparse
@@ -45,7 +45,7 @@ import urllib3
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-# DBAASP uses a self-signed TLS certificate — suppress the noisy warning.
+# DBAASP uses a self-signed TLS certificate.
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # ── project root & shared logger ─────────────────────────────────────────────
@@ -57,7 +57,6 @@ log = get_logger(__name__)
 # ── API constants (from  https://dbaasp.org/v3/api-docs) ─────────────────────
 BASE_URL    = "https://dbaasp.org"
 PEPTIDE_EP  = "/peptides"          # GET  ?limit=N&offset=N[&complexity.value=monomer]
-SPEC_EP     = "/v3/api-docs"       # OpenAPI 3 spec
 DEFAULT_PAGE_SIZE = 500            # server seems happy up to 1000
 
 # ── HTTP session with automatic retry ────────────────────────────────────────
@@ -90,42 +89,10 @@ def _fetch_page(
     params = {"limit": limit, "offset": offset}
     if extra_params:
         params.update(extra_params)
+
     resp = session.get(BASE_URL + PEPTIDE_EP, params=params, timeout=timeout)
     resp.raise_for_status()
     return resp.json()
-
-# ── record parser ─────────────────────────────────────────────────────────────
-def _parse_record(item: dict) -> list[dict]:
-    """Return a list of flat dicts extracted from one API item.
-    Monomers  → one row (the item itself).
-    Multimers → one row per embedded monomer (sequences live on sub-objects).
-    Items with no usable sequence are silently skipped.
-    """
-    rows: list[dict] = []
-    def _make_row(rec: dict, parent_id: str | None = None) -> dict | None:
-        seq = (rec.get("sequence") or "").strip().upper()
-        if not seq:
-            return None
-        return {
-            "dbaasp_id": rec.get("dbaaspId") or parent_id,
-            "sequence":  seq,
-            "activity":  1,   # every DBAASP record is an experimentally confirmed AMP
-            "name":      (rec.get("name") or "").strip(),
-            "synthesis": (rec.get("synthesisType") or "").strip(),
-        }
-    complexity = (item.get("complexity") or "").lower()
-    if complexity == "monomer":
-        row = _make_row(item)
-        if row:
-            rows.append(row)
-    else:
-        # multimer / multi_peptide — extract embedded monomers
-        parent_id = item.get("dbaaspId")
-        for mono in item.get("monomers") or []:
-            row = _make_row(mono, parent_id=parent_id)
-            if row:
-                rows.append(row)
-    return rows
 
 # ── core download function ────────────────────────────────────────────────────
 def download(
@@ -149,6 +116,7 @@ def download(
     out_path = ROOT / "data" / "raw" / out_file
     session  = _make_session()
     extra = {"complexity.value": "monomer"} if monomers_only else {}
+
     # ── dry-run ───────────────────────────────────────────────────────────────
     if dry_run:
         log.info("DRY-RUN — fetching 2 records from DBAASP to show raw JSON …")
@@ -156,6 +124,7 @@ def download(
         print(json.dumps(data, indent=2, ensure_ascii=False))
         log.info("totalCount reported by server: %s", data.get("totalCount"))
         return out_path
+
     # ── discover total ────────────────────────────────────────────────────────
     log.info("Probing DBAASP for total record count …")
     first = _fetch_page(session, limit=1, offset=0, extra_params=extra)
@@ -168,6 +137,7 @@ def download(
         "Total records: %d  |  page size: %d  |  pages: %d",
         total, page_size, total_pages,
     )
+
     # ── paginate ──────────────────────────────────────────────────────────────
     records: list[dict] = []
     for page_idx in range(total_pages):
@@ -180,8 +150,9 @@ def download(
             time.sleep(5)
             page_data = _fetch_page(session, limit=page_size, offset=offset,
                                     extra_params=extra)
-        for item in page_data.get("data") or []:
-            records.extend(_parse_record(item))
+
+        records.extend(page_data.get("data", []))
+
         progress_page = page_idx + 1
         if progress_page % 5 == 0 or progress_page == total_pages:
             log.info(
@@ -190,6 +161,7 @@ def download(
             )
         if page_idx < total_pages - 1:
             time.sleep(delay)
+
     # ── save ──────────────────────────────────────────────────────────────────
     if not records:
         log.error("No records collected. Aborting.")
