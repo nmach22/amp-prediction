@@ -79,11 +79,6 @@ amp-prediction/
 ├── run_experiment.py           ← main CLI entry-point (loads config → MLflow)
 └── env.yml                     ← updated with mlflow, biopython, transformers…
 ```
-###### re-run download any time — idempotent, overwrites the CSV
-`python scripts/download_dbaasp.py`
-
-###### Build fixed train/val/test splits (needs a negative set first!)
-`python scripts/make_splits.py --input dbaasp_raw.csv`
 
 ###### Create an environment with dependencies specified in env.yml:
 `conda env create -f env.yml`
@@ -93,6 +88,13 @@ amp-prediction/
 
 ###### To deactivate an active environment, use
 `conda deactivate`
+
+###### download
+`python scripts/fetch_dbaasp_sequences.py`
+`python scripts/fetch_dbaasp_cards.py`
+
+###### Build fixed train/val/test splits (needs a negative set first!)
+`python scripts/make_splits.py --input dbaasp_raw.csv`
 
 ###### 2. Run any experiment
 `python run_experiment.py --config experiments/rf_physicochemical.yml`
