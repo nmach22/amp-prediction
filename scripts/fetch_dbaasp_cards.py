@@ -26,6 +26,7 @@ Run:
   python scripts/fetch_dbaasp_cards.py
 """
 import os
+import sys
 import time
 import json
 import requests
@@ -37,11 +38,14 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from urllib3 import Retry
 
+ROOT = Path(__file__).parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from src.utils import get_logger  # noqa: E402
 log = get_logger(__name__)
 
 # ── Config ──────────────────────────────────────────────────────────────────
-ROOT        = Path(__file__).parents[1]
 BASE_URL    = "https://dbaasp.org/peptides"
 DELAY       = 0.2   # seconds between requests per worker (be polite to the server)
 MAX_WORKERS = 8     # concurrent threads; tune to avoid rate-limiting
