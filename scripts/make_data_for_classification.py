@@ -46,8 +46,8 @@ unknown_rows = []
 
 for _, row in df.iterrows():
     try:
-        sequence = row.iloc[3]
-        species = row.iloc[4 - 1]  
+        sequence = row.iloc[2]
+        species = row.iloc[3]  
         activity_value = row.iloc[5]
         concentration = str(row.iloc[6])
         unit = normalize_unit(row.iloc[7])
@@ -95,8 +95,8 @@ for _, row in df.iterrows():
 
     except:
         unknown_rows.append({
-            "sequence": row.iloc[3],
-            "species": row.iloc[4 - 1],
+            "sequence": row.iloc[2],
+            "species": row.iloc[3],
             "mic": None,
             "active": None
         })

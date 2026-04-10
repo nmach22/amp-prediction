@@ -101,3 +101,8 @@ amp-prediction/
 
 ###### 3. Compare all runs visually
 `mlflow ui`
+
+
+
+###### clean downloaded data for classification problem
+`python scripts/make_data_for_classification.py`
