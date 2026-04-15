@@ -103,12 +103,16 @@ amp-prediction/
 `mlflow ui`
 
 
-###### clean downloaded data for regression problem
-`python scripts/make_data_for_regression.py`
+###### clean downloaded data for regression problem-without features, only sequences. 
+`python scripts/extracting_sequences_from_full_data.py`
+
+###### clean downloaded data for regression problem-with ufeatures from JSON.  
+`python scripts/extracting_sequences_with_features.py`
 
 აქ გამოდის რომ გვაქვს 115K raw, აქედან გვაქვს 16K განსხვავებული სექვენსი, რომლებიც მეორდება targetების მიხედვით. 
 ამ კოდით დატას ბოლოში ვამატებ დაუჰენდლავ როუებს და ეგ მისახედი იქნება ბოლოს. უნდა ვიპოვო რა ქმნის პრობლემას და რატომ ვერ იჰნდლება. 
 ასევე, unit-ების კონვერტაციისთვის ამ ფორმულას ვიყენებ და ზაალიშვილის უნდა დავადასტურებინო: µM --> µg/ml: ვალუე * len(sequence) * 110 /1000 
+
 
 
 პრობლემები: 1)კარგად გავიგოთ რა განსხვავებაა activity_measureს და concentrate-ს შორის. რომელი გამოვიყენოთ. 

@@ -4,21 +4,18 @@ import re
 import os
 
 INPUT_PATH = "data/raw/dbaasp_full.json"
-OUTPUT_PATH = "data/processed/embeddings/data_for_regression.csv"
+OUTPUT_PATH = "data/processed/embeddings/sequences_with_features.csv"
 
 
-# --- Approx molecular weight ---
+# --- Helpers ---
 def compute_mw(sequence):
     return len(sequence) * 110
 
 
-# --- Convert µM to µg/ml ---
 def convert_uM_to_ugml(value, sequence):
-    mw = compute_mw(sequence)
-    return value * mw / 1000
+    return value * compute_mw(sequence) / 1000
 
 
-# --- Check if numeric ---
 def is_numeric(x):
     try:
         float(x)
@@ -27,7 +24,6 @@ def is_numeric(x):
         return False
 
 
-# --- Parse MIC ---
 def parse_mic(activity, concentration):
     activity = str(activity)
     concentration = str(concentration)
@@ -54,83 +50,102 @@ def parse_mic(activity, concentration):
     return None
 
 
+def normalize_unit(unit):
+    return str(unit).replace("μ", "µ").replace("�", "µ")
+
+
 # --- Load JSON ---
 with open(INPUT_PATH, "r") as f:
     data = json.load(f)
 
 
-clean_rows = []
+rows = []
 unknown_rows = []
 
 for peptide in data:
     sequence = peptide.get("sequence")
 
+    # --- Extract physico-chemical features ---
+    physchem = peptide.get("physicoChemicalProperties") or []
+    feature_dict = {}
+
+    for item in physchem:
+        name = item.get("name")
+        value = item.get("value")
+
+        if name and value and is_numeric(value):
+            clean_name = name.lower().replace(" ", "_")
+            feature_dict[clean_name] = float(value)
+
+    # --- Extra features ---
+    feature_dict["sequence_length"] = len(sequence) if sequence else None
+    feature_dict["n_term"] = peptide.get("nTerminus", {}).get("name") if peptide.get("nTerminus") else None
+    feature_dict["c_term"] = peptide.get("cTerminus", {}).get("name") if peptide.get("cTerminus") else None
+
+    # --- Iterate activities ---
     for act in peptide.get("targetActivities", []):
         try:
-            # --- SAFE measure check ---
             measure_group = act.get("activityMeasureGroup")
             if not measure_group or measure_group.get("name") != "MIC":
                 continue
 
-            # --- SAFE species ---
+            # species
             species_obj = act.get("targetSpecies")
             species = species_obj.get("name") if species_obj else None
             if species is None:
-                raise ValueError("Missing species")
+                raise ValueError("No species")
 
-            # --- SAFE unit ---
+            # unit
             unit_obj = act.get("unit")
-            unit = unit_obj.get("name") if unit_obj else None
+            unit = normalize_unit(unit_obj.get("name")) if unit_obj else None
             if unit is None:
-                raise ValueError("Missing unit")
-
-            unit = unit.replace("μ", "µ")
+                raise ValueError("No unit")
 
             activity_value = act.get("activity")
             concentration = act.get("concentration")
             reference = act.get("reference")
 
-            mic_value = parse_mic(activity_value, concentration)
-
-            if mic_value is None:
+            mic = parse_mic(activity_value, concentration)
+            if mic is None:
                 raise ValueError("Bad MIC")
 
-            # --- Unit conversion ---
+            # convert units
             if unit == "µM":
-                mic_value = convert_uM_to_ugml(mic_value, sequence)
+                mic = convert_uM_to_ugml(mic, sequence)
             elif unit == "µg/ml":
                 pass
             else:
-                raise ValueError(f"Unknown unit: {unit}")
+                raise ValueError("Unknown unit")
 
-            clean_rows.append({
+            row = {
                 "sequence": sequence,
                 "species": species,
-                "mic": mic_value,
+                "mic": mic,
                 "reference": reference
-            })
+            }
+
+            # add all features
+            row.update(feature_dict)
+
+            rows.append(row)
 
         except:
-            species_obj = act.get("targetSpecies")
-            species = species_obj.get("name") if species_obj else None
-
             unknown_rows.append({
                 "sequence": sequence,
-                "species": species,
-                "mic": None,
-                "reference": act.get("reference")
+                "species": species if 'species' in locals() else None,
+                "mic": None
             })
 
 
 # --- Save ---
-clean_df = pd.DataFrame(clean_rows)
+df = pd.DataFrame(rows)
 unknown_df = pd.DataFrame(unknown_rows)
 
-final_df = pd.concat([clean_df, unknown_df], ignore_index=True)
+final_df = pd.concat([df, unknown_df], ignore_index=True)
 
 os.makedirs("data/processed/embeddings", exist_ok=True)
 final_df.to_csv(OUTPUT_PATH, index=False)
 
 print("Done.")
-print("Clean rows:", len(clean_df))
-print("Unknown rows:", len(unknown_df))
+print("Rows:", len(df))
+print("Unknown:", len(unknown_df))
