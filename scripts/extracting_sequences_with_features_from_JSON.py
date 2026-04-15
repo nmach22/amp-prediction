@@ -4,7 +4,7 @@ import re
 import os
 
 INPUT_PATH = "data/raw/dbaasp_full.json"
-OUTPUT_PATH = "data/processed/embeddings/sequences_with_features.csv"
+OUTPUT_PATH = "data/processed/embeddings/sequences_with_features_from_DBAASP.csv"
 
 
 # --- Helpers ---

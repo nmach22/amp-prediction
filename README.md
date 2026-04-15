@@ -103,11 +103,15 @@ amp-prediction/
 `mlflow ui`
 
 
-###### clean downloaded data for regression problem-without features, only sequences. 
+###### extracting sequences with MICs from JSON
 `python scripts/extracting_sequences_from_full_data.py`
 
-###### clean downloaded data for regression problem-with ufeatures from JSON.  
-`python scripts/extracting_sequences_with_features.py`
+###### extracting sequences anits features from JSON
+`python scripts/extracting_sequences_with_features_from_JSON.py`
+
+###### getting features from extracted sequences using modlAMP
+`python scripts/extracting_features_from_sequence.py`
+
 
 აქ გამოდის რომ გვაქვს 115K raw, აქედან გვაქვს 16K განსხვავებული სექვენსი, რომლებიც მეორდება targetების მიხედვით. 
 ამ კოდით დატას ბოლოში ვამატებ დაუჰენდლავ როუებს და ეგ მისახედი იქნება ბოლოს. უნდა ვიპოვო რა ქმნის პრობლემას და რატომ ვერ იჰნდლება. 
