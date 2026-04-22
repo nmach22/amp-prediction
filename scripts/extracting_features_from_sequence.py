@@ -7,92 +7,118 @@ import re
 INPUT_PATH = "data/processed/embeddings/sequences_with_MIC.csv"
 OUTPUT_PATH = "data/processed/embeddings/features_from_sequences.csv"
 
+CROSSCORR_WINDOW = 7
 
 def clean_sequence(seq):
     seq = str(seq).upper().strip()
     seq = re.sub(r"[^ACDEFGHIKLMNPQRSTVWY]", "", seq)
     return seq
 
-
 df = pd.read_csv(INPUT_PATH)
-# Filter out empty strings but keep short sequences
 all_sequences = df.iloc[:, 0].apply(clean_sequence).tolist()
-sequences = [s for s in all_sequences if len(s) > 0]
+all_sequences = [s for s in all_sequences if len(s) > 0]
 
-print(f"Processing {len(sequences)} sequences.")
+long_seqs  = [s for s in all_sequences if len(s) >= CROSSCORR_WINDOW]
+short_seqs = [s for s in all_sequences if len(s) <  CROSSCORR_WINDOW]
 
-# 1. GlobalDescriptor (Names are built-in)
-gd = GlobalDescriptor(sequences)
-gd.calculate_all(amide=True)
-global_df = pd.DataFrame(gd.descriptor, columns=gd.featurenames)
-
-
-# 2. PeptideDescriptor: Processing scales and getting names
-def get_descriptor_df(seqs, scale, mode='global', window=None):
-    desc = PeptideDescriptor(seqs, scale)
-    if mode == 'global_moment':
-        desc.calculate_global()
-        desc.calculate_moment(append=True)
-    elif mode == 'autocorr':
-        desc.calculate_autocorr(1)
-    elif mode == 'crosscorr':
-        # To handle short sequences, we cap the window at the length of the shortest sequence
-        min_len = min([len(s) for s in seqs])
-        actual_window = min(window, min_len) if window else min_len
-        desc.calculate_crosscorr(actual_window)
-
-    # Use desc.featurenames for appropriate column descriptions
-    return pd.DataFrame(desc.descriptor, columns=[f"{scale}_{name}" for name in desc.featurenames])
+print(f"Total sequences   : {len(all_sequences)}")
+print(f"Long  (>= {CROSSCORR_WINDOW} AA)  : {len(long_seqs)}")
+print(f"Short (<  {CROSSCORR_WINDOW} AA)  : {len(short_seqs)}")
 
 
-# Eisenberg & Gravy
-pd1 = PeptideDescriptor(sequences, 'eisenberg')
-pd1.calculate_global()
-pd1.calculate_moment(append=True)
-pd1.load_scale('gravy')
-pd1.calculate_global(append=True)
-pd1.calculate_moment(append=True)
-# Naming for pd1 is a mix, so we manually label or use the internal featurenames
-pd1_cols = [f"eisenberg_{n}" for n in pd1.featurenames[:2]] + [f"gravy_{n}" for n in pd1.featurenames[2:]]
-df_pd1 = pd.DataFrame(pd1.descriptor, columns=pd1_cols)
+# ── Helper ─────────────────────────────────────────────────────────────────────
+def compute_features(sequences):
+    """Return a DataFrame of all features for a list of sequences."""
 
-# Z3 Autocorr
-pd_z3 = PeptideDescriptor(sequences, 'z3')
-pd_z3.calculate_autocorr(1)
-df_z3 = pd.DataFrame(pd_z3.descriptor, columns=[f"z3_{n}" for n in pd_z3.featurenames])
+    # 1. Global descriptors (10 features, named by modlAMP itself)
+    gd = GlobalDescriptor(sequences)
+    gd.calculate_all(amide=True)
+    global_df = pd.DataFrame(gd.descriptor, columns=gd.featurenames)
 
-# Pepcats Crosscorr (The tricky one for short sequences)
-# We set window to 1 if we want to include very short peptides safely
-pd_pepcats = PeptideDescriptor(sequences, 'pepcats')
-pd_pepcats.calculate_crosscorr(window=1)
-df_pepcats = pd.DataFrame(pd_pepcats.descriptor, columns=[f"pepcats_{n}" for n in pd_pepcats.featurenames])
+    # 2. Eisenberg hydrophobicity + hydrophobic moment
+    pd1 = PeptideDescriptor(sequences, 'eisenberg')
+    pd1.calculate_global()
+    pd1.calculate_moment(append=True)
 
-# AASI
-pd_aasi = PeptideDescriptor(sequences, 'aasi')
-pd_aasi.calculate_global()
-pd_aasi.calculate_moment(append=True)
-df_aasi = pd.DataFrame(pd_aasi.descriptor, columns=[f"aasi_{n}" for n in pd_aasi.featurenames])
+    # 3. GRAVY hydrophobicity + moment (append onto pd1)
+    pd1.load_scale('gravy')
+    pd1.calculate_global(append=True)
+    pd1.calculate_moment(append=True)
 
-# Charge Phys
-pd_charge = PeptideDescriptor(sequences, 'charge_phys')
-pd_charge.calculate_global()
-pd_charge.calculate_moment(append=True)
-df_charge = pd.DataFrame(pd_charge.descriptor, columns=[f"charge_{n}" for n in pd_charge.featurenames])
+    # 4. Z3 physicochemical scale (3 descriptors via autocorr window=1)
+    pd1.load_scale('z3')
+    pd1.calculate_autocorr(1, append=True)
 
-# 3. Assemble
-features_df = pd.concat([
-    pd.Series(sequences, name="sequence"),
-    global_df.reset_index(drop=True),
-    df_pd1.reset_index(drop=True),
-    df_z3.reset_index(drop=True),
-    df_pepcats.reset_index(drop=True),
-    df_aasi.reset_index(drop=True),
-    df_charge.reset_index(drop=True)
+    # 5. AASI (helical AMP selectivity) global + moment
+    pd1.load_scale('aasi')
+    pd1.calculate_global(append=True)
+    pd1.calculate_moment(append=True)
+
+    # 6. Charge scale global + moment
+    pd1.load_scale('charge_phys')
+    pd1.calculate_global(append=True)
+    pd1.calculate_moment(append=True)
+
+    scale_cols = [
+        'H_Eisenberg', 'uH_Eisenberg',
+        'H_GRAVY',     'uH_GRAVY',
+        'Z3_1',        'Z3_2',        'Z3_3',
+        'H_AASI',      'uH_AASI',
+        'H_Charge',    'uH_Charge',
+    ]
+    scale_df = pd.DataFrame(pd1.descriptor, columns=scale_cols)
+
+    return pd.concat([global_df, scale_df], axis=1)
+
+
+def compute_pepcats(sequences, window):
+    """Return a DataFrame of pepcats cross-correlation features."""
+    pd2 = PeptideDescriptor(sequences, 'pepcats')
+    pd2.calculate_autocorr(window)
+    n_feats = pd2.descriptor.shape[1]
+    cols = [f"pepcats_cc_{i+1}" for i in range(n_feats)]
+    return pd.DataFrame(pd2.descriptor, columns=cols)
+
+
+# ── Compute for long sequences (all features) ──────────────────────────────────
+long_base_df   = compute_features(long_seqs)
+long_pepcats_df = compute_pepcats(long_seqs, CROSSCORR_WINDOW)
+long_df = pd.concat([
+    pd.Series(long_seqs, name="sequence"),
+    long_base_df,
+    long_pepcats_df,
 ], axis=1)
 
-os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
+# ── Compute for short sequences (no pepcats → NaN) ─────────────────────────────
+if short_seqs:
+    short_base_df = compute_features(short_seqs)
+    # Fill pepcats columns with NaN
+    n_pepcats = long_pepcats_df.shape[1]
+    short_pepcats_df = pd.DataFrame(
+        np.nan, index=range(len(short_seqs)),
+        columns=long_pepcats_df.columns
+    )
+    short_df = pd.concat([
+        pd.Series(short_seqs, name="sequence"),
+        short_base_df,
+        short_pepcats_df,
+    ], axis=1)
+else:
+    short_df = pd.DataFrame(columns=long_df.columns)
+
+# ── Merge, restore original order, save ───────────────────────────────────────
+features_df = pd.concat([long_df, short_df], ignore_index=True)
+
+# Restore original sequence order
+order = {s: i for i, s in enumerate(all_sequences)}
+features_df = features_df.sort_values(
+    "sequence", key=lambda col: col.map(order)
+).reset_index(drop=True)
+
+os.makedirs("data/processed/embeddings", exist_ok=True)
 features_df.to_csv(OUTPUT_PATH, index=False)
 
-print("Done.")
-print(f"Sequences processed: {len(sequences)}")
-print(f"Feature shape: {features_df.shape}")
+print("\nDone!")
+print(f"Sequences processed : {len(features_df)}")
+print(f"Feature shape       : {features_df.shape}")
+print(f"\nColumns:\n{list(features_df.columns)}")
