@@ -30,6 +30,10 @@ AA_RESIDUE_MW = {
     'W': 186.07931,
     'Y': 163.06333,
     'V': 99.06841,
+    'U': 150.95364,
+    'O': 237.14773,
+    'B': 114.535,
+    'Z': 128.551,
 }
 
 WATER_MW = 18.01056  # Add once per peptide (N- and C-terminus)
