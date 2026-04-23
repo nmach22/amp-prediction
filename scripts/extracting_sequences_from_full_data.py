@@ -12,10 +12,43 @@ def compute_mw(sequence):
     return len(sequence) * 110
 
 
-# --- Convert µM to µg/ml ---
-def convert_uM_to_ugml(value, sequence):
-    mw = compute_mw(sequence)
-    return value * mw / 1000
+# --- Amino acid residue molecular weights (Da) ---
+# These are residue weights (i.e., after losing H2O during peptide bond formation)
+AA_RESIDUE_MW = {
+    'A': 71.03711,
+    'R': 156.10111,
+    'N': 114.04293,
+    'D': 115.02694,
+    'C': 103.00919,
+    'E': 129.04259,
+    'Q': 128.05858,
+    'G': 57.02146,
+    'H': 137.05891,
+    'I': 113.08406,
+    'L': 113.08406,
+    'K': 128.09496,
+    'M': 131.04049,
+    'F': 147.06841,
+    'P': 97.05276,
+    'S': 87.03203,
+    'T': 101.04768,
+    'W': 186.07931,
+    'Y': 163.06333,
+    'V': 99.06841,
+}
+
+WATER_MW = 18.01056  # Add once per peptide (N- and C-terminus)
+
+def compute_mw(sequence):
+    """
+    Compute peptide molecular weight from sequence.
+    Sum of residue weights + water (for the free termini).
+    Unknown AAs fall back to average 110 Da.
+    """
+    mw = WATER_MW
+    for aa in sequence.upper():
+        mw += AA_RESIDUE_MW.get(aa, 110.0)  # fallback for non-standard AAs
+    return mw
 
 
 # --- Check if numeric ---
