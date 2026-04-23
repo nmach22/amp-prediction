@@ -7,11 +7,6 @@ INPUT_PATH = "data/raw/dbaasp_full.json"
 OUTPUT_PATH = "data/processed/embeddings/sequences_with_MIC.csv"
 
 
-# --- Approx molecular weight ---
-def compute_mw(sequence):
-    return len(sequence) * 110
-
-
 # --- Amino acid residue molecular weights (Da) ---
 # These are residue weights (i.e., after losing H2O during peptide bond formation)
 AA_RESIDUE_MW = {
@@ -49,6 +44,10 @@ def compute_mw(sequence):
     for aa in sequence.upper():
         mw += AA_RESIDUE_MW.get(aa, 110.0)  # fallback for non-standard AAs
     return mw
+
+def convert_ugml_to_uM(value, sequence):
+    mw = compute_mw(sequence)
+    return (value * 1000) / mw
 
 
 # --- Check if numeric ---
@@ -128,13 +127,14 @@ for peptide in data:
             if mic_value is None:
                 raise ValueError("Bad MIC")
 
-            # --- Unit conversion ---
-            if unit == "µM":
-                mic_value = convert_uM_to_ugml(mic_value, sequence)
-            elif unit == "µg/ml":
-                pass
+            # --- Unit conversion block ---
+            if unit == "µg/ml":
+                mic_value = convert_ugml_to_uM(mic_value, sequence)  # convert to µM
+            elif unit == "µM":
+                pass  # already in µM, keep as-is
             else:
                 raise ValueError(f"Unknown unit: {unit}")
+
 
             clean_rows.append({
                 "sequence": sequence,
