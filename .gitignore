@@ -495,3 +495,6 @@ results/figures/*
 results/tables/*
 !results/tables/.gitkeep
 /data/processed/amp_mic_activities_gram_classified.csv
+/data/processed/splits/test.csv
+/data/processed/splits/train.csv
+/data/processed/splits/val.csv
