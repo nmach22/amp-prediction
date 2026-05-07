@@ -494,3 +494,4 @@ results/figures/*
 !results/figures/.gitkeep
 results/tables/*
 !results/tables/.gitkeep
+/data/processed/amp_mic_activities_gram_classified.csv
