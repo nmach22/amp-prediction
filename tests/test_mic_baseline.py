@@ -1,13 +1,16 @@
 import numpy as np
 import pandas as pd
 
-from src.mic_baseline import (
+from models.mic_baseline import (
+    MicBaselineRegressor,
     build_features,
+    build_model,
     clean_mic_data,
     encode_sequences,
     evaluate_predictions,
     split_by_sequence,
 )
+from src.models import BaseModel
 
 
 def test_encode_sequences_handles_variable_lengths():
@@ -96,3 +99,10 @@ def test_evaluate_predictions_reports_overall_and_per_gram_metrics():
 
     assert {"mae", "rmse", "r2", "positive_mae", "negative_mae"}.issubset(metrics)
     assert metrics["mae"] > 0
+
+
+def test_mic_baseline_regressor_implements_base_model_interface():
+    model = build_model(random_state=7)
+
+    assert isinstance(model, MicBaselineRegressor)
+    assert isinstance(model, BaseModel)

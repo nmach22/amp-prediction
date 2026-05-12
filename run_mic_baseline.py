@@ -12,7 +12,7 @@ import argparse
 import logging
 from pathlib import Path
 
-from src.mic_baseline import train_and_evaluate
+from src.models.mic_baseline import train_and_evaluate
 
 logging.basicConfig(
     level=logging.INFO,

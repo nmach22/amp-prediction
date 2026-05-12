@@ -19,7 +19,8 @@ import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, r2_score, root_mean_squared_error
 from sklearn.model_selection import GroupShuffleSplit
-from sklearn.pipeline import Pipeline
+
+from src.models import BaseModel
 
 STANDARD_AA = tuple("ACDEFGHIKLMNPQRSTVWY")
 STANDARD_AA_SET = set(STANDARD_AA)
@@ -135,20 +136,34 @@ def build_features(df: pd.DataFrame) -> pd.DataFrame:
     )
 
 
-def build_model(random_state: int = 42) -> Pipeline:
+class MicBaselineRegressor(BaseModel):
+    """Random Forest baseline model for log10(MIC) regression."""
+
+    def __init__(self, random_state: int = 42):
+        self.random_state = random_state
+        self._model = RandomForestRegressor(
+            n_estimators=200,
+            random_state=random_state,
+            n_jobs=-1,
+        )
+
+    def fit(self, X: np.ndarray, y: np.ndarray) -> "MicBaselineRegressor":
+        self._model.fit(X, y)
+        return self
+
+    def predict(self, X: np.ndarray) -> np.ndarray:
+        return self._model.predict(X)
+
+    def predict_proba(self, X: np.ndarray) -> np.ndarray:
+        raise NotImplementedError(
+            "MicBaselineRegressor is a regression model and does not expose "
+            "class probabilities."
+        )
+
+
+def build_model(random_state: int = 42) -> MicBaselineRegressor:
     """Create the baseline regressor."""
-    return Pipeline(
-        steps=[
-            (
-                "model",
-                RandomForestRegressor(
-                    n_estimators=200,
-                    random_state=random_state,
-                    n_jobs=-1,
-                ),
-            )
-        ]
-    )
+    return MicBaselineRegressor(random_state=random_state)
 
 
 def evaluate_predictions(
