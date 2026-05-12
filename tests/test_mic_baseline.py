@@ -1,0 +1,98 @@
+import numpy as np
+import pandas as pd
+
+from src.mic_baseline import (
+    build_features,
+    clean_mic_data,
+    encode_sequences,
+    evaluate_predictions,
+    split_by_sequence,
+)
+
+
+def test_encode_sequences_handles_variable_lengths():
+    features = encode_sequences(["ACD", "AAAAAA"])
+
+    assert features.shape == (2, 26)
+    assert features.loc[0, "sequence_length"] == 3
+    assert features.loc[1, "sequence_length"] == 6
+    assert np.isclose(features.loc[0, "aa_frac_A"], 1 / 3)
+    assert np.isclose(features.loc[1, "aa_frac_A"], 1.0)
+
+
+def test_clean_mic_data_filters_invalid_rows_and_adds_log_target():
+    raw = pd.DataFrame(
+        {
+            "sequence": [" acd ", "ACX", "AAAA", "CCCC", "GGGG"],
+            "gram_status": [
+                "gram_positive",
+                "gram_positive",
+                "gram_negative",
+                "unknown",
+                "gram_negative",
+            ],
+            "activity": [10.0, 12.0, 0.0, 5.0, "100"],
+        }
+    )
+
+    cleaned = clean_mic_data(raw)
+
+    assert cleaned["sequence"].tolist() == ["ACD", "GGGG"]
+    assert cleaned["gram_status"].tolist() == ["gram_positive", "gram_negative"]
+    assert np.allclose(cleaned["log_mic"], [1.0, 2.0])
+
+
+def test_split_by_sequence_prevents_overlap_between_splits():
+    df = pd.DataFrame(
+        {
+            "sequence": [f"SEQ{i}" for i in range(30) for _ in range(2)],
+            "gram_status": ["gram_positive", "gram_negative"] * 30,
+            "activity": np.linspace(1, 60, 60),
+            "log_mic": np.log10(np.linspace(1, 60, 60)),
+        }
+    )
+
+    splits = split_by_sequence(df, random_state=7)
+    train_sequences = set(splits.train["sequence"])
+    val_sequences = set(splits.val["sequence"])
+    test_sequences = set(splits.test["sequence"])
+
+    assert train_sequences.isdisjoint(val_sequences)
+    assert train_sequences.isdisjoint(test_sequences)
+    assert val_sequences.isdisjoint(test_sequences)
+
+
+def test_build_features_adds_stable_gram_columns():
+    df = pd.DataFrame(
+        {
+            "sequence": ["ACDE", "AAAA"],
+            "gram_status": ["gram_positive", "gram_positive"],
+        }
+    )
+
+    features = build_features(df)
+
+    assert "gram_gram_negative" in features.columns
+    assert "gram_gram_positive" in features.columns
+    assert features["gram_gram_negative"].sum() == 0.0
+    assert features["gram_gram_positive"].sum() == 2.0
+
+
+def test_evaluate_predictions_reports_overall_and_per_gram_metrics():
+    df = pd.DataFrame(
+        {
+            "gram_status": [
+                "gram_positive",
+                "gram_positive",
+                "gram_negative",
+                "gram_negative",
+            ]
+        }
+    )
+    y_true = np.array([1.0, 2.0, 3.0, 4.0])
+    y_pred = np.array([1.1, 1.9, 2.8, 4.2])
+
+    metrics = evaluate_predictions(df, y_true, y_pred)
+
+    assert {"mae", "rmse", "r2", "positive_mae", "negative_mae"}.issubset(metrics)
+    assert metrics["mae"] > 0
