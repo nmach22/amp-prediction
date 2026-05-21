@@ -37,6 +37,11 @@ def parse_args() -> argparse.Namespace:
         default="target_activity_name",
         help="Column containing target species or organism names.",
     )
+    parser.add_argument(
+        "--gram-mapping",
+        default="data/raw/gram_classified.json",
+        help="JSON mapping from target organism name to gram_status.",
+    )
     return parser.parse_args()
 
 
@@ -46,6 +51,7 @@ def main() -> None:
         input_csv=Path(args.input),
         output_csv=Path(args.output),
         target_col=args.target_col,
+        gram_mapping_json=Path(args.gram_mapping),
     )
     feature_count = len(
         [

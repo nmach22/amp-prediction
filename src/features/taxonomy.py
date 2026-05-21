@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from functools import lru_cache
+import json
 from pathlib import Path
 import re
 from typing import Iterable
@@ -244,6 +245,26 @@ def add_taxonomy_columns(
     return df.merge(lookup, on=target_col, how="left")
 
 
+def load_gram_mapping(path: str | Path) -> dict[str, str]:
+    """Load target organism to Gram-status mapping from JSON."""
+    with Path(path).open() as handle:
+        mapping = json.load(handle)
+    return {str(key): str(value) for key, value in mapping.items()}
+
+
+def add_gram_status_column(
+    df: pd.DataFrame,
+    gram_mapping: dict[str, str],
+    target_col: str = "target_activity_name",
+) -> pd.DataFrame:
+    """Append gram_status from the original target-organism mapping."""
+    if target_col not in df.columns:
+        raise ValueError(f"Missing required target column: {target_col}")
+    output = df.copy()
+    output["gram_status"] = output[target_col].map(gram_mapping).fillna("unknown")
+    return output
+
+
 def build_taxonomy_feature_matrix(
     df: pd.DataFrame,
     rank_columns: Iterable[str] = TAXONOMY_COLUMNS,
@@ -266,10 +287,17 @@ def write_taxonomy_feature_file(
     input_csv: str | Path,
     output_csv: str | Path,
     target_col: str = "target_activity_name",
+    gram_mapping_json: str | Path | None = None,
 ) -> pd.DataFrame:
     """Load activities, append taxonomy columns and one-hot features, then save."""
     df = pd.read_csv(input_csv)
     enriched = add_taxonomy_columns(df, target_col=target_col)
+    if gram_mapping_json is not None:
+        enriched = add_gram_status_column(
+            enriched,
+            gram_mapping=load_gram_mapping(gram_mapping_json),
+            target_col=target_col,
+        )
     feature_matrix = build_taxonomy_feature_matrix(enriched)
     output = pd.concat([enriched, feature_matrix], axis=1)
     Path(output_csv).parent.mkdir(parents=True, exist_ok=True)

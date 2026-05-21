@@ -101,6 +101,29 @@ def split_by_sequence(
     )
 
 
+def split_train_val_by_sequence(
+    df: pd.DataFrame,
+    train_size: float = 0.8235294117647058,
+    val_size: float = 0.17647058823529413,
+    random_state: int = 42,
+) -> SplitData:
+    """Split training rows into train/validation while grouping by sequence."""
+    if not np.isclose(train_size + val_size, 1.0):
+        raise ValueError("train_size and val_size must sum to 1.0")
+
+    splitter = GroupShuffleSplit(
+        n_splits=1,
+        test_size=val_size,
+        random_state=random_state,
+    )
+    train_idx, val_idx = next(splitter.split(df, groups=df["sequence"]))
+    return SplitData(
+        train=df.iloc[train_idx].reset_index(drop=True),
+        val=df.iloc[val_idx].reset_index(drop=True),
+        test=pd.DataFrame(columns=df.columns),
+    )
+
+
 def encode_sequences(sequences: Iterable[str]) -> pd.DataFrame:
     """Encode variable-length peptide sequences into fixed-width features."""
     rows = []
@@ -196,7 +219,7 @@ def train_and_evaluate(
     tables_dir.mkdir(parents=True, exist_ok=True)
 
     df = load_mic_data(input_csv)
-    splits = split_by_sequence(df, random_state=random_state)
+    splits = split_train_val_by_sequence(df, random_state=random_state)
 
     X_train = build_features(splits.train)
     y_train = splits.train["log_mic"].to_numpy()
@@ -206,19 +229,20 @@ def train_and_evaluate(
     metrics_by_split: dict[str, dict[str, float]] = {}
     prediction_frames = []
     for split_name, split_df in [
+        ("train", splits.train),
         ("val", splits.val),
-        ("test", splits.test),
     ]:
         X = build_features(split_df).reindex(columns=X_train.columns, fill_value=0.0)
         y_true = split_df["log_mic"].to_numpy()
         y_pred = model.predict(X)
         metrics_by_split[split_name] = evaluate_predictions(split_df, y_true, y_pred)
 
-        pred_df = split_df[["sequence", "gram_status", "activity", "log_mic"]].copy()
-        pred_df["split"] = split_name
-        pred_df["pred_log_mic"] = y_pred
-        pred_df["pred_mic"] = np.power(10.0, y_pred)
-        prediction_frames.append(pred_df)
+        if split_name == "val":
+            pred_df = split_df[["sequence", "gram_status", "activity", "log_mic"]].copy()
+            pred_df["split"] = split_name
+            pred_df["pred_log_mic"] = y_pred
+            pred_df["pred_mic"] = np.power(10.0, y_pred)
+            prediction_frames.append(pred_df)
 
     pd.concat(prediction_frames, ignore_index=True).to_csv(
         tables_dir / "mic_baseline_predictions.csv", index=False

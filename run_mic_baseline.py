@@ -3,7 +3,7 @@ Train a simple baseline model for MIC regression.
 
 Usage:
     python run_mic_baseline.py
-    python run_mic_baseline.py --input data/processed/amp_mic_activities_gram_classified.csv
+    python run_mic_baseline.py --input data/processed/splits/train.csv
 """
 
 from __future__ import annotations
@@ -26,8 +26,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run the MIC regression baseline.")
     parser.add_argument(
         "--input",
-        default="data/processed/amp_mic_activities_gram_classified.csv",
-        help="CSV with sequence, gram_status, and activity columns.",
+        default="data/processed/splits/train.csv",
+        help="Training CSV with sequence, gram_status, and activity columns.",
     )
     parser.add_argument(
         "--output-dir",

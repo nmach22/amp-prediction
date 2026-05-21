@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from models.mic_baseline import (
+from src.models.mic_baseline import (
     MicBaselineRegressor,
     build_features,
     build_model,
@@ -9,6 +9,7 @@ from models.mic_baseline import (
     encode_sequences,
     evaluate_predictions,
     split_by_sequence,
+    split_train_val_by_sequence,
 )
 from src.models import BaseModel
 
@@ -63,6 +64,24 @@ def test_split_by_sequence_prevents_overlap_between_splits():
     assert train_sequences.isdisjoint(val_sequences)
     assert train_sequences.isdisjoint(test_sequences)
     assert val_sequences.isdisjoint(test_sequences)
+
+
+def test_split_train_val_by_sequence_has_no_test_rows():
+    df = pd.DataFrame(
+        {
+            "sequence": [f"SEQ{i}" for i in range(30) for _ in range(2)],
+            "gram_status": ["gram_positive", "gram_negative"] * 30,
+            "activity": np.linspace(1, 60, 60),
+            "log_mic": np.log10(np.linspace(1, 60, 60)),
+        }
+    )
+
+    splits = split_train_val_by_sequence(df, random_state=7)
+
+    assert len(splits.train) > 0
+    assert len(splits.val) > 0
+    assert splits.test.empty
+    assert set(splits.train["sequence"]).isdisjoint(set(splits.val["sequence"]))
 
 
 def test_build_features_adds_stable_gram_columns():

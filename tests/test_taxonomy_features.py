@@ -2,6 +2,7 @@ import pandas as pd
 
 from src.features.taxonomy import (
     BACTERIA_TAXID,
+    add_gram_status_column,
     add_taxonomy_columns,
     build_taxonomy_feature_matrix,
     get_taxonomic_lineage,
@@ -128,3 +129,29 @@ def test_add_taxonomy_columns_and_one_hot_features():
     assert "Genus_Unknown" in features.columns
     assert "target_is_bacteria" in features.columns
     assert features["target_is_bacteria"].tolist() == [1, 0]
+
+
+def test_add_gram_status_column_maps_original_target_names():
+    df = pd.DataFrame(
+        {
+            "target_activity_name": [
+                "Bacillus subtilis PY22",
+                "Candida albicans ATCC 10231",
+                "Missing organism",
+            ]
+        }
+    )
+
+    enriched = add_gram_status_column(
+        df,
+        {
+            "Bacillus subtilis PY22": "gram_positive",
+            "Candida albicans ATCC 10231": "non_bacteria",
+        },
+    )
+
+    assert enriched["gram_status"].tolist() == [
+        "gram_positive",
+        "non_bacteria",
+        "unknown",
+    ]
