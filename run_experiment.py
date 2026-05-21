@@ -20,6 +20,7 @@ import sys
 from pathlib import Path
 
 import mlflow
+import mlflow.sklearn
 import numpy as np
 
 # ── make src importable ──────────────────────────────────────────────────────
@@ -125,6 +126,11 @@ def main() -> None:
         log.info(f"Training {cfg['model']['name']} …")
         model = SklearnModel(name=cfg["model"]["name"], params=model_params)
         model.fit(X_train, y_train)
+        mlflow.sklearn.log_model(
+            sk_model=model._clf,
+            name="sklearn_model",
+            input_example=X_train[: min(5, len(X_train))],
+        )
 
         # ── Evaluate ─────────────────────────────────────────────────────────
         for split_name, X, y in [("val", X_val, y_val), ("test", X_test, y_test)]:
@@ -151,4 +157,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
