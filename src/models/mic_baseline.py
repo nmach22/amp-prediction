@@ -124,6 +124,15 @@ def split_train_val_by_sequence(
     )
 
 
+def infer_test_csv(input_csv: str | Path) -> Path | None:
+    """Return a sibling test.csv for the common processed split layout."""
+    input_path = Path(input_csv)
+    test_path = input_path.with_name("test.csv")
+    if input_path.name == "train.csv" and test_path.exists():
+        return test_path
+    return None
+
+
 def encode_sequences(sequences: Iterable[str]) -> pd.DataFrame:
     """Encode variable-length peptide sequences into fixed-width features."""
     rows = []
@@ -212,6 +221,7 @@ def train_and_evaluate(
     input_csv: str | Path,
     output_dir: str | Path,
     random_state: int = 42,
+    test_csv: str | Path | None = None,
 ) -> dict[str, dict[str, float]]:
     """Train the baseline model and write predictions, metrics, and model file."""
     output_path = Path(output_dir)
@@ -220,6 +230,14 @@ def train_and_evaluate(
 
     df = load_mic_data(input_csv)
     splits = split_train_val_by_sequence(df, random_state=random_state)
+    resolved_test_csv = (
+        Path(test_csv) if test_csv is not None else infer_test_csv(input_csv)
+    )
+    test_df = (
+        load_mic_data(resolved_test_csv)
+        if resolved_test_csv is not None
+        else splits.test
+    )
 
     X_train = build_features(splits.train)
     y_train = splits.train["log_mic"].to_numpy()
@@ -231,13 +249,16 @@ def train_and_evaluate(
     for split_name, split_df in [
         ("train", splits.train),
         ("val", splits.val),
+        ("test", test_df),
     ]:
+        if split_df.empty:
+            continue
         X = build_features(split_df).reindex(columns=X_train.columns, fill_value=0.0)
         y_true = split_df["log_mic"].to_numpy()
         y_pred = model.predict(X)
         metrics_by_split[split_name] = evaluate_predictions(split_df, y_true, y_pred)
 
-        if split_name == "val":
+        if split_name in {"val", "test"}:
             pred_df = split_df[["sequence", "gram_status", "activity", "log_mic"]].copy()
             pred_df["split"] = split_name
             pred_df["pred_log_mic"] = y_pred

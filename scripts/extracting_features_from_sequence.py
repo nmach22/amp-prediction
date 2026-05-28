@@ -4,7 +4,7 @@ from modlamp.descriptors import GlobalDescriptor, PeptideDescriptor
 import os
 import re
 
-INPUT_PATH = "data/processed/embeddings/sequences_with_MIC.csv"
+INPUT_PATH = "data/processed/raw/amp_mic_activities.csv"
 OUTPUT_PATH = "data/processed/embeddings/features_from_sequences.csv"
 
 CROSSCORR_WINDOW = 7

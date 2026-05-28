@@ -5,6 +5,7 @@ from src.models.taxonomy_mic_baseline import (
     build_taxonomy_features,
     load_taxonomy_mic_data,
     taxonomy_feature_columns,
+    train_and_evaluate,
 )
 
 
@@ -76,3 +77,55 @@ def test_build_taxonomy_features_combines_sequence_and_taxonomy_features():
     assert "Genus_Bacillus" in features.columns
     assert "target_is_bacteria" in features.columns
     assert features.loc[0, "sequence_length"] == 4
+
+
+def test_taxonomy_train_and_evaluate_writes_test_metrics_when_test_csv_is_provided(
+    tmp_path,
+):
+    train_path = tmp_path / "train.csv"
+    test_path = tmp_path / "test.csv"
+    output_dir = tmp_path / "results"
+
+    train_df = pd.DataFrame(
+        {
+            "sequence": [f"ACD{'A' * (i % 5)}K" for i in range(30)],
+            "target_activity_name": ["Bacillus subtilis"] * 30,
+            "activity": np.linspace(1, 30, 30),
+            "Phylum": ["Bacillota"] * 30,
+            "Genus": ["Bacillus"] * 30,
+            "Phylum_Bacillota": [1] * 30,
+            "Genus_Bacillus": [1] * 30,
+            "target_is_bacteria": [1] * 30,
+        }
+    )
+    test_df = pd.DataFrame(
+        {
+            "sequence": ["AAAAK", "CCCCK", "DDDDK", "EEEEK"],
+            "target_activity_name": ["Bacillus subtilis"] * 4,
+            "activity": [2.0, 4.0, 8.0, 16.0],
+            "Phylum": ["Bacillota"] * 4,
+            "Genus": ["Bacillus"] * 4,
+            "Phylum_Bacillota": [1] * 4,
+            "Genus_Bacillus": [1] * 4,
+            "target_is_bacteria": [1] * 4,
+        }
+    )
+    train_df.to_csv(train_path, index=False)
+    test_df.to_csv(test_path, index=False)
+
+    metrics = train_and_evaluate(
+        input_csv=train_path,
+        output_dir=output_dir,
+        random_state=7,
+        test_csv=test_path,
+    )
+
+    saved_metrics = pd.read_csv(
+        output_dir / "tables" / "taxonomy_mic_baseline_metrics.csv"
+    )
+    predictions = pd.read_csv(
+        output_dir / "tables" / "taxonomy_mic_baseline_predictions.csv"
+    )
+    assert set(metrics) == {"train", "val", "test"}
+    assert saved_metrics["split"].tolist() == ["train", "val", "test"]
+    assert "test" in set(predictions["split"])

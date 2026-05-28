@@ -30,6 +30,14 @@ def parse_args() -> argparse.Namespace:
         help="Training CSV with sequence, gram_status, and activity columns.",
     )
     parser.add_argument(
+        "--test-input",
+        default=None,
+        help=(
+            "Optional held-out test CSV. If omitted and --input is train.csv, "
+            "a sibling test.csv is used when present."
+        ),
+    )
+    parser.add_argument(
         "--output-dir",
         default="results",
         help="Directory for model, predictions, and metric outputs.",
@@ -67,6 +75,7 @@ def main() -> None:
         input_csv=Path(args.input),
         output_dir=output_dir,
         random_state=args.seed,
+        test_csv=Path(args.test_input) if args.test_input else None,
     )
 
     mlflow.set_experiment(args.mlflow_experiment)
@@ -74,6 +83,7 @@ def main() -> None:
         mlflow.log_params(
             {
                 "input_csv": args.input,
+                "test_input_csv": args.test_input or "auto",
                 "output_dir": str(output_dir),
                 "seed": args.seed,
                 "model_name": "random_forest_regressor",

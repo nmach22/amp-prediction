@@ -13,6 +13,7 @@ from src.models.mic_baseline import (
     MicBaselineRegressor,
     build_model,
     encode_sequences,
+    infer_test_csv,
     split_train_val_by_sequence,
 )
 
@@ -129,6 +130,7 @@ def train_and_evaluate(
     input_csv: str | Path,
     output_dir: str | Path,
     random_state: int = 42,
+    test_csv: str | Path | None = None,
 ) -> dict[str, dict[str, float]]:
     """Train taxonomy MIC baseline and write predictions, metrics, and model."""
     output_path = Path(output_dir)
@@ -137,6 +139,14 @@ def train_and_evaluate(
 
     df = load_taxonomy_mic_data(input_csv)
     splits = split_train_val_by_sequence(df, random_state=random_state)
+    resolved_test_csv = (
+        Path(test_csv) if test_csv is not None else infer_test_csv(input_csv)
+    )
+    test_df = (
+        load_taxonomy_mic_data(resolved_test_csv)
+        if resolved_test_csv is not None
+        else splits.test
+    )
 
     X_train = build_taxonomy_features(splits.train)
     y_train = splits.train["log_mic"].to_numpy()
@@ -164,7 +174,10 @@ def train_and_evaluate(
     for split_name, split_df in [
         ("train", splits.train),
         ("val", splits.val),
+        ("test", test_df),
     ]:
+        if split_df.empty:
+            continue
         X = build_taxonomy_features(split_df).reindex(
             columns=X_train.columns, fill_value=0.0
         )
@@ -174,7 +187,7 @@ def train_and_evaluate(
             split_df, y_true, y_pred
         )
 
-        if split_name == "val":
+        if split_name in {"val", "test"}:
             pred_df = split_df[prediction_columns].copy()
             pred_df["split"] = split_name
             pred_df["pred_log_mic"] = y_pred
