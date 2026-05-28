@@ -2,7 +2,7 @@
 # config/wandb.yml is gitignored so API keys stay out of version control.
 
 enabled: true
-project: amp-prediction
+project: AMP prediction
 entity:
 mode: online
 api_key: ${WANDB_API_KEY}
