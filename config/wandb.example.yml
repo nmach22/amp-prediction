@@ -1,0 +1,10 @@
+# Copy these keys into config/wandb.yml for local runs.
+# config/wandb.yml is gitignored so API keys stay out of version control.
+
+enabled: true
+project: amp-prediction
+entity:
+mode: online
+api_key: ${WANDB_API_KEY}
+tags:
+  - mic-baseline

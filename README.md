@@ -76,8 +76,8 @@ amp-prediction/
 │   └── esm2_lr.yml             ← Logistic Regression + ESM-2
 ├── scripts/
 │   └── make_splits.py          ← run once → writes data/processed/splits/
-├── run_experiment.py           ← main CLI entry-point (loads config → MLflow)
-└── env.yml                     ← updated with mlflow, biopython, transformers…
+├── run_experiment.py           ← main CLI entry-point (loads config → W&B)
+└── env.yml                     ← updated with wandb, biopython, transformers…
 ```
 
 ###### Create an environment with dependencies specified in env.yml:
@@ -100,7 +100,7 @@ amp-prediction/
 `python run_experiment.py --config experiments/rf_physicochemical.yml`
 
 ###### 3. Compare all runs visually
-`mlflow ui`
+Open your Weights & Biases project dashboard.
 
 
 ###### extracting sequences with MICs from JSON

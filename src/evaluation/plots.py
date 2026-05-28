@@ -3,7 +3,7 @@ Plotting utilities for model evaluation.
 
 All functions return a matplotlib Figure so callers can either:
   - save it to disk (results/figures/)
-  - log it as an MLflow artefact via mlflow.log_figure()
+  - log it to an experiment tracker such as W&B
 """
 
 from typing import Dict, List, Optional
@@ -110,4 +110,3 @@ def plot_metrics_comparison(
     plt.xticks(rotation=30, ha="right")
     fig.tight_layout()
     return fig
-

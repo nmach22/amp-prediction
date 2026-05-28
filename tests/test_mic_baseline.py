@@ -117,8 +117,21 @@ def test_evaluate_predictions_reports_overall_and_per_gram_metrics():
 
     metrics = evaluate_predictions(df, y_true, y_pred)
 
-    assert {"mae", "rmse", "r2", "positive_mae", "negative_mae"}.issubset(metrics)
+    assert {
+        "mae",
+        "rmse",
+        "median_ae",
+        "mean_error",
+        "r2",
+        "pearson",
+        "spearman",
+        "within_2fold",
+        "within_4fold",
+        "positive_mae",
+        "negative_mae",
+    }.issubset(metrics)
     assert metrics["mae"] > 0
+    assert 0.0 <= metrics["within_2fold"] <= metrics["within_4fold"] <= 1.0
 
 
 def test_mic_baseline_regressor_implements_base_model_interface():
@@ -160,4 +173,7 @@ def test_train_and_evaluate_writes_test_metrics_when_test_csv_is_provided(tmp_pa
     predictions = pd.read_csv(output_dir / "tables" / "mic_baseline_predictions.csv")
     assert set(metrics) == {"train", "val", "test"}
     assert saved_metrics["split"].tolist() == ["train", "val", "test"]
+    assert {"pearson", "spearman", "within_2fold", "within_4fold"}.issubset(
+        saved_metrics.columns
+    )
     assert "test" in set(predictions["split"])

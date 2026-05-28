@@ -1,6 +1,6 @@
 # Experiment: SVM + Word2Vec (3-mer) Embeddings
 experiment_name: svm_word2vec
-mlflow_experiment_group: embedding-based
+wandb_project: amp-prediction
 
 tags:
   author: nika          # change to your name when running
@@ -24,4 +24,3 @@ model:
     random_state: 42
 
 seed: 42
-

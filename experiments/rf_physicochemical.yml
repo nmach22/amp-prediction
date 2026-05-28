@@ -1,6 +1,6 @@
 # Experiment: Random Forest + Physicochemical Descriptors
 experiment_name: rf_physicochemical
-mlflow_experiment_group: classical-ml
+wandb_project: amp-prediction
 
 tags:
   author: zaza          # change to your name when running
@@ -20,4 +20,3 @@ model:
     random_state: 42
 
 seed: 42
-

@@ -2,7 +2,7 @@
 # NOTE: requires GPU (or patience). Pre-compute embeddings first:
 #   python scripts/make_embeddings.py --config experiments/esm2_lr.yml
 experiment_name: esm2_lr
-mlflow_experiment_group: plm-based
+wandb_project: amp-prediction
 
 tags:
   author: nika
@@ -24,4 +24,3 @@ model:
     random_state: 42
 
 seed: 42
-

@@ -13,6 +13,7 @@ import logging
 from pathlib import Path
 
 from src.models.mic_baseline import train_and_evaluate
+from src.utils import log_wandb_run, resolve_wandb_settings
 
 logging.basicConfig(
     level=logging.INFO,
@@ -44,14 +45,32 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--seed", type=int, default=42, help="Random seed.")
     parser.add_argument(
-        "--mlflow-experiment",
-        default="mic-baseline",
-        help="MLflow experiment name for logged metrics and artifacts.",
-    )
-    parser.add_argument(
         "--run-name",
         default="mic_baseline_random_forest",
-        help="MLflow run name.",
+        help="W&B run name.",
+    )
+    parser.add_argument(
+        "--wandb-project",
+        default=None,
+        help=(
+            "Weights & Biases project. Overrides config/wandb.yml when provided."
+        ),
+    )
+    parser.add_argument(
+        "--wandb-mode",
+        default=None,
+        choices=["online", "offline", "disabled"],
+        help="Optional W&B mode. Overrides config/wandb.yml when provided.",
+    )
+    parser.add_argument(
+        "--wandb-config",
+        default="config/wandb.yml",
+        help="Path to local W&B YAML config.",
+    )
+    parser.add_argument(
+        "--disable-wandb",
+        action="store_true",
+        help="Skip Weights & Biases logging.",
     )
     return parser.parse_args()
 
@@ -60,57 +79,40 @@ def main() -> None:
     args = parse_args()
     output_dir = Path(args.output_dir)
 
-    try:
-        import joblib
-        import mlflow
-        import mlflow.sklearn
-        import pandas as pd
-    except ImportError as exc:
-        raise SystemExit(
-            "MLflow logging requires the project environment. "
-            "Run `conda activate amp` and try again."
-        ) from exc
-
     metrics = train_and_evaluate(
         input_csv=Path(args.input),
         output_dir=output_dir,
         random_state=args.seed,
         test_csv=Path(args.test_input) if args.test_input else None,
     )
+    wandb_settings = resolve_wandb_settings(
+        config_path=args.wandb_config,
+        default_project="mic-baseline",
+        cli_project=args.wandb_project,
+        cli_mode=args.wandb_mode,
+        cli_disabled=args.disable_wandb,
+    )
 
-    mlflow.set_experiment(args.mlflow_experiment)
-    with mlflow.start_run(run_name=args.run_name):
-        mlflow.log_params(
-            {
-                "input_csv": args.input,
-                "test_input_csv": args.test_input or "auto",
-                "output_dir": str(output_dir),
-                "seed": args.seed,
-                "model_name": "random_forest_regressor",
-                "target": "log10_mic",
-            }
+    run_config = {
+        "input_csv": args.input,
+        "test_input_csv": args.test_input or "auto",
+        "output_dir": str(output_dir),
+        "seed": args.seed,
+        "model_name": "random_forest_regressor",
+        "target": "log10_mic",
+    }
+
+    if wandb_settings["enabled"]:
+        log_wandb_run(
+            project=wandb_settings["project"],
+            run_name=args.run_name,
+            config=run_config,
+            metrics_by_split=metrics,
+            mode=wandb_settings["mode"],
+            entity=wandb_settings["entity"],
+            tags=wandb_settings["tags"],
+            api_key=wandb_settings["api_key"],
         )
-        for split, split_metrics in metrics.items():
-            mlflow.log_metrics(
-                {f"{split}_{name}": value for name, value in split_metrics.items()}
-            )
-
-        tables_dir = output_dir / "tables"
-        model_path = output_dir / "mic_baseline_model.joblib"
-        if tables_dir.exists():
-            mlflow.log_artifacts(str(tables_dir), artifact_path="tables")
-        if model_path.exists():
-            mlflow.log_artifact(str(model_path), artifact_path="model")
-            model_payload = joblib.load(model_path)
-            input_example = pd.DataFrame(
-                [[0.0] * len(model_payload["feature_columns"])],
-                columns=model_payload["feature_columns"],
-            )
-            mlflow.sklearn.log_model(
-                sk_model=model_payload["model"]._model,
-                name="sklearn_model",
-                input_example=input_example,
-            )
 
     for split, split_metrics in metrics.items():
         formatted = " | ".join(
@@ -118,7 +120,8 @@ def main() -> None:
         )
         log.info("%s | %s", split, formatted)
     log.info("Saved outputs to %s", output_dir.resolve())
-    log.info("Logged run to MLflow experiment: %s", args.mlflow_experiment)
+    if wandb_settings["enabled"]:
+        log.info("Logged run to W&B project: %s", wandb_settings["project"])
 
 
 if __name__ == "__main__":

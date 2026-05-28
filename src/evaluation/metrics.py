@@ -2,7 +2,7 @@
 Evaluation metrics for binary AMP classification.
 
 All functions accept numpy arrays and return plain Python floats / dicts
-so they can be passed directly to mlflow.log_metrics().
+so they can be logged or saved directly by experiment runners.
 """
 
 from typing import Dict
@@ -47,4 +47,3 @@ def compute_metrics(
         "specificity": float(specificity),
         "precision": float(tp / (tp + fp)) if (tp + fp) > 0 else 0.0,
     }
-

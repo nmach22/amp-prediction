@@ -202,10 +202,18 @@ def evaluate_predictions(
     df: pd.DataFrame, y_true: np.ndarray, y_pred: np.ndarray
 ) -> dict[str, float]:
     """Compute overall and per-gram regression metrics."""
+    abs_error = np.abs(y_true - y_pred)
+    log_error = abs_error
     metrics = {
         "mae": float(mean_absolute_error(y_true, y_pred)),
         "rmse": float(root_mean_squared_error(y_true, y_pred)),
+        "median_ae": float(np.median(abs_error)),
+        "mean_error": float(np.mean(y_pred - y_true)),
         "r2": float(r2_score(y_true, y_pred)),
+        "pearson": _safe_corr(y_true, y_pred, method="pearson"),
+        "spearman": _safe_corr(y_true, y_pred, method="spearman"),
+        "within_2fold": float(np.mean(log_error <= np.log10(2.0))),
+        "within_4fold": float(np.mean(log_error <= np.log10(4.0))),
     }
     for gram_status in sorted(GRAM_CLASSES):
         mask = df["gram_status"].to_numpy() == gram_status
@@ -215,6 +223,16 @@ def evaluate_predictions(
         metrics[f"{prefix}_mae"] = float(mean_absolute_error(y_true[mask], y_pred[mask]))
         metrics[f"{prefix}_rmse"] = float(root_mean_squared_error(y_true[mask], y_pred[mask]))
     return metrics
+
+
+def _safe_corr(y_true: np.ndarray, y_pred: np.ndarray, method: str) -> float:
+    """Return a finite correlation value, or 0.0 when correlation is undefined."""
+    if len(y_true) < 2 or np.std(y_true) == 0 or np.std(y_pred) == 0:
+        return 0.0
+    corr = pd.Series(y_true).corr(pd.Series(y_pred), method=method)
+    if pd.isna(corr):
+        return 0.0
+    return float(corr)
 
 
 def train_and_evaluate(

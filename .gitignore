@@ -486,8 +486,9 @@ data/processed/embeddings/*
 
 # Fixed splits ARE committed – do NOT ignore data/processed/splits/
 
-# MLflow local tracking store
-mlruns/
+# Local W&B credentials/config
+config/wandb.yml
+wandb/
 
 # Results – figures and tables are reproducible; ignore to keep repo clean
 results/figures/*

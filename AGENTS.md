@@ -10,8 +10,7 @@ Data is organized under `data/`: keep raw exports in `data/raw/`, intermediate f
 - `conda activate amp`: activate the project environment.
 - `python scripts/fetch_dbaasp_sequences.py`: fetch DBAASP sequence data.
 - `python scripts/make_splits.py --input dbaasp_raw.csv`: generate train/validation/test splits.
-- `python run_experiment.py --config experiments/rf_physicochemical.yml`: run one experiment and log metrics/artifacts to MLflow.
-- `mlflow ui`: inspect experiment runs locally at `http://127.0.0.1:5000`.
+- `python run_experiment.py --config experiments/rf_physicochemical.yml`: run one experiment and log metrics/artifacts to W&B.
 
 ## Coding Style & Naming Conventions
 Use standard Python style with 4-space indentation, snake_case for functions and variables, and PascalCase for classes such as `PhysicochemicalEncoder` or `SklearnModel`. Keep modules focused and add new encoders, models, or metrics in the matching `src/` subpackage. Use `pathlib.Path` for file paths and YAML configs for experiment parameters.
@@ -22,7 +21,7 @@ No committed test suite is currently present. When adding tests, use `pytest`, p
 ## Commit & Pull Request Guidelines
 Recent commit messages are short phrases such as `split data`, `edited notebook`, and `update plots`. Keep future commits concise, but make the subject specific to the changed behavior.
 
-Pull requests should include a short description, affected experiment or data path, commands run, and metric changes when model behavior changes. Include screenshots or saved figure paths for plot/notebook updates. Do not commit large raw data, cached embeddings, virtual environments, IDE files, or MLflow artifacts unless required.
+Pull requests should include a short description, affected experiment or data path, commands run, and metric changes when model behavior changes. Include screenshots or saved figure paths for plot/notebook updates. Do not commit large raw data, cached embeddings, virtual environments, IDE files, or generated run artifacts unless required.
 
 ## Security & Configuration Tips
 Keep credentials and API keys out of the repository. Treat DBAASP exports and generated caches as reproducible artifacts; store large files in ignored data directories and document how to recreate them. Prefer extending `experiments/*.yml` over hard-coding paths, seeds, or model parameters.

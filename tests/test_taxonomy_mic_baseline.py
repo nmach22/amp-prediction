@@ -128,4 +128,7 @@ def test_taxonomy_train_and_evaluate_writes_test_metrics_when_test_csv_is_provid
     )
     assert set(metrics) == {"train", "val", "test"}
     assert saved_metrics["split"].tolist() == ["train", "val", "test"]
+    assert {"pearson", "spearman", "within_2fold", "within_4fold"}.issubset(
+        saved_metrics.columns
+    )
     assert "test" in set(predictions["split"])

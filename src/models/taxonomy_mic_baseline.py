@@ -7,12 +7,12 @@ from pathlib import Path
 import joblib
 import numpy as np
 import pandas as pd
-from sklearn.metrics import mean_absolute_error, r2_score, root_mean_squared_error
 
 from src.models.mic_baseline import (
     MicBaselineRegressor,
     build_model,
     encode_sequences,
+    evaluate_predictions,
     infer_test_csv,
     split_train_val_by_sequence,
 )
@@ -108,11 +108,7 @@ def evaluate_taxonomy_predictions(
     df: pd.DataFrame, y_true: np.ndarray, y_pred: np.ndarray
 ) -> dict[str, float]:
     """Compute overall metrics plus broad taxonomy-group diagnostics."""
-    metrics = {
-        "mae": float(mean_absolute_error(y_true, y_pred)),
-        "rmse": float(root_mean_squared_error(y_true, y_pred)),
-        "r2": float(r2_score(y_true, y_pred)),
-    }
+    metrics = evaluate_predictions(_with_gram_status(df), y_true, y_pred)
 
     if "Phylum" in df.columns:
         for phylum, group in df.groupby("Phylum", dropna=False):
@@ -124,6 +120,15 @@ def evaluate_taxonomy_predictions(
                 np.mean(np.abs(y_true[mask] - y_pred[mask]))
             )
     return metrics
+
+
+def _with_gram_status(df: pd.DataFrame) -> pd.DataFrame:
+    """Provide a compatible gram_status column for shared MIC metrics."""
+    if "gram_status" in df.columns:
+        return df
+    compatible = df.copy()
+    compatible["gram_status"] = "unknown"
+    return compatible
 
 
 def train_and_evaluate(
