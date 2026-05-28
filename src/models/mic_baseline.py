@@ -3,7 +3,7 @@ Baseline MIC regression pipeline for AMP sequences.
 
 The pipeline predicts log10(MIC) from simple sequence composition features
 and gram status. Splits are grouped by sequence to avoid duplicate-sequence
-leakage across train, validation, and test sets.
+leakage across train and validation sets.
 """
 
 from __future__ import annotations
@@ -33,6 +33,7 @@ RESIDUE_GROUPS = {
     "frac_hydrophobic": set("AILMFWV"),
     "frac_aromatic": set("FWY"),
 }
+DEFAULT_ESTIMATOR_CHECKPOINTS = (1, 5, 10, 25, 50, 100, 200)
 
 
 @dataclass(frozen=True)
@@ -124,15 +125,6 @@ def split_train_val_by_sequence(
     )
 
 
-def infer_test_csv(input_csv: str | Path) -> Path | None:
-    """Return a sibling test.csv for the common processed split layout."""
-    input_path = Path(input_csv)
-    test_path = input_path.with_name("test.csv")
-    if input_path.name == "train.csv" and test_path.exists():
-        return test_path
-    return None
-
-
 def encode_sequences(sequences: Iterable[str]) -> pd.DataFrame:
     """Encode variable-length peptide sequences into fixed-width features."""
     rows = []
@@ -171,10 +163,10 @@ def build_features(df: pd.DataFrame) -> pd.DataFrame:
 class MicBaselineRegressor(BaseModel):
     """Random Forest baseline model for log10(MIC) regression."""
 
-    def __init__(self, random_state: int = 42):
+    def __init__(self, random_state: int = 42, n_estimators: int = 200):
         self.random_state = random_state
         self._model = RandomForestRegressor(
-            n_estimators=200,
+            n_estimators=n_estimators,
             random_state=random_state,
             n_jobs=-1,
         )
@@ -193,9 +185,11 @@ class MicBaselineRegressor(BaseModel):
         )
 
 
-def build_model(random_state: int = 42) -> MicBaselineRegressor:
+def build_model(
+    random_state: int = 42, n_estimators: int = 200
+) -> MicBaselineRegressor:
     """Create the baseline regressor."""
-    return MicBaselineRegressor(random_state=random_state)
+    return MicBaselineRegressor(random_state=random_state, n_estimators=n_estimators)
 
 
 def evaluate_predictions(
@@ -235,12 +229,23 @@ def _safe_corr(y_true: np.ndarray, y_pred: np.ndarray, method: str) -> float:
     return float(corr)
 
 
+def estimator_checkpoints(n_estimators: int) -> list[int]:
+    """Return increasing Random Forest checkpoints up to n_estimators."""
+    checkpoints = {
+        checkpoint
+        for checkpoint in DEFAULT_ESTIMATOR_CHECKPOINTS
+        if checkpoint <= n_estimators
+    }
+    checkpoints.add(n_estimators)
+    return sorted(checkpoints)
+
+
 def train_and_evaluate(
     input_csv: str | Path,
     output_dir: str | Path,
     random_state: int = 42,
-    test_csv: str | Path | None = None,
-) -> dict[str, dict[str, float]]:
+    return_history: bool = False,
+) -> dict[str, dict[str, float]] | tuple[dict[str, dict[str, float]], list[dict]]:
     """Train the baseline model and write predictions, metrics, and model file."""
     output_path = Path(output_dir)
     tables_dir = output_path / "tables"
@@ -248,35 +253,62 @@ def train_and_evaluate(
 
     df = load_mic_data(input_csv)
     splits = split_train_val_by_sequence(df, random_state=random_state)
-    resolved_test_csv = (
-        Path(test_csv) if test_csv is not None else infer_test_csv(input_csv)
-    )
-    test_df = (
-        load_mic_data(resolved_test_csv)
-        if resolved_test_csv is not None
-        else splits.test
-    )
+
+    split_frames = [
+        ("train", splits.train),
+        ("val", splits.val),
+    ]
 
     X_train = build_features(splits.train)
     y_train = splits.train["log_mic"].to_numpy()
     model = build_model(random_state=random_state)
-    model.fit(X_train, y_train)
+    total_estimators = model._model.n_estimators
+    model._model.set_params(warm_start=True)
 
+    split_features: dict[str, pd.DataFrame] = {
+        "train": X_train,
+    }
+    split_targets: dict[str, np.ndarray] = {
+        "train": y_train,
+    }
+    for split_name, split_df in split_frames:
+        if split_df.empty or split_name == "train":
+            continue
+        split_features[split_name] = build_features(split_df).reindex(
+            columns=X_train.columns, fill_value=0.0
+        )
+        split_targets[split_name] = split_df["log_mic"].to_numpy()
+
+    metric_history: list[dict] = []
     metrics_by_split: dict[str, dict[str, float]] = {}
+    for step, n_estimators in enumerate(estimator_checkpoints(total_estimators), start=1):
+        model._model.set_params(n_estimators=n_estimators)
+        model.fit(X_train, y_train)
+        metrics_by_split = {}
+        for split_name, split_df in split_frames:
+            if split_df.empty:
+                continue
+            y_pred = model.predict(split_features[split_name])
+            metrics = evaluate_predictions(
+                split_df, split_targets[split_name], y_pred
+            )
+            metrics_by_split[split_name] = metrics
+            metric_history.append(
+                {
+                    "step": step,
+                    "num_estimators": n_estimators,
+                    "split": split_name,
+                    "metrics": metrics,
+                }
+            )
+
     prediction_frames = []
-    for split_name, split_df in [
-        ("train", splits.train),
-        ("val", splits.val),
-        ("test", test_df),
-    ]:
+    for split_name, split_df in split_frames:
         if split_df.empty:
             continue
-        X = build_features(split_df).reindex(columns=X_train.columns, fill_value=0.0)
-        y_true = split_df["log_mic"].to_numpy()
-        y_pred = model.predict(X)
-        metrics_by_split[split_name] = evaluate_predictions(split_df, y_true, y_pred)
+        y_pred = model.predict(split_features[split_name])
 
-        if split_name in {"val", "test"}:
+        if split_name == "val":
             pred_df = split_df[["sequence", "gram_status", "activity", "log_mic"]].copy()
             pred_df["split"] = split_name
             pred_df["pred_log_mic"] = y_pred
@@ -293,4 +325,6 @@ def train_and_evaluate(
         {"model": model, "feature_columns": X_train.columns.tolist()},
         output_path / "mic_baseline_model.joblib",
     )
+    if return_history:
+        return metrics_by_split, metric_history
     return metrics_by_split

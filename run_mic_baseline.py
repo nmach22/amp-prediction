@@ -31,14 +31,6 @@ def parse_args() -> argparse.Namespace:
         help="Training CSV with sequence, gram_status, and activity columns.",
     )
     parser.add_argument(
-        "--test-input",
-        default=None,
-        help=(
-            "Optional held-out test CSV. If omitted and --input is train.csv, "
-            "a sibling test.csv is used when present."
-        ),
-    )
-    parser.add_argument(
         "--output-dir",
         default="results",
         help="Directory for model, predictions, and metric outputs.",
@@ -79,11 +71,11 @@ def main() -> None:
     args = parse_args()
     output_dir = Path(args.output_dir)
 
-    metrics = train_and_evaluate(
+    metrics, metric_history = train_and_evaluate(
         input_csv=Path(args.input),
         output_dir=output_dir,
         random_state=args.seed,
-        test_csv=Path(args.test_input) if args.test_input else None,
+        return_history=True,
     )
     wandb_settings = resolve_wandb_settings(
         config_path=args.wandb_config,
@@ -95,7 +87,6 @@ def main() -> None:
 
     run_config = {
         "input_csv": args.input,
-        "test_input_csv": args.test_input or "auto",
         "output_dir": str(output_dir),
         "seed": args.seed,
         "model_name": "random_forest_regressor",
@@ -108,6 +99,7 @@ def main() -> None:
             run_name=args.run_name,
             config=run_config,
             metrics_by_split=metrics,
+            metric_history=metric_history,
             mode=wandb_settings["mode"],
             entity=wandb_settings["entity"],
             tags=wandb_settings["tags"],

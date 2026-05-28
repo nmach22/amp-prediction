@@ -27,12 +27,50 @@ def flatten_split_metrics(
     }
 
 
+def flatten_metric_history_row(row: dict[str, Any]) -> dict[str, Any]:
+    """Flatten one metric-history row to W&B keys."""
+    split = row["split"]
+    flattened = {
+        "step": row["step"],
+        "epoch": row["step"],
+        "training_step": row["step"],
+    }
+    if "num_estimators" in row:
+        flattened["num_estimators"] = row["num_estimators"]
+
+    for name, value in row["metrics"].items():
+        flattened[f"{split}/{name}"] = value
+    return flattened
+
+
+def group_metric_history(
+    metric_history: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Group split metric rows into one W&B payload per training step."""
+    grouped: dict[int, dict[str, Any]] = {}
+    for row in metric_history:
+        step = int(row["step"])
+        payload = grouped.setdefault(
+            step,
+            {
+                "step": step,
+                "epoch": step,
+                "training_step": step,
+            },
+        )
+        if "num_estimators" in row:
+            payload["num_estimators"] = row["num_estimators"]
+        payload.update(flatten_metric_history_row(row))
+    return [grouped[step] for step in sorted(grouped)]
+
+
 def log_wandb_run(
     *,
     project: str,
     run_name: str,
     config: dict[str, Any],
     metrics_by_split: dict[str, dict[str, float]],
+    metric_history: list[dict[str, Any]] | None = None,
     mode: str | None = None,
     entity: str | None = None,
     tags: list[str] | None = None,
@@ -63,7 +101,11 @@ def log_wandb_run(
         tags=tags,
     )
     try:
-        wandb.log(flatten_split_metrics(metrics_by_split))
+        if metric_history:
+            for payload in group_metric_history(metric_history):
+                wandb.log(payload, step=payload["step"])
+        else:
+            wandb.log(flatten_split_metrics(metrics_by_split))
 
         if figure_path is not None and figure_path.exists():
             for image_path in sorted(figure_path.glob("*.png")):

@@ -38,32 +38,73 @@ from src.utils import (
 )
 
 log = get_logger(__name__)
+DEFAULT_ESTIMATOR_CHECKPOINTS = (1, 5, 10, 25, 50, 100, 200)
 
 # ── Feature factory ──────────────────────────────────────────────────────────
 
-def build_features(cfg: dict, train_seqs: list, val_seqs: list, test_seqs: list):
-    """Instantiate encoder, fit on train, transform all splits."""
+def build_features(cfg: dict, train_seqs: list, val_seqs: list):
+    """Instantiate encoder, fit on train when needed, and transform train/val."""
     name   = cfg["features"]["name"]
     params = cfg["features"].get("params", {}) or {}
 
     if name == "onehot":
         enc = feature_encoders.OneHotEncoder(**params)
-        return enc.encode(train_seqs), enc.encode(val_seqs), enc.encode(test_seqs)
+        return enc, enc.encode(train_seqs), enc.encode(val_seqs)
 
     if name == "physicochemical":
         enc = feature_encoders.PhysicochemicalEncoder()
-        return enc.encode(train_seqs), enc.encode(val_seqs), enc.encode(test_seqs)
+        return enc, enc.encode(train_seqs), enc.encode(val_seqs)
 
     if name == "word2vec":
         enc = feature_encoders.Word2VecEncoder(**params)
         enc.fit(train_seqs)
-        return enc.encode(train_seqs), enc.encode(val_seqs), enc.encode(test_seqs)
+        return enc, enc.encode(train_seqs), enc.encode(val_seqs)
 
     if name == "plm":
         enc = feature_encoders.PLMEncoder(**params)
-        return enc.encode(train_seqs), enc.encode(val_seqs), enc.encode(test_seqs)
+        return enc, enc.encode(train_seqs), enc.encode(val_seqs)
 
     raise ValueError(f"Unknown feature encoder: '{name}'")
+
+
+def make_serializable_encoder(encoder):
+    """Drop lazy-loaded PLM objects before saving the inference bundle."""
+    if hasattr(encoder, "_model"):
+        encoder._model = None
+    if hasattr(encoder, "_tokenizer"):
+        encoder._tokenizer = None
+    return encoder
+
+
+def estimator_checkpoints(n_estimators: int) -> list[int]:
+    checkpoints = {
+        checkpoint
+        for checkpoint in DEFAULT_ESTIMATOR_CHECKPOINTS
+        if checkpoint <= n_estimators
+    }
+    checkpoints.add(n_estimators)
+    return sorted(checkpoints)
+
+
+def collect_classification_history(
+    model: SklearnModel,
+    split_data: list[tuple[str, np.ndarray, np.ndarray]],
+    step: int,
+    num_estimators: int | None = None,
+) -> list[dict]:
+    rows = []
+    for split_name, X, y in split_data:
+        y_pred = model.predict(X)
+        y_prob = model.predict_proba(X)
+        row = {
+            "step": step,
+            "split": split_name,
+            "metrics": compute_metrics(y, y_pred, y_prob),
+        }
+        if num_estimators is not None:
+            row["num_estimators"] = num_estimators
+        rows.append(row)
+    return rows
 
 # ── Main ─────────────────────────────────────────────────────────────────────
 
@@ -123,19 +164,16 @@ def main() -> None:
     log.info("Loading splits …")
     df_train = load_split("train")
     df_val   = load_split("val")
-    df_test  = load_split("test")
 
     train_seqs = df_train["sequence"].tolist()
     val_seqs   = df_val["sequence"].tolist()
-    test_seqs  = df_test["sequence"].tolist()
 
     y_train = df_train["activity"].values
     y_val   = df_val["activity"].values
-    y_test  = df_test["activity"].values
 
     # ── Feature engineering ───────────────────────────────────────────────────
     log.info(f"Encoding features: {cfg['features']['name']} …")
-    X_train, X_val, X_test = build_features(cfg, train_seqs, val_seqs, test_seqs)
+    encoder, X_train, X_val = build_features(cfg, train_seqs, val_seqs)
 
     model_params = cfg["model"].get("params", {}) or {}
     feature_params = cfg["features"].get("params", {}) or {}
@@ -143,14 +181,41 @@ def main() -> None:
     # ── Train ────────────────────────────────────────────────────────────────
     log.info(f"Training {cfg['model']['name']} …")
     model = SklearnModel(name=cfg["model"]["name"], params=model_params)
-    model.fit(X_train, y_train)
+    split_data = [
+        ("train", X_train, y_train),
+        ("val", X_val, y_val),
+    ]
+    metric_history: list[dict] = []
+    if cfg["model"]["name"] == "random_forest":
+        total_estimators = model._clf.n_estimators
+        model._clf.set_params(warm_start=True)
+        for step, n_estimators in enumerate(
+            estimator_checkpoints(total_estimators), start=1
+        ):
+            model._clf.set_params(n_estimators=n_estimators)
+            model.fit(X_train, y_train)
+            metric_history.extend(
+                collect_classification_history(
+                    model,
+                    split_data,
+                    step=step,
+                    num_estimators=n_estimators,
+                )
+            )
+    else:
+        model.fit(X_train, y_train)
+        metric_history.extend(
+            collect_classification_history(model, split_data, step=1)
+        )
 
     model_path = models_dir / f"{cfg['experiment_name']}_model.joblib"
     joblib.dump(
         {
             "model": model._clf,
+            "feature_encoder": make_serializable_encoder(encoder),
             "config": cfg,
             "config_file": args.config,
+            "trained_splits": ["train", "val"],
         },
         model_path,
     )
@@ -161,7 +226,6 @@ def main() -> None:
     for split_name, X, y, split_df in [
         ("train", X_train, y_train, df_train),
         ("val", X_val, y_val, df_val),
-        ("test", X_test, y_test, df_test),
     ]:
         y_pred = model.predict(X)
         y_prob = model.predict_proba(X)
@@ -218,6 +282,7 @@ def main() -> None:
             run_name=cfg["experiment_name"],
             config=run_config,
             metrics_by_split=metrics_by_split,
+            metric_history=metric_history,
             mode=wandb_settings["mode"],
             entity=wandb_settings["entity"],
             tags=list(cfg.get("tags", {}).values()) + wandb_settings["tags"],

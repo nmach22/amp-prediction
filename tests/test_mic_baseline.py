@@ -141,9 +141,8 @@ def test_mic_baseline_regressor_implements_base_model_interface():
     assert isinstance(model, BaseModel)
 
 
-def test_train_and_evaluate_writes_test_metrics_when_test_csv_is_provided(tmp_path):
+def test_train_and_evaluate_writes_only_train_and_val_outputs(tmp_path):
     train_path = tmp_path / "train.csv"
-    test_path = tmp_path / "test.csv"
     output_dir = tmp_path / "results"
     train_df = pd.DataFrame(
         {
@@ -152,28 +151,19 @@ def test_train_and_evaluate_writes_test_metrics_when_test_csv_is_provided(tmp_pa
             "activity": np.linspace(1, 30, 30),
         }
     )
-    test_df = pd.DataFrame(
-        {
-            "sequence": ["AAAAK", "CCCCK", "DDDDK", "EEEEK"],
-            "gram_status": ["gram_positive", "gram_negative"] * 2,
-            "activity": [2.0, 4.0, 8.0, 16.0],
-        }
-    )
     train_df.to_csv(train_path, index=False)
-    test_df.to_csv(test_path, index=False)
 
     metrics = train_and_evaluate(
         input_csv=train_path,
         output_dir=output_dir,
         random_state=7,
-        test_csv=test_path,
     )
 
     saved_metrics = pd.read_csv(output_dir / "tables" / "mic_baseline_metrics.csv")
     predictions = pd.read_csv(output_dir / "tables" / "mic_baseline_predictions.csv")
-    assert set(metrics) == {"train", "val", "test"}
-    assert saved_metrics["split"].tolist() == ["train", "val", "test"]
+    assert set(metrics) == {"train", "val"}
+    assert saved_metrics["split"].tolist() == ["train", "val"]
     assert {"pearson", "spearman", "within_2fold", "within_4fold"}.issubset(
         saved_metrics.columns
     )
-    assert "test" in set(predictions["split"])
+    assert set(predictions["split"]) == {"val"}

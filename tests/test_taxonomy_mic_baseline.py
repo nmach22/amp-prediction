@@ -79,11 +79,10 @@ def test_build_taxonomy_features_combines_sequence_and_taxonomy_features():
     assert features.loc[0, "sequence_length"] == 4
 
 
-def test_taxonomy_train_and_evaluate_writes_test_metrics_when_test_csv_is_provided(
+def test_taxonomy_train_and_evaluate_writes_only_train_and_val_outputs(
     tmp_path,
 ):
     train_path = tmp_path / "train.csv"
-    test_path = tmp_path / "test.csv"
     output_dir = tmp_path / "results"
 
     train_df = pd.DataFrame(
@@ -98,26 +97,12 @@ def test_taxonomy_train_and_evaluate_writes_test_metrics_when_test_csv_is_provid
             "target_is_bacteria": [1] * 30,
         }
     )
-    test_df = pd.DataFrame(
-        {
-            "sequence": ["AAAAK", "CCCCK", "DDDDK", "EEEEK"],
-            "target_activity_name": ["Bacillus subtilis"] * 4,
-            "activity": [2.0, 4.0, 8.0, 16.0],
-            "Phylum": ["Bacillota"] * 4,
-            "Genus": ["Bacillus"] * 4,
-            "Phylum_Bacillota": [1] * 4,
-            "Genus_Bacillus": [1] * 4,
-            "target_is_bacteria": [1] * 4,
-        }
-    )
     train_df.to_csv(train_path, index=False)
-    test_df.to_csv(test_path, index=False)
 
     metrics = train_and_evaluate(
         input_csv=train_path,
         output_dir=output_dir,
         random_state=7,
-        test_csv=test_path,
     )
 
     saved_metrics = pd.read_csv(
@@ -126,9 +111,9 @@ def test_taxonomy_train_and_evaluate_writes_test_metrics_when_test_csv_is_provid
     predictions = pd.read_csv(
         output_dir / "tables" / "taxonomy_mic_baseline_predictions.csv"
     )
-    assert set(metrics) == {"train", "val", "test"}
-    assert saved_metrics["split"].tolist() == ["train", "val", "test"]
+    assert set(metrics) == {"train", "val"}
+    assert saved_metrics["split"].tolist() == ["train", "val"]
     assert {"pearson", "spearman", "within_2fold", "within_4fold"}.issubset(
         saved_metrics.columns
     )
-    assert "test" in set(predictions["split"])
+    assert set(predictions["split"]) == {"val"}

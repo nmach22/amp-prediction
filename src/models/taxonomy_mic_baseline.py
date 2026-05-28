@@ -12,8 +12,8 @@ from src.models.mic_baseline import (
     MicBaselineRegressor,
     build_model,
     encode_sequences,
+    estimator_checkpoints,
     evaluate_predictions,
-    infer_test_csv,
     split_train_val_by_sequence,
 )
 
@@ -135,8 +135,8 @@ def train_and_evaluate(
     input_csv: str | Path,
     output_dir: str | Path,
     random_state: int = 42,
-    test_csv: str | Path | None = None,
-) -> dict[str, dict[str, float]]:
+    return_history: bool = False,
+) -> dict[str, dict[str, float]] | tuple[dict[str, dict[str, float]], list[dict]]:
     """Train taxonomy MIC baseline and write predictions, metrics, and model."""
     output_path = Path(output_dir)
     tables_dir = output_path / "tables"
@@ -144,21 +144,55 @@ def train_and_evaluate(
 
     df = load_taxonomy_mic_data(input_csv)
     splits = split_train_val_by_sequence(df, random_state=random_state)
-    resolved_test_csv = (
-        Path(test_csv) if test_csv is not None else infer_test_csv(input_csv)
-    )
-    test_df = (
-        load_taxonomy_mic_data(resolved_test_csv)
-        if resolved_test_csv is not None
-        else splits.test
-    )
+
+    split_frames = [
+        ("train", splits.train),
+        ("val", splits.val),
+    ]
 
     X_train = build_taxonomy_features(splits.train)
     y_train = splits.train["log_mic"].to_numpy()
     model = build_model(random_state=random_state)
-    model.fit(X_train, y_train)
+    total_estimators = model._model.n_estimators
+    model._model.set_params(warm_start=True)
 
+    split_features: dict[str, pd.DataFrame] = {
+        "train": X_train,
+    }
+    split_targets: dict[str, np.ndarray] = {
+        "train": y_train,
+    }
+    for split_name, split_df in split_frames:
+        if split_df.empty or split_name == "train":
+            continue
+        split_features[split_name] = build_taxonomy_features(split_df).reindex(
+            columns=X_train.columns, fill_value=0.0
+        )
+        split_targets[split_name] = split_df["log_mic"].to_numpy()
+
+    metric_history: list[dict] = []
     metrics_by_split: dict[str, dict[str, float]] = {}
+    for step, n_estimators in enumerate(estimator_checkpoints(total_estimators), start=1):
+        model._model.set_params(n_estimators=n_estimators)
+        model.fit(X_train, y_train)
+        metrics_by_split = {}
+        for split_name, split_df in split_frames:
+            if split_df.empty:
+                continue
+            y_pred = model.predict(split_features[split_name])
+            metrics = evaluate_taxonomy_predictions(
+                split_df, split_targets[split_name], y_pred
+            )
+            metrics_by_split[split_name] = metrics
+            metric_history.append(
+                {
+                    "step": step,
+                    "num_estimators": n_estimators,
+                    "split": split_name,
+                    "metrics": metrics,
+                }
+            )
+
     prediction_frames = []
     prediction_columns = [
         column
@@ -176,23 +210,12 @@ def train_and_evaluate(
         if column in df.columns
     ]
 
-    for split_name, split_df in [
-        ("train", splits.train),
-        ("val", splits.val),
-        ("test", test_df),
-    ]:
+    for split_name, split_df in split_frames:
         if split_df.empty:
             continue
-        X = build_taxonomy_features(split_df).reindex(
-            columns=X_train.columns, fill_value=0.0
-        )
-        y_true = split_df["log_mic"].to_numpy()
-        y_pred = model.predict(X)
-        metrics_by_split[split_name] = evaluate_taxonomy_predictions(
-            split_df, y_true, y_pred
-        )
+        y_pred = model.predict(split_features[split_name])
 
-        if split_name in {"val", "test"}:
+        if split_name == "val":
             pred_df = split_df[prediction_columns].copy()
             pred_df["split"] = split_name
             pred_df["pred_log_mic"] = y_pred
@@ -213,6 +236,8 @@ def train_and_evaluate(
         },
         output_path / "taxonomy_mic_baseline_model.joblib",
     )
+    if return_history:
+        return metrics_by_split, metric_history
     return metrics_by_split
 
 
