@@ -500,3 +500,4 @@ results/*.joblib
 /data/processed/splits/test.csv
 /data/processed/splits/train.csv
 /data/processed/splits/val.csv
+/results/models/

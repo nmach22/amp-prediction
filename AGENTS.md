@@ -10,7 +10,8 @@ Data is organized under `data/`: keep raw exports in `data/raw/`, intermediate f
 - `conda activate amp`: activate the project environment.
 - `python scripts/fetch_dbaasp_sequences.py`: fetch DBAASP sequence data.
 - `python scripts/make_splits.py --input dbaasp_raw.csv`: generate train/validation/test splits.
-- `python run_experiment.py --config experiments/rf_physicochemical.yml`: run one experiment and log metrics/artifacts to W&B.
+- `python run_experiment.py --config experiments/rf_physicochemical.yml`: run a classification experiment and log metrics/artifacts to W&B.
+- `python run_experiment.py --model mic_baseline --input data/processed/splits/train.csv`: run a named MIC regression baseline.
 
 ## Coding Style & Naming Conventions
 Use standard Python style with 4-space indentation, snake_case for functions and variables, and PascalCase for classes such as `PhysicochemicalEncoder` or `SklearnModel`. Keep modules focused and add new encoders, models, or metrics in the matching `src/` subpackage. Use `pathlib.Path` for file paths and YAML configs for experiment parameters.

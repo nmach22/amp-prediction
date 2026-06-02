@@ -10,9 +10,10 @@ from src.models.mic_baseline import (
     evaluate_predictions,
     split_by_sequence,
     split_train_val_by_sequence,
-    train_and_evaluate,
 )
 from src.models import BaseModel
+from src.models.mic_runner import train_and_evaluate_mic_baseline
+from src.models.registry import get_mic_experiment_spec
 
 
 def test_encode_sequences_handles_variable_lengths():
@@ -153,7 +154,8 @@ def test_train_and_evaluate_writes_only_train_and_val_outputs(tmp_path):
     )
     train_df.to_csv(train_path, index=False)
 
-    metrics = train_and_evaluate(
+    metrics = train_and_evaluate_mic_baseline(
+        spec=get_mic_experiment_spec("mic_baseline"),
         input_csv=train_path,
         output_dir=output_dir,
         random_state=7,
@@ -162,6 +164,7 @@ def test_train_and_evaluate_writes_only_train_and_val_outputs(tmp_path):
     saved_metrics = pd.read_csv(output_dir / "tables" / "mic_baseline_metrics.csv")
     predictions = pd.read_csv(output_dir / "tables" / "mic_baseline_predictions.csv")
     assert set(metrics) == {"train", "val"}
+    assert (output_dir / "models" / "mic_baseline_model.joblib").exists()
     assert saved_metrics["split"].tolist() == ["train", "val"]
     assert {"pearson", "spearman", "within_2fold", "within_4fold"}.issubset(
         saved_metrics.columns

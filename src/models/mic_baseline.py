@@ -13,17 +13,15 @@ from pathlib import Path
 import re
 from typing import Iterable
 
-import joblib
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, r2_score, root_mean_squared_error
 from sklearn.model_selection import GroupShuffleSplit
 
-from src.models import BaseModel
+from src.models.base import BaseModel
 
 STANDARD_AA = tuple("ACDEFGHIKLMNPQRSTVWY")
-STANDARD_AA_SET = set(STANDARD_AA)
 NONSTANDARD_PATTERN = re.compile(f"[^{''.join(STANDARD_AA)}]")
 GRAM_CLASSES = {"gram_positive", "gram_negative"}
 RESIDUE_GROUPS = {
@@ -33,9 +31,6 @@ RESIDUE_GROUPS = {
     "frac_hydrophobic": set("AILMFWV"),
     "frac_aromatic": set("FWY"),
 }
-DEFAULT_ESTIMATOR_CHECKPOINTS = (1, 5, 10, 25, 50, 100, 200)
-
-
 @dataclass(frozen=True)
 class SplitData:
     train: pd.DataFrame
@@ -227,104 +222,3 @@ def _safe_corr(y_true: np.ndarray, y_pred: np.ndarray, method: str) -> float:
     if pd.isna(corr):
         return 0.0
     return float(corr)
-
-
-def estimator_checkpoints(n_estimators: int) -> list[int]:
-    """Return increasing Random Forest checkpoints up to n_estimators."""
-    checkpoints = {
-        checkpoint
-        for checkpoint in DEFAULT_ESTIMATOR_CHECKPOINTS
-        if checkpoint <= n_estimators
-    }
-    checkpoints.add(n_estimators)
-    return sorted(checkpoints)
-
-
-def train_and_evaluate(
-    input_csv: str | Path,
-    output_dir: str | Path,
-    random_state: int = 42,
-    return_history: bool = False,
-) -> dict[str, dict[str, float]] | tuple[dict[str, dict[str, float]], list[dict]]:
-    """Train the baseline model and write predictions, metrics, and model file."""
-    output_path = Path(output_dir)
-    tables_dir = output_path / "tables"
-    tables_dir.mkdir(parents=True, exist_ok=True)
-
-    df = load_mic_data(input_csv)
-    splits = split_train_val_by_sequence(df, random_state=random_state)
-
-    split_frames = [
-        ("train", splits.train),
-        ("val", splits.val),
-    ]
-
-    X_train = build_features(splits.train)
-    y_train = splits.train["log_mic"].to_numpy()
-    model = build_model(random_state=random_state)
-    total_estimators = model._model.n_estimators
-    model._model.set_params(warm_start=True)
-
-    split_features: dict[str, pd.DataFrame] = {
-        "train": X_train,
-    }
-    split_targets: dict[str, np.ndarray] = {
-        "train": y_train,
-    }
-    for split_name, split_df in split_frames:
-        if split_df.empty or split_name == "train":
-            continue
-        split_features[split_name] = build_features(split_df).reindex(
-            columns=X_train.columns, fill_value=0.0
-        )
-        split_targets[split_name] = split_df["log_mic"].to_numpy()
-
-    metric_history: list[dict] = []
-    metrics_by_split: dict[str, dict[str, float]] = {}
-    for step, n_estimators in enumerate(estimator_checkpoints(total_estimators), start=1):
-        model._model.set_params(n_estimators=n_estimators)
-        model.fit(X_train, y_train)
-        metrics_by_split = {}
-        for split_name, split_df in split_frames:
-            if split_df.empty:
-                continue
-            y_pred = model.predict(split_features[split_name])
-            metrics = evaluate_predictions(
-                split_df, split_targets[split_name], y_pred
-            )
-            metrics_by_split[split_name] = metrics
-            metric_history.append(
-                {
-                    "step": step,
-                    "num_estimators": n_estimators,
-                    "split": split_name,
-                    "metrics": metrics,
-                }
-            )
-
-    prediction_frames = []
-    for split_name, split_df in split_frames:
-        if split_df.empty:
-            continue
-        y_pred = model.predict(split_features[split_name])
-
-        if split_name == "val":
-            pred_df = split_df[["sequence", "gram_status", "activity", "log_mic"]].copy()
-            pred_df["split"] = split_name
-            pred_df["pred_log_mic"] = y_pred
-            pred_df["pred_mic"] = np.power(10.0, y_pred)
-            prediction_frames.append(pred_df)
-
-    pd.concat(prediction_frames, ignore_index=True).to_csv(
-        tables_dir / "mic_baseline_predictions.csv", index=False
-    )
-    pd.DataFrame(metrics_by_split).T.to_csv(
-        tables_dir / "mic_baseline_metrics.csv", index_label="split"
-    )
-    joblib.dump(
-        {"model": model, "feature_columns": X_train.columns.tolist()},
-        output_path / "mic_baseline_model.joblib",
-    )
-    if return_history:
-        return metrics_by_split, metric_history
-    return metrics_by_split

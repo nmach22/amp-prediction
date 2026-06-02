@@ -3,13 +3,16 @@ run_experiment.py
 =================
 Single CLI entry-point for all AMP prediction experiments.
 
-Every experiment is fully described by a YAML config file in experiments/.
-Results (params, metrics, figures, model artifacts) are logged to W&B.
+Classification experiments are described by YAML config files in experiments/.
+MIC baselines are selected by model name. Results, metrics, and artifacts are
+logged to W&B when enabled.
 
 Usage:
     python run_experiment.py --config experiments/rf_physicochemical.yml
     python run_experiment.py --config experiments/svm_word2vec.yml
     python run_experiment.py --config experiments/esm2_lr.yml
+    python run_experiment.py --model mic_baseline --input data/processed/splits/train.csv
+    python run_experiment.py --model taxonomy_mic_baseline --input data/processed/splits/train.csv
 
 """
 
@@ -20,7 +23,6 @@ from pathlib import Path
 import joblib
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
 # ── make src importable ──────────────────────────────────────────────────────
 ROOT = Path(__file__).parent
@@ -28,8 +30,7 @@ sys.path.insert(0, str(ROOT))
 
 from src.data import load_split
 import src.features as feature_encoders
-from src.models import SklearnModel
-from src.evaluation import compute_metrics, plot_roc_curve, plot_confusion_matrix
+from src.models.registry import MIC_EXPERIMENT_NAMES
 from src.utils import (
     set_seed,
     get_logger,
@@ -87,11 +88,13 @@ def estimator_checkpoints(n_estimators: int) -> list[int]:
 
 
 def collect_classification_history(
-    model: SklearnModel,
+    model,
     split_data: list[tuple[str, np.ndarray, np.ndarray]],
     step: int,
     num_estimators: int | None = None,
 ) -> list[dict]:
+    from src.evaluation.metrics import compute_metrics
+
     rows = []
     for split_name, X, y in split_data:
         y_pred = model.predict(X)
@@ -106,13 +109,73 @@ def collect_classification_history(
         rows.append(row)
     return rows
 
+
+def build_wandb_run_config(
+    *,
+    cfg: dict,
+    config_file: str,
+    output_dir: Path,
+    seed: int,
+    model=None,
+) -> dict:
+    """Build W&B config with both requested and resolved model settings."""
+    model_config = cfg["model"]
+    feature_config = cfg["features"]
+    model_params = model_config.get("params", {}) or {}
+    feature_params = feature_config.get("params", {}) or {}
+
+    resolved_model_params = {}
+    if model is not None and hasattr(model._clf, "get_params"):
+        resolved_model_params = model._clf.get_params(deep=False)
+
+    return {
+        "experiment_name": cfg.get("experiment_name"),
+        "config_file": config_file,
+        "output_dir": str(output_dir),
+        "seed": seed,
+        "tags": cfg.get("tags", {}),
+        "feature_encoder": feature_config["name"],
+        "feature_config": feature_config,
+        "model_name": model_config["name"],
+        "model_config": model_config,
+        "resolved_model_params": resolved_model_params,
+        **{f"model_{k}": v for k, v in model_params.items()},
+        **{f"feat_{k}": v for k, v in feature_params.items()},
+        **{
+            f"resolved_model_{k}": v
+            for k, v in resolved_model_params.items()
+        },
+    }
+
 # ── Main ─────────────────────────────────────────────────────────────────────
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Run an AMP prediction experiment.")
+    mic_models = sorted(MIC_EXPERIMENT_NAMES)
     p.add_argument(
-        "--config", required=True,
+        "--config",
+        default=None,
         help="Path to the experiment YAML (e.g. experiments/rf_physicochemical.yml)"
+    )
+    p.add_argument(
+        "--model",
+        default=None,
+        choices=mic_models,
+        help=(
+            "Named MIC regression baseline to run. Available: "
+            f"{', '.join(mic_models)}"
+        ),
+    )
+    p.add_argument(
+        "--input",
+        default="data/processed/splits/train.csv",
+        help="Input CSV for named MIC regression baselines.",
+    )
+    p.add_argument("--seed", type=int, default=None, help="Override random seed.")
+    p.add_argument(
+        "--run-name",
+        default=None,
+        help="Weights & Biases run name for named MIC baselines.",
     )
     p.add_argument(
         "--output-dir",
@@ -140,12 +203,26 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Skip Weights & Biases logging.",
     )
-    return p.parse_args()
+    args = p.parse_args()
+    if bool(args.config) == bool(args.model):
+        p.error("Provide exactly one of --config or --model.")
+    return args
 
 
 def main() -> None:
     args = parse_args()
+    if args.model:
+        run_named_mic_experiment(args)
+    else:
+        run_classification_experiment(args)
+
+
+def run_classification_experiment(args: argparse.Namespace) -> None:
     from src.utils import load_config
+    from src.models import SklearnModel
+    from src.evaluation.metrics import compute_metrics
+    import matplotlib.pyplot as plt
+    from src.evaluation import plot_confusion_matrix, plot_roc_curve
 
     cfg  = load_config(args.config)
     output_dir = Path(args.output_dir)
@@ -157,7 +234,7 @@ def main() -> None:
     models_dir.mkdir(parents=True, exist_ok=True)
 
     # ── Seed ─────────────────────────────────────────────────────────────────
-    seed = cfg.get("seed", 42)
+    seed = args.seed if args.seed is not None else cfg.get("seed", 42)
     set_seed(seed)
 
     # ── Load fixed splits ────────────────────────────────────────────────────
@@ -176,7 +253,6 @@ def main() -> None:
     encoder, X_train, X_val = build_features(cfg, train_seqs, val_seqs)
 
     model_params = cfg["model"].get("params", {}) or {}
-    feature_params = cfg["features"].get("params", {}) or {}
 
     # ── Train ────────────────────────────────────────────────────────────────
     log.info(f"Training {cfg['model']['name']} …")
@@ -260,15 +336,13 @@ def main() -> None:
         index=False,
     )
 
-    run_config = {
-        "config_file": args.config,
-        "output_dir": str(output_dir),
-        "seed": seed,
-        "feature_encoder": cfg["features"]["name"],
-        "model_name": cfg["model"]["name"],
-        **{f"model_{k}": v for k, v in model_params.items()},
-        **{f"feat_{k}": v for k, v in feature_params.items()},
-    }
+    run_config = build_wandb_run_config(
+        cfg=cfg,
+        config_file=args.config,
+        output_dir=output_dir,
+        seed=seed,
+        model=model,
+    )
     wandb_settings = resolve_wandb_settings(
         config_path=args.wandb_config,
         default_project=cfg.get("wandb_project", "amp-prediction"),
@@ -290,6 +364,62 @@ def main() -> None:
             figures_dir=figures_dir,
         )
         log.info("Logged run to W&B project: %s", wandb_settings["project"])
+
+
+def run_named_mic_experiment(args: argparse.Namespace) -> None:
+    from src.models.mic_runner import train_and_evaluate_mic_baseline
+    from src.models.registry import get_mic_experiment_spec
+
+    spec = get_mic_experiment_spec(args.model)
+    output_dir = Path(args.output_dir)
+    seed = args.seed if args.seed is not None else 42
+    set_seed(seed)
+
+    metrics, metric_history = train_and_evaluate_mic_baseline(
+        spec=spec,
+        input_csv=Path(args.input),
+        output_dir=output_dir,
+        random_state=seed,
+        return_history=True,
+    )
+
+    wandb_settings = resolve_wandb_settings(
+        config_path=args.wandb_config,
+        default_project=spec.default_project,
+        cli_project=args.wandb_project,
+        cli_mode=args.wandb_mode,
+        cli_disabled=args.disable_wandb,
+    )
+
+    run_config = {
+        "input_csv": args.input,
+        "output_dir": str(output_dir),
+        "seed": seed,
+        "model": args.model,
+        **spec.run_config,
+    }
+    if wandb_settings["enabled"]:
+        log_wandb_run(
+            project=wandb_settings["project"],
+            run_name=args.run_name or spec.default_run_name,
+            config=run_config,
+            metrics_by_split=metrics,
+            metric_history=metric_history,
+            mode=wandb_settings["mode"],
+            entity=wandb_settings["entity"],
+            tags=wandb_settings["tags"],
+            api_key=wandb_settings["api_key"],
+        )
+
+    for split, split_metrics in metrics.items():
+        metric_names = ["mae", "rmse", "r2"]
+        formatted = " | ".join(
+            f"{name}={split_metrics[name]:.4f}"
+            for name in metric_names
+            if name in split_metrics
+        )
+        log.info("%s | %s", split, formatted)
+    log.info("Saved %s outputs to %s", args.model, output_dir.resolve())
 
 
 if __name__ == "__main__":

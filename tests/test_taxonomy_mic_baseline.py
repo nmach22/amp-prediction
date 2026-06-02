@@ -5,8 +5,9 @@ from src.models.taxonomy_mic_baseline import (
     build_taxonomy_features,
     load_taxonomy_mic_data,
     taxonomy_feature_columns,
-    train_and_evaluate,
 )
+from src.models.mic_runner import train_and_evaluate_mic_baseline
+from src.models.registry import get_mic_experiment_spec
 
 
 def test_taxonomy_feature_columns_detects_rank_features():
@@ -99,7 +100,8 @@ def test_taxonomy_train_and_evaluate_writes_only_train_and_val_outputs(
     )
     train_df.to_csv(train_path, index=False)
 
-    metrics = train_and_evaluate(
+    metrics = train_and_evaluate_mic_baseline(
+        spec=get_mic_experiment_spec("taxonomy_mic_baseline"),
         input_csv=train_path,
         output_dir=output_dir,
         random_state=7,
@@ -112,6 +114,7 @@ def test_taxonomy_train_and_evaluate_writes_only_train_and_val_outputs(
         output_dir / "tables" / "taxonomy_mic_baseline_predictions.csv"
     )
     assert set(metrics) == {"train", "val"}
+    assert (output_dir / "models" / "taxonomy_mic_baseline_model.joblib").exists()
     assert saved_metrics["split"].tolist() == ["train", "val"]
     assert {"pearson", "spearman", "within_2fold", "within_4fold"}.issubset(
         saved_metrics.columns

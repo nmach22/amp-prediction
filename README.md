@@ -38,7 +38,7 @@ approaches and identify potential directions for improvement.
 ### *Project Supervisor:*
 - *Giorgi Zaalishvili*
 
-# Project sructure
+# Project structure
 ```aiignore
 amp-prediction/
 ├── data/
@@ -62,7 +62,9 @@ amp-prediction/
 │   │   └── plm.py              ← PLMEncoder (ESM-2, cached to disk)
 │   ├── models/
 │   │   ├── base.py             ← BaseModel ABC (fit/predict/predict_proba)
-│   │   └── sklearn_wrapper.py  ← SklearnModel (RF, SVM, LR, GB, KNN)
+│   │   ├── sklearn_wrapper.py  ← SklearnModel (RF, SVM, LR, GB, KNN)
+│   │   ├── mic_runner.py       ← shared MIC baseline training runner
+│   │   └── registry.py         ← named model registry
 │   ├── evaluation/
 │   │   ├── metrics.py          ← compute_metrics() → AUC, MCC, F1, …
 │   │   └── plots.py            ← ROC curves, confusion matrix, comparison bar
@@ -96,18 +98,18 @@ amp-prediction/
 ###### Build fixed train/val/test splits (needs a negative set first!)
 `python scripts/make_splits.py --input dbaasp_raw.csv`
 
-###### 2. Run any experiment
+###### 2. Run a classification experiment
 `python run_experiment.py --config experiments/rf_physicochemical.yml`
+
+###### Run a MIC regression baseline
+`python run_experiment.py --model mic_baseline --input data/processed/splits/train.csv`
+
+###### Run the taxonomy MIC regression baseline
+`python run_experiment.py --model taxonomy_mic_baseline --input data/processed/splits/train.csv`
 
 ###### 3. Compare all runs visually
 Open your Weights & Biases project dashboard.
 
-
-###### extracting sequences with MICs from JSON
-`python scripts/extracting_sequences_from_full_data.py`
-
-###### extracting sequences anits features from JSON
-`python scripts/extracting_sequences_with_features_from_JSON.py`
 
 ###### getting features from extracted sequences using modlAMP
 `python scripts/extracting_features_from_sequence.py`
