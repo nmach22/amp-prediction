@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AMP MIC Predictor</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="masthead">
+      <span class="eyebrow">Antimicrobial Peptide Assay &middot; In Silico</span>
+      <h1>Minimum Inhibitory Concentration Predictor</h1>
+      <p>
+        Submit a peptide sequence and a target organism. The model estimates the
+        MIC needed to inhibit visible growth of that strain.
+      </p>
+    </header>
+
+    <main class="assay">
+      <section class="card">
+        <h2>Specimen</h2>
+        <form id="predict-form">
+          <label class="field-label" for="sequence">Peptide sequence</label>
+          <textarea
+            id="sequence"
+            name="sequence"
+            rows="3"
+            placeholder="e.g. GIGKFLHSAKKFGKAFVGEIMNS"
+            required
+          ></textarea>
+
+          <label class="field-label" for="microbe">Target organism</label>
+          <select id="microbe" name="microbe" required></select>
+
+          <button type="submit" id="submit-btn">Run prediction</button>
+        </form>
+      </section>
+
+      <section class="card readout">
+        <h2>Assay readout</h2>
+        <div id="result">
+          <p class="readout-empty">Results will appear here once you run a prediction.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      Predictions are model estimates from sequence and organism context, not a
+      substitute for wet-lab susceptibility testing.
+    </footer>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

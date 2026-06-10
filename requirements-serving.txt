@@ -1,0 +1,17 @@
+# Runtime dependencies for the FastAPI serving app (app/main.py).
+#
+# Deliberately excludes training-only dependencies: ete3 (+ taxdump.tar.gz),
+# xgboost, catboost, wandb, gensim, jupyter/ipykernel, matplotlib/seaborn.
+# The scikit-learn version is pinned to match whatever trained the artifact,
+# since the fitted StandardScaler/PCA/SimpleImputer objects are unpickled by
+# joblib.load() and can break across scikit-learn minor versions.
+torch==2.12.1
+transformers==5.12.1
+modlamp==4.3.2
+scikit-learn==1.9.0
+numpy==2.4.6
+pandas==3.0.3
+fastapi==0.139.0
+uvicorn[standard]==0.51.0
+pydantic==2.13.4
+joblib==1.5.3

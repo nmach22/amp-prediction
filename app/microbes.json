@@ -1,0 +1,68 @@
+[
+  {
+    "key": "e_coli_atcc_25922",
+    "display_name": "Escherichia coli (ATCC 25922)",
+    "target_activity_name": "Escherichia coli ATCC 25922",
+    "gram_status": "gram_negative",
+    "phylum": "Pseudomonadota",
+    "class_": "Gammaproteobacteria",
+    "order": "Enterobacterales",
+    "family": "Enterobacteriaceae",
+    "genus": "Escherichia"
+  },
+  {
+    "key": "s_aureus_atcc_25923",
+    "display_name": "Staphylococcus aureus (ATCC 25923)",
+    "target_activity_name": "Staphylococcus aureus ATCC 25923",
+    "gram_status": "gram_positive",
+    "phylum": "Bacillota",
+    "class_": "Bacilli",
+    "order": "Bacillales",
+    "family": "Staphylococcaceae",
+    "genus": "Staphylococcus"
+  },
+  {
+    "key": "p_aeruginosa_atcc_27853",
+    "display_name": "Pseudomonas aeruginosa (ATCC 27853)",
+    "target_activity_name": "Pseudomonas aeruginosa ATCC 27853",
+    "gram_status": "gram_negative",
+    "phylum": "Pseudomonadota",
+    "class_": "Gammaproteobacteria",
+    "order": "Pseudomonadales",
+    "family": "Pseudomonadaceae",
+    "genus": "Pseudomonas"
+  },
+  {
+    "key": "a_baumannii_atcc_19606",
+    "display_name": "Acinetobacter baumannii (ATCC 19606)",
+    "target_activity_name": "Acinetobacter baumannii ATCC 19606",
+    "gram_status": "gram_negative",
+    "phylum": "Pseudomonadota",
+    "class_": "Gammaproteobacteria",
+    "order": "Moraxellales",
+    "family": "Moraxellaceae",
+    "genus": "Acinetobacter"
+  },
+  {
+    "key": "k_pneumoniae_atcc_700603",
+    "display_name": "Klebsiella pneumoniae (ATCC 700603)",
+    "target_activity_name": "Klebsiella pneumoniae ATCC 700603",
+    "gram_status": "gram_negative",
+    "phylum": "Pseudomonadota",
+    "class_": "Gammaproteobacteria",
+    "order": "Enterobacterales",
+    "family": "Enterobacteriaceae",
+    "genus": "Klebsiella"
+  },
+  {
+    "key": "e_faecalis_atcc_29212",
+    "display_name": "Enterococcus faecalis (ATCC 29212)",
+    "target_activity_name": "Enterococcus faecalis ATCC 29212",
+    "gram_status": "gram_positive",
+    "phylum": "Bacillota",
+    "class_": "Bacilli",
+    "order": "Lactobacillales",
+    "family": "Enterococcaceae",
+    "genus": "Enterococcus"
+  }
+]

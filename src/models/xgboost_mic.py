@@ -324,6 +324,9 @@ def pca_reduce_esm2_features(
             np.sum(pca.explained_variance_ratio_)
         ),
         "passthrough_feature_columns": context_columns,
+        "esm2_feature_columns": list(esm2_columns),
+        "esm2_pca_scaler": scaler,
+        "esm2_pca_model": pca,
     }
     return X_train_reduced, transformed_validation, metadata
 
