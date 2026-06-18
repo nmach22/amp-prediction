@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from src.models.mic_runner import MicExperimentSpec
 
 
-MIC_EXPERIMENT_NAMES = ("mic_baseline", "taxonomy_mic_baseline")
+MIC_EXPERIMENT_NAMES = ("mic_baseline", "taxonomy_mic_baseline", "xgboost_mic")
 
 
 def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
@@ -24,6 +24,12 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
         evaluate_taxonomy_predictions,
         load_taxonomy_mic_data,
         taxonomy_feature_columns,
+    )
+    from src.models.xgboost_mic import (
+        build_model as build_xgboost_model,
+        build_xgboost_features,
+        load_xgboost_mic_data,
+        xgboost_artifact_metadata,
     )
 
     return {
@@ -66,6 +72,35 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
                 "model_name": "random_forest_regressor",
                 "target": "log10_mic",
                 "target_features": "taxonomy",
+            },
+        ),
+        "xgboost_mic": MicExperimentSpec(
+            name="xgboost_mic",
+            default_project="xgboost-mic",
+            default_run_name="xgboost_mic_sequence_taxonomy",
+            load_data=load_xgboost_mic_data,
+            build_features=build_xgboost_features,
+            evaluate_predictions=evaluate_taxonomy_predictions,
+            prediction_columns=(
+                "sequence",
+                "target_activity_name",
+                "activity",
+                "log_mic",
+                "gram_status",
+                "Phylum",
+                "Class",
+                "Order",
+                "Family",
+                "Genus",
+            ),
+            build_model=build_xgboost_model,
+            use_estimator_checkpoints=False,
+            artifact_metadata=xgboost_artifact_metadata,
+            run_config={
+                "model_name": "xgboost_regressor",
+                "target": "log10_mic",
+                "target_features": "sequence_descriptors_taxonomy_gram",
+                "sequence_descriptor_library": "modlamp",
             },
         ),
     }

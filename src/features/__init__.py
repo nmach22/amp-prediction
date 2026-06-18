@@ -7,6 +7,7 @@ feature utilities.
 __all__ = [
     "OneHotEncoder",
     "PhysicochemicalEncoder",
+    "SequenceDescriptorEncoder",
     "Word2VecEncoder",
     "PLMEncoder",
 ]
@@ -21,6 +22,10 @@ def __getattr__(name):
         from .physicochemical import PhysicochemicalEncoder
 
         return PhysicochemicalEncoder
+    if name == "SequenceDescriptorEncoder":
+        from .sequence_descriptors import SequenceDescriptorEncoder
+
+        return SequenceDescriptorEncoder
     if name == "Word2VecEncoder":
         from .word2vec import Word2VecEncoder
 

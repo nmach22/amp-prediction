@@ -11,7 +11,8 @@ import numpy as np
 import pandas as pd
 
 from src.models.base import BaseModel
-from src.models.mic_baseline import build_model, split_train_val_by_sequence
+from src.models.mic_baseline import build_model as build_mic_baseline_model
+from src.models.mic_baseline import split_train_val_by_sequence
 
 DEFAULT_ESTIMATOR_CHECKPOINTS = (1, 5, 10, 25, 50, 100, 200)
 
@@ -30,6 +31,8 @@ class MicExperimentSpec:
         dict[str, float],
     ]
     prediction_columns: tuple[str, ...]
+    build_model: Callable[[int], BaseModel] = build_mic_baseline_model
+    use_estimator_checkpoints: bool = True
     artifact_metadata: Callable[[pd.DataFrame], dict] = field(default=lambda df: {})
     run_config: dict = field(default_factory=dict)
 
@@ -68,11 +71,8 @@ def train_and_evaluate_mic_baseline(
 
     X_train = spec.build_features(splits.train)
     y_train = splits.train["log_mic"].to_numpy()
-    model = build_model(random_state=random_state)
+    model = spec.build_model(random_state=random_state)
     _assert_base_model(model, spec.name)
-
-    total_estimators = model._model.n_estimators
-    model._model.set_params(warm_start=True)
 
     split_features: dict[str, pd.DataFrame] = {"train": X_train}
     split_targets: dict[str, np.ndarray] = {"train": y_train}
@@ -87,8 +87,21 @@ def train_and_evaluate_mic_baseline(
 
     metric_history: list[dict] = []
     metrics_by_split: dict[str, dict[str, float]] = {}
-    for step, n_estimators in enumerate(estimator_checkpoints(total_estimators), start=1):
-        model._model.set_params(n_estimators=n_estimators)
+    if spec.use_estimator_checkpoints:
+        total_estimators = model._model.n_estimators
+        model._model.set_params(warm_start=True)
+        training_steps = [
+            (step, n_estimators)
+            for step, n_estimators in enumerate(
+                estimator_checkpoints(total_estimators), start=1
+            )
+        ]
+    else:
+        training_steps = [(1, None)]
+
+    for step, n_estimators in training_steps:
+        if n_estimators is not None:
+            model._model.set_params(n_estimators=n_estimators)
         model.fit(X_train, y_train)
         metrics_by_split = {}
         for split_name, split_df in split_frames:
@@ -104,11 +117,12 @@ def train_and_evaluate_mic_baseline(
             metric_history.append(
                 {
                     "step": step,
-                    "num_estimators": n_estimators,
                     "split": split_name,
                     "metrics": metrics,
                 }
             )
+            if n_estimators is not None:
+                metric_history[-1]["num_estimators"] = n_estimators
 
     prediction_frames = []
     prediction_columns = [

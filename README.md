@@ -107,6 +107,9 @@ amp-prediction/
 ###### Run the taxonomy MIC regression baseline
 `python run_experiment.py --model taxonomy_mic_baseline --input data/processed/splits/train.csv`
 
+###### Run the XGBoost MIC regression model with sequence descriptors and taxonomy
+`python run_experiment.py --model xgboost_mic --input data/processed/amp_mic_activities_taxonomy_features.csv`
+
 ###### 3. Compare all runs visually
 Open your Weights & Biases project dashboard.
 
