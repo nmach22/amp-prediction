@@ -45,6 +45,16 @@ def test_mic_registry_lists_baseline_models():
     specs = mic_experiment_specs()
 
     assert {"mic_baseline", "taxonomy_mic_baseline"}.issubset(specs)
+    assert {
+        "xgboost_mic",
+        "xgboost_mic_basic_seq",
+        "xgboost_mic_amp_core",
+        "xgboost_mic_selected_seq",
+        "xgboost_mic_motif_seq",
+        "xgboost_mic_sequence_only",
+        "xgboost_mic_taxonomy_gram",
+        "xgboost_mic_interactions",
+    }.issubset(specs)
     assert get_mic_experiment_spec("mic_baseline").name == "mic_baseline"
 
 

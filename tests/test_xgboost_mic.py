@@ -10,8 +10,15 @@ from src.models.registry import MIC_EXPERIMENT_NAMES, get_mic_experiment_spec
 from src.models.xgboost_mic import (
     XGBoostMicRegressor,
     aggregate_duplicate_measurements,
+    build_xgboost_amp_core_features,
+    build_xgboost_basic_sequence_features,
+    build_xgboost_interaction_features,
+    build_xgboost_motif_sequence_features,
+    build_xgboost_sequence_only_features,
+    build_xgboost_taxonomy_gram_features,
     build_xgboost_features,
     load_xgboost_mic_data,
+    select_informative_feature_columns,
 )
 
 
@@ -119,6 +126,80 @@ def test_build_xgboost_features_combines_descriptors_taxonomy_and_gram(tmp_path)
     assert "gram_gram_negative" in features.columns
     assert "gram_gram_positive" in features.columns
     assert np.isfinite(features.to_numpy()).all()
+
+
+def test_xgboost_sequence_feature_variants_use_smaller_descriptor_sets(tmp_path):
+    path = tmp_path / "taxonomy.csv"
+    _taxonomy_frame().to_csv(path, index=False)
+    cleaned = load_xgboost_mic_data(path)
+
+    basic = build_xgboost_basic_sequence_features(cleaned)
+    amp_core = build_xgboost_amp_core_features(cleaned)
+
+    assert "modlamp_charge" in basic.columns
+    assert "aa_frac_A" not in basic.columns
+    assert "eisenberg_moment" not in basic.columns
+    assert "aa_frac_K" in amp_core.columns
+    assert "eisenberg_moment" in amp_core.columns
+    assert "pepcats_available" not in amp_core.columns
+    assert "Genus_Escherichia" in basic.columns
+    assert "gram_gram_negative" in amp_core.columns
+
+
+def test_xgboost_ablation_and_interaction_feature_builders(tmp_path):
+    path = tmp_path / "taxonomy.csv"
+    _taxonomy_frame().to_csv(path, index=False)
+    cleaned = load_xgboost_mic_data(path)
+
+    sequence_only = build_xgboost_sequence_only_features(cleaned)
+    taxonomy_gram = build_xgboost_taxonomy_gram_features(cleaned)
+    interactions = build_xgboost_interaction_features(cleaned)
+
+    assert "modlamp_charge" in sequence_only.columns
+    assert "Genus_Escherichia" not in sequence_only.columns
+    assert "Genus_Escherichia" in taxonomy_gram.columns
+    assert "modlamp_charge" not in taxonomy_gram.columns
+    assert "modlamp_charge_x_gram_gram_negative" in interactions.columns
+    assert "local_max_positive_frac_w5_x_Phylum_Bacillota" in interactions.columns
+    assert "Genus_Escherichia" in interactions.columns
+    assert np.isfinite(interactions.to_numpy()).all()
+
+
+def test_xgboost_motif_sequence_features_include_reduced_kmers(tmp_path):
+    path = tmp_path / "taxonomy.csv"
+    _taxonomy_frame().to_csv(path, index=False)
+    cleaned = load_xgboost_mic_data(path)
+
+    features = build_xgboost_motif_sequence_features(cleaned)
+
+    assert "modlamp_charge" in features.columns
+    assert "red_kmer_pos_pos" in features.columns
+    assert "red_kmer_hyd_hyd_hyd" in features.columns
+    assert "Genus_Escherichia" in features.columns
+    assert "gram_gram_negative" in features.columns
+    assert np.isfinite(features.to_numpy()).all()
+
+
+def test_select_informative_feature_columns_drops_constant_and_correlated_columns():
+    X = pd.DataFrame(
+        {
+            "constant": [1.0, 1.0, 1.0, 1.0, 1.0],
+            "signal": [0.0, 1.0, 2.0, 3.0, 4.0],
+            "signal_copy": [0.0, 1.0, 2.0, 3.0, 4.0],
+            "other": [4.0, 1.0, 3.0, 0.0, 2.0],
+            "Genus_Bacillus": [1.0, 1.0, 0.0, 0.0, 1.0],
+            "gram_gram_positive": [1.0, 1.0, 0.0, 0.0, 1.0],
+        }
+    )
+    y = np.array([0.0, 0.9, 2.1, 2.8, 4.2])
+
+    columns = select_informative_feature_columns(X, y, top_k=3)
+
+    assert "constant" not in columns
+    assert not {"signal", "signal_copy"}.issubset(columns)
+    assert "Genus_Bacillus" in columns
+    assert "gram_gram_positive" in columns
+    assert len([column for column in columns if column in {"signal", "other"}]) <= 2
 
 
 def test_xgboost_regressor_fit_without_validation_preserves_base_interface():
