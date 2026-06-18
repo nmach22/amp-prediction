@@ -1,0 +1,4 @@
+interface:
+  display_name: "AMP Prediction Workflows"
+  short_description: "AMP repo experiments, data, and MIC models."
+  default_prompt: "Use $amp-prediction-workflows to inspect the AMP prediction repo, choose the correct experiment path, and make tested scoped changes."

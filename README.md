@@ -88,6 +88,12 @@ amp-prediction/
 ###### Activate the new environment:
 `conda activate amp`
 
+###### Install the project Codex skill:
+`mkdir -p ~/.codex/skills && cp -R .codex/skills/amp-prediction-workflows ~/.codex/skills/`
+
+Then use it in Codex prompts with:
+`Use $amp-prediction-workflows ...`
+
 ###### To deactivate an active environment, use
 `conda deactivate`
 
