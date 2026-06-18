@@ -95,12 +95,15 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
             ),
             build_model=build_xgboost_model,
             use_estimator_checkpoints=False,
+            use_validation_fit=True,
             artifact_metadata=xgboost_artifact_metadata,
             run_config={
                 "model_name": "xgboost_regressor",
                 "target": "log10_mic",
                 "target_features": "sequence_descriptors_taxonomy_gram",
                 "sequence_descriptor_library": "modlamp",
+                "duplicate_measurements": "median_log_mic_by_sequence_target",
+                "early_stopping_rounds": 50,
             },
         ),
     }

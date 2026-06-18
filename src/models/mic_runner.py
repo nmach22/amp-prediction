@@ -33,6 +33,7 @@ class MicExperimentSpec:
     prediction_columns: tuple[str, ...]
     build_model: Callable[[int], BaseModel] = build_mic_baseline_model
     use_estimator_checkpoints: bool = True
+    use_validation_fit: bool = False
     artifact_metadata: Callable[[pd.DataFrame], dict] = field(default=lambda df: {})
     run_config: dict = field(default_factory=dict)
 
@@ -102,7 +103,15 @@ def train_and_evaluate_mic_baseline(
     for step, n_estimators in training_steps:
         if n_estimators is not None:
             model._model.set_params(n_estimators=n_estimators)
-        model.fit(X_train, y_train)
+        if spec.use_validation_fit and "val" in split_features:
+            model.fit(
+                X_train,
+                y_train,
+                X_val=split_features["val"],
+                y_val=split_targets["val"],
+            )
+        else:
+            model.fit(X_train, y_train)
         metrics_by_split = {}
         for split_name, split_df in split_frames:
             if split_df.empty:
@@ -152,6 +161,7 @@ def train_and_evaluate_mic_baseline(
             "feature_columns": X_train.columns.tolist(),
             "model_name": spec.name,
             **spec.artifact_metadata(df),
+            **_model_artifact_metadata(model, X_train.columns.tolist()),
         },
         models_dir / f"{spec.name}_model.joblib",
     )
@@ -164,3 +174,10 @@ def train_and_evaluate_mic_baseline(
 def _assert_base_model(model: BaseModel, model_name: str) -> None:
     if not isinstance(model, BaseModel):
         raise TypeError(f"{model_name} did not build a BaseModel instance.")
+
+
+def _model_artifact_metadata(model: BaseModel, feature_columns: list[str]) -> dict:
+    metadata_fn = getattr(model, "artifact_metadata", None)
+    if not callable(metadata_fn):
+        return {}
+    return metadata_fn(feature_columns)
