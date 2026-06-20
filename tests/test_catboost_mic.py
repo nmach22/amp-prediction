@@ -15,6 +15,7 @@ from src.models.catboost_mic import (
 from src.models.mic_runner import train_and_evaluate_mic_baseline
 from src.models.mlp_mic import MlpMicRegressor, build_mlp_features, load_mlp_mic_data
 from src.models.registry import MIC_EXPERIMENT_NAMES, get_mic_experiment_spec
+from src.utils.wandb_logging import group_metric_history
 
 
 def _raw_frame() -> pd.DataFrame:
@@ -246,15 +247,44 @@ def test_mlp_train_and_evaluate_writes_outputs(tmp_path):
             batch_size=8,
         ),
     )
-    metrics = train_and_evaluate_mic_baseline(
+    metrics, metric_history = train_and_evaluate_mic_baseline(
         spec=spec,
         input_csv=train_path,
         output_dir=output_dir,
         random_state=7,
+        return_history=True,
     )
 
     assert set(metrics) == {"train", "val"}
     artifact = joblib.load(output_dir / "models" / "mlp_mic_physchem_model.joblib")
     assert artifact["mlp_best_epoch"] is not None
     assert "numeric_imputation_medians" in artifact
+    history = artifact["mlp_training_history"]
+    assert history
+    expected_history_keys = {
+        "epoch",
+        "train_loss",
+        "train_mae",
+        "train_rmse",
+        "train_r2",
+        "val_loss",
+        "val_mae",
+        "val_rmse",
+        "val_r2",
+    }
+    assert expected_history_keys.issubset(history[0])
+    assert len(metric_history) == len(history) * 2
+    for row in metric_history:
+        assert {"loss", "mae", "rmse", "r2"}.issubset(row["metrics"])
+    grouped_history = group_metric_history(metric_history)
+    assert {
+        "train/loss",
+        "train/mae",
+        "train/rmse",
+        "train/r2",
+        "val/loss",
+        "val/mae",
+        "val/rmse",
+        "val/r2",
+    }.issubset(grouped_history[0])
     assert (output_dir / "tables" / "mlp_mic_physchem_predictions.csv").exists()

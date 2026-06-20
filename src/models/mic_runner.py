@@ -108,6 +108,9 @@ def train_and_evaluate_mic_baseline(
         ]
     else:
         training_steps = [(1, None)]
+    use_model_metric_history = (
+        len(training_steps) == 1 and callable(getattr(model, "metric_history", None))
+    )
 
     for step, n_estimators in training_steps:
         if n_estimators is not None:
@@ -132,15 +135,18 @@ def train_and_evaluate_mic_baseline(
                 y_pred,
             )
             metrics_by_split[split_name] = metrics
-            metric_history.append(
-                {
-                    "step": step,
-                    "split": split_name,
-                    "metrics": metrics,
-                }
-            )
-            if n_estimators is not None:
-                metric_history[-1]["num_estimators"] = n_estimators
+            if not use_model_metric_history:
+                metric_history.append(
+                    {
+                        "step": step,
+                        "split": split_name,
+                        "metrics": metrics,
+                    }
+                )
+                if n_estimators is not None:
+                    metric_history[-1]["num_estimators"] = n_estimators
+        if use_model_metric_history:
+            metric_history.extend(model.metric_history())
 
     prediction_frames = []
     prediction_columns = [

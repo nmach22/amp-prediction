@@ -129,18 +129,23 @@ class MlpMicRegressor(BaseModel):
         epochs_without_improvement = 0
 
         for epoch in range(1, self.max_epochs + 1):
-            train_loss = self._train_epoch(X_train, y_train, optimizer, loss_fn)
-            train_mae = self._mae(X_train, y_train)
+            self._train_epoch(X_train, y_train, optimizer, loss_fn)
+            train_metrics = self._regression_metrics(X_train, y_train, loss_fn)
             row = {
-                "epoch": float(epoch),
-                "train_loss": float(train_loss),
-                "train_mae": float(train_mae),
+                "epoch": epoch,
+                **{f"train_{name}": value for name, value in train_metrics.items()},
             }
-            score = train_mae
+            score = train_metrics["mae"]
             if X_val_array is not None and y_val_array is not None:
-                val_mae = self._mae(X_val_array, y_val_array)
-                row["val_mae"] = float(val_mae)
-                score = val_mae
+                val_metrics = self._regression_metrics(
+                    X_val_array,
+                    y_val_array,
+                    loss_fn,
+                )
+                row.update(
+                    {f"val_{name}": value for name, value in val_metrics.items()}
+                )
+                score = val_metrics["mae"]
             self.training_history_.append(row)
 
             if score + 1e-8 < best_score:
@@ -177,6 +182,29 @@ class MlpMicRegressor(BaseModel):
             "MlpMicRegressor is a regression model and does not expose "
             "class probabilities."
         )
+
+    def metric_history(self) -> list[dict]:
+        """Return per-epoch train/validation metrics for W&B curves."""
+        rows = []
+        metric_names = ("loss", "mae", "rmse", "r2")
+        for history_row in self.training_history_:
+            epoch = int(history_row["epoch"])
+            for split in ("train", "val"):
+                metrics = {
+                    name: history_row[f"{split}_{name}"]
+                    for name in metric_names
+                    if f"{split}_{name}" in history_row
+                }
+                if not metrics:
+                    continue
+                rows.append(
+                    {
+                        "step": epoch,
+                        "split": split,
+                        "metrics": metrics,
+                    }
+                )
+        return rows
 
     def artifact_metadata(self, feature_columns: list[str]) -> dict:
         return {
@@ -259,10 +287,45 @@ class MlpMicRegressor(BaseModel):
             target = self._tensor(y)
             return float(torch.mean(torch.abs(pred - target)).cpu())
 
+    def _regression_metrics(
+        self,
+        X: np.ndarray,
+        y: np.ndarray,
+        loss_fn,
+    ) -> dict[str, float]:
+        if self._model is None:
+            raise RuntimeError("Model must be initialized before evaluation.")
+        import torch
+
+        self._model.eval()
+        with torch.no_grad():
+            pred_tensor = self._model(self._tensor(X))
+            target_tensor = self._tensor(y)
+            loss = float(loss_fn(pred_tensor, target_tensor).cpu())
+        y_true = y.ravel().astype(float)
+        y_pred = pred_tensor.cpu().numpy().ravel().astype(float)
+        abs_error = np.abs(y_pred - y_true)
+        return {
+            "loss": loss,
+            "mae": float(np.mean(abs_error)),
+            "rmse": float(np.sqrt(np.mean(np.square(y_pred - y_true)))),
+            "r2": _safe_r2(y_true, y_pred),
+        }
+
     def _tensor(self, values: np.ndarray):
         import torch
 
         return torch.as_tensor(values, dtype=torch.float32)
+
+
+def _safe_r2(y_true: np.ndarray, y_pred: np.ndarray) -> float:
+    if len(y_true) < 2:
+        return 0.0
+    denominator = float(np.sum(np.square(y_true - np.mean(y_true))))
+    if denominator == 0.0:
+        return 0.0
+    numerator = float(np.sum(np.square(y_true - y_pred)))
+    return 1.0 - numerator / denominator
 
 
 def build_model(random_state: int = 42) -> MlpMicRegressor:
