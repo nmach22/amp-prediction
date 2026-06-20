@@ -1,0 +1,296 @@
+"""PyTorch MLP MIC regression ablation using physicochemical descriptors."""
+
+from __future__ import annotations
+
+import numpy as np
+import pandas as pd
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler
+
+from src.features.sequence_descriptors import SequenceDescriptorEncoder
+from src.models.base import BaseModel
+from src.models.catboost_mic import (
+    CATBOOST_CATEGORICAL_COLUMNS,
+    DESCRIPTOR_FEATURE_SET,
+    ENGINEERED_FEATURE_COLUMNS,
+    build_engineered_physchem_features,
+    load_catboost_mic_data,
+)
+from src.models.taxonomy_mic_baseline import evaluate_taxonomy_predictions
+
+
+def load_mlp_mic_data(path: str) -> pd.DataFrame:
+    """Load cleaned MIC rows for the MLP ablation."""
+    return load_catboost_mic_data(path)
+
+
+def build_mlp_features(df: pd.DataFrame) -> pd.DataFrame:
+    """Build numeric descriptor and one-hot target metadata features."""
+    descriptor_encoder = SequenceDescriptorEncoder(feature_set=DESCRIPTOR_FEATURE_SET)
+    sequence_features = descriptor_encoder.encode(df["sequence"])
+    engineered = build_engineered_physchem_features(sequence_features)
+    categoricals = pd.get_dummies(
+        _categorical_frame(df),
+        columns=list(CATBOOST_CATEGORICAL_COLUMNS),
+        prefix=list(CATBOOST_CATEGORICAL_COLUMNS),
+        dtype=float,
+    )
+    return pd.concat(
+        [
+            sequence_features.reset_index(drop=True),
+            engineered.reset_index(drop=True),
+            categoricals.reset_index(drop=True),
+        ],
+        axis=1,
+    ).astype(float)
+
+
+def _categorical_frame(df: pd.DataFrame) -> pd.DataFrame:
+    categorical = pd.DataFrame(index=df.index)
+    for column in CATBOOST_CATEGORICAL_COLUMNS:
+        if column in df.columns:
+            values = df[column]
+        else:
+            values = pd.Series("Unknown", index=df.index)
+        categorical[column] = (
+            values.fillna("Unknown")
+            .astype(str)
+            .str.strip()
+            .replace("", "Unknown")
+        )
+    return categorical
+
+
+class MlpMicRegressor(BaseModel):
+    """Regularized PyTorch MLP for log10(MIC)."""
+
+    def __init__(
+        self,
+        random_state: int = 42,
+        hidden_layers: tuple[int, ...] = (256, 128, 64),
+        dropout: float = 0.2,
+        learning_rate: float = 1e-3,
+        weight_decay: float = 1e-4,
+        max_epochs: int = 300,
+        patience: int = 30,
+        batch_size: int = 64,
+    ):
+        try:
+            import torch  # noqa: F401
+        except ImportError as exc:
+            raise ImportError(
+                "torch is required for the mlp_mic_physchem experiment. "
+                "Install the project environment from env.yml."
+            ) from exc
+
+        self.random_state = random_state
+        self.hidden_layers = hidden_layers
+        self.dropout = dropout
+        self.learning_rate = learning_rate
+        self.weight_decay = weight_decay
+        self.max_epochs = max_epochs
+        self.patience = patience
+        self.batch_size = batch_size
+        self._model = None
+        self._imputer = SimpleImputer(strategy="median")
+        self._scaler = StandardScaler()
+        self.training_history_: list[dict[str, float]] = []
+        self.best_epoch_: int | None = None
+        self.best_val_mae_: float | None = None
+
+    def fit(
+        self,
+        X: pd.DataFrame,
+        y: np.ndarray,
+        X_val: pd.DataFrame | None = None,
+        y_val: np.ndarray | None = None,
+    ) -> "MlpMicRegressor":
+        import torch
+        from torch import nn
+
+        torch.manual_seed(self.random_state)
+        X_train = self._fit_preprocess(X)
+        y_train = np.asarray(y, dtype=np.float32).reshape(-1, 1)
+        X_val_array = None
+        y_val_array = None
+        if X_val is not None and y_val is not None:
+            X_val_array = self._transform(X_val)
+            y_val_array = np.asarray(y_val, dtype=np.float32).reshape(-1, 1)
+
+        self._model = self._build_network(X_train.shape[1])
+        optimizer = torch.optim.AdamW(
+            self._model.parameters(),
+            lr=self.learning_rate,
+            weight_decay=self.weight_decay,
+        )
+        loss_fn = nn.HuberLoss()
+        best_state = None
+        best_score = np.inf
+        epochs_without_improvement = 0
+
+        for epoch in range(1, self.max_epochs + 1):
+            train_loss = self._train_epoch(X_train, y_train, optimizer, loss_fn)
+            train_mae = self._mae(X_train, y_train)
+            row = {
+                "epoch": float(epoch),
+                "train_loss": float(train_loss),
+                "train_mae": float(train_mae),
+            }
+            score = train_mae
+            if X_val_array is not None and y_val_array is not None:
+                val_mae = self._mae(X_val_array, y_val_array)
+                row["val_mae"] = float(val_mae)
+                score = val_mae
+            self.training_history_.append(row)
+
+            if score + 1e-8 < best_score:
+                best_score = score
+                self.best_epoch_ = epoch
+                self.best_val_mae_ = float(score)
+                best_state = {
+                    key: value.detach().clone()
+                    for key, value in self._model.state_dict().items()
+                }
+                epochs_without_improvement = 0
+            else:
+                epochs_without_improvement += 1
+                if epochs_without_improvement >= self.patience:
+                    break
+
+        if best_state is not None:
+            self._model.load_state_dict(best_state)
+        return self
+
+    def predict(self, X: pd.DataFrame) -> np.ndarray:
+        if self._model is None:
+            raise RuntimeError("Model must be fit before predict().")
+        import torch
+
+        X_array = self._transform(X)
+        self._model.eval()
+        with torch.no_grad():
+            preds = self._model(self._tensor(X_array)).cpu().numpy().ravel()
+        return preds
+
+    def predict_proba(self, X: pd.DataFrame) -> np.ndarray:
+        raise NotImplementedError(
+            "MlpMicRegressor is a regression model and does not expose "
+            "class probabilities."
+        )
+
+    def artifact_metadata(self, feature_columns: list[str]) -> dict:
+        return {
+            "mlp_hidden_layers": list(self.hidden_layers),
+            "mlp_dropout": self.dropout,
+            "mlp_learning_rate": self.learning_rate,
+            "mlp_weight_decay": self.weight_decay,
+            "mlp_max_epochs": self.max_epochs,
+            "mlp_patience": self.patience,
+            "mlp_batch_size": self.batch_size,
+            "mlp_best_epoch": self.best_epoch_,
+            "mlp_best_validation_mae": self.best_val_mae_,
+            "mlp_training_history": self.training_history_,
+            "numeric_imputation_medians": {
+                column: float(value)
+                for column, value in zip(
+                    feature_columns,
+                    self._imputer.statistics_,
+                    strict=False,
+                )
+            },
+        }
+
+    def _fit_preprocess(self, X: pd.DataFrame) -> np.ndarray:
+        raw = X.replace([np.inf, -np.inf], np.nan).astype(float)
+        imputed = self._imputer.fit_transform(raw)
+        return self._scaler.fit_transform(imputed).astype(np.float32)
+
+    def _transform(self, X: pd.DataFrame) -> np.ndarray:
+        raw = X.replace([np.inf, -np.inf], np.nan).astype(float)
+        imputed = self._imputer.transform(raw)
+        return self._scaler.transform(imputed).astype(np.float32)
+
+    def _build_network(self, input_dim: int):
+        from torch import nn
+
+        layers = []
+        previous = input_dim
+        for width in self.hidden_layers:
+            layers.append(nn.Linear(previous, width))
+            layers.append(nn.BatchNorm1d(width))
+            layers.append(nn.ReLU())
+            layers.append(nn.Dropout(self.dropout))
+            previous = width
+        layers.append(nn.Linear(previous, 1))
+        return nn.Sequential(*layers)
+
+    def _train_epoch(self, X: np.ndarray, y: np.ndarray, optimizer, loss_fn) -> float:
+        if self._model is None:
+            raise RuntimeError("Model must be initialized before training.")
+        import torch
+
+        self._model.train()
+        indices = torch.randperm(len(X)).numpy()
+        losses = []
+        for start in range(0, len(X), self.batch_size):
+            batch_idx = indices[start : start + self.batch_size]
+            single_row_batch = len(batch_idx) == 1
+            if single_row_batch:
+                self._model.eval()
+            X_batch = self._tensor(X[batch_idx])
+            y_batch = self._tensor(y[batch_idx])
+            optimizer.zero_grad()
+            loss = loss_fn(self._model(X_batch), y_batch)
+            loss.backward()
+            optimizer.step()
+            if single_row_batch:
+                self._model.train()
+            losses.append(float(loss.detach().cpu()))
+        return float(np.mean(losses)) if losses else 0.0
+
+    def _mae(self, X: np.ndarray, y: np.ndarray) -> float:
+        if self._model is None:
+            raise RuntimeError("Model must be initialized before evaluation.")
+        import torch
+
+        self._model.eval()
+        with torch.no_grad():
+            pred = self._model(self._tensor(X))
+            target = self._tensor(y)
+            return float(torch.mean(torch.abs(pred - target)).cpu())
+
+    def _tensor(self, values: np.ndarray):
+        import torch
+
+        return torch.as_tensor(values, dtype=torch.float32)
+
+
+def build_model(random_state: int = 42) -> MlpMicRegressor:
+    """Create the PyTorch MLP MIC regressor."""
+    return MlpMicRegressor(random_state=random_state)
+
+
+def mlp_artifact_metadata(df: pd.DataFrame) -> dict:
+    """Return feature metadata stored with the trained artifact."""
+    return {
+        "sequence_descriptor_columns": SequenceDescriptorEncoder(
+            feature_set=DESCRIPTOR_FEATURE_SET
+        ).feature_names(),
+        "engineered_feature_columns": list(ENGINEERED_FEATURE_COLUMNS),
+        "categorical_encoding": "one_hot_target_gram_taxonomy",
+        "descriptor_library": "modlamp_plus_reduced_alphabet_kmers",
+        "sequence_feature_set": DESCRIPTOR_FEATURE_SET,
+        "target": "log10_mic",
+        "duplicate_measurements": "median_log_mic_by_sequence_target",
+        "null_policy": "taxonomy_unknown_numeric_train_median",
+    }
+
+
+__all__ = [
+    "MlpMicRegressor",
+    "build_mlp_features",
+    "build_model",
+    "evaluate_taxonomy_predictions",
+    "load_mlp_mic_data",
+    "mlp_artifact_metadata",
+]

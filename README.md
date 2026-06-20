@@ -116,6 +116,18 @@ Then use it in Codex prompts with:
 ###### Run the XGBoost MIC regression model with sequence descriptors and taxonomy
 `python run_experiment.py --model xgboost_mic --input data/processed/amp_mic_activities_taxonomy_features.csv`
 
+###### Run the CatBoost MIC regression model with engineered physicochemical features
+`python run_experiment.py --model catboost_mic_physchem --input data/processed/amp_mic_activities_taxonomy_features.csv`
+
+###### Run the tuned CatBoost MIC regression model
+`python run_experiment.py --model catboost_mic_tuned --input data/processed/amp_mic_activities_taxonomy_features.csv`
+
+###### Analyze MIC validation errors by Gram, taxonomy, length, MIC range, and duplicates
+`python scripts/analyze_mic_errors.py --predictions results/tables/catboost_mic_tuned_predictions.csv --source data/processed/amp_mic_activities_taxonomy_features.csv`
+
+###### Run the PyTorch MLP MIC regression ablation
+`python run_experiment.py --model mlp_mic_physchem --input data/processed/amp_mic_activities_taxonomy_features.csv`
+
 ###### 3. Compare all runs visually
 Open your Weights & Biases project dashboard.
 
