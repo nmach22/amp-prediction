@@ -128,6 +128,12 @@ Then use it in Codex prompts with:
 ###### Run the PyTorch MLP MIC regression ablation
 `python run_experiment.py --model mlp_mic_physchem --input data/processed/amp_mic_activities_taxonomy_features.csv`
 
+###### Run the regularized PyTorch MLP MIC regression ablation
+`python run_experiment.py --model mlp_mic_physchem_regularized --input data/processed/amp_mic_activities_taxonomy_features.csv`
+
+###### Run the mildly regularized PyTorch MLP MIC regression ablation
+`python run_experiment.py --model mlp_mic_physchem_mild_regularized --input data/processed/amp_mic_activities_taxonomy_features.csv`
+
 ###### 3. Compare all runs visually
 Open your Weights & Biases project dashboard.
 

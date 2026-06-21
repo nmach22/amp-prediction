@@ -57,6 +57,8 @@ def test_mic_registry_lists_baseline_models():
         "catboost_mic_physchem",
         "catboost_mic_tuned",
         "mlp_mic_physchem",
+        "mlp_mic_physchem_regularized",
+        "mlp_mic_physchem_mild_regularized",
     }.issubset(specs)
     assert get_mic_experiment_spec("mic_baseline").name == "mic_baseline"
 

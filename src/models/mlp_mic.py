@@ -74,6 +74,7 @@ class MlpMicRegressor(BaseModel):
         max_epochs: int = 300,
         patience: int = 30,
         batch_size: int = 64,
+        noise_std: float = 0.0,
     ):
         try:
             import torch  # noqa: F401
@@ -91,12 +92,15 @@ class MlpMicRegressor(BaseModel):
         self.max_epochs = max_epochs
         self.patience = patience
         self.batch_size = batch_size
+        self.noise_std = noise_std
         self._model = None
         self._imputer = SimpleImputer(strategy="median")
         self._scaler = StandardScaler()
         self.training_history_: list[dict[str, float]] = []
         self.best_epoch_: int | None = None
+        self.best_train_mae_: float | None = None
         self.best_val_mae_: float | None = None
+        self.best_train_val_mae_gap_: float | None = None
 
     def fit(
         self,
@@ -109,6 +113,11 @@ class MlpMicRegressor(BaseModel):
         from torch import nn
 
         torch.manual_seed(self.random_state)
+        self.training_history_ = []
+        self.best_epoch_ = None
+        self.best_train_mae_ = None
+        self.best_val_mae_ = None
+        self.best_train_val_mae_gap_ = None
         X_train = self._fit_preprocess(X)
         y_train = np.asarray(y, dtype=np.float32).reshape(-1, 1)
         X_val_array = None
@@ -151,7 +160,14 @@ class MlpMicRegressor(BaseModel):
             if score + 1e-8 < best_score:
                 best_score = score
                 self.best_epoch_ = epoch
+                self.best_train_mae_ = float(train_metrics["mae"])
                 self.best_val_mae_ = float(score)
+                if X_val_array is not None and y_val_array is not None:
+                    self.best_train_val_mae_gap_ = float(
+                        val_metrics["mae"] - train_metrics["mae"]
+                    )
+                else:
+                    self.best_train_val_mae_gap_ = None
                 best_state = {
                     key: value.detach().clone()
                     for key, value in self._model.state_dict().items()
@@ -215,8 +231,11 @@ class MlpMicRegressor(BaseModel):
             "mlp_max_epochs": self.max_epochs,
             "mlp_patience": self.patience,
             "mlp_batch_size": self.batch_size,
+            "mlp_noise_std": self.noise_std,
             "mlp_best_epoch": self.best_epoch_,
+            "mlp_train_mae_at_best_epoch": self.best_train_mae_,
             "mlp_best_validation_mae": self.best_val_mae_,
+            "mlp_train_val_mae_gap_at_best_epoch": self.best_train_val_mae_gap_,
             "mlp_training_history": self.training_history_,
             "numeric_imputation_medians": {
                 column: float(value)
@@ -266,6 +285,8 @@ class MlpMicRegressor(BaseModel):
             if single_row_batch:
                 self._model.eval()
             X_batch = self._tensor(X[batch_idx])
+            if not single_row_batch:
+                X_batch = self._add_training_noise(X_batch)
             y_batch = self._tensor(y[batch_idx])
             optimizer.zero_grad()
             loss = loss_fn(self._model(X_batch), y_batch)
@@ -317,6 +338,13 @@ class MlpMicRegressor(BaseModel):
 
         return torch.as_tensor(values, dtype=torch.float32)
 
+    def _add_training_noise(self, X_batch):
+        if self.noise_std <= 0.0:
+            return X_batch
+        import torch
+
+        return X_batch + torch.randn_like(X_batch) * self.noise_std
+
 
 def _safe_r2(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     if len(y_true) < 2:
@@ -331,6 +359,34 @@ def _safe_r2(y_true: np.ndarray, y_pred: np.ndarray) -> float:
 def build_model(random_state: int = 42) -> MlpMicRegressor:
     """Create the PyTorch MLP MIC regressor."""
     return MlpMicRegressor(random_state=random_state)
+
+
+def build_regularized_model(random_state: int = 42) -> MlpMicRegressor:
+    """Create the regularized PyTorch MLP MIC regressor."""
+    return MlpMicRegressor(
+        random_state=random_state,
+        hidden_layers=(128, 64, 32),
+        dropout=0.35,
+        learning_rate=5e-4,
+        weight_decay=5e-4,
+        max_epochs=400,
+        patience=20,
+        noise_std=0.01,
+    )
+
+
+def build_mild_regularized_model(random_state: int = 42) -> MlpMicRegressor:
+    """Create a milder regularized MLP after the stronger variant underfit."""
+    return MlpMicRegressor(
+        random_state=random_state,
+        hidden_layers=(192, 96, 48),
+        dropout=0.25,
+        learning_rate=7e-4,
+        weight_decay=2e-4,
+        max_epochs=400,
+        patience=25,
+        noise_std=0.005,
+    )
 
 
 def mlp_artifact_metadata(df: pd.DataFrame) -> dict:
@@ -352,7 +408,9 @@ def mlp_artifact_metadata(df: pd.DataFrame) -> dict:
 __all__ = [
     "MlpMicRegressor",
     "build_mlp_features",
+    "build_mild_regularized_model",
     "build_model",
+    "build_regularized_model",
     "evaluate_taxonomy_predictions",
     "load_mlp_mic_data",
     "mlp_artifact_metadata",

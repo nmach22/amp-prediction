@@ -13,7 +13,13 @@ from src.models.catboost_mic import (
     load_catboost_mic_data,
 )
 from src.models.mic_runner import train_and_evaluate_mic_baseline
-from src.models.mlp_mic import MlpMicRegressor, build_mlp_features, load_mlp_mic_data
+from src.models.mlp_mic import (
+    MlpMicRegressor,
+    build_mlp_features,
+    build_mild_regularized_model,
+    build_regularized_model,
+    load_mlp_mic_data,
+)
 from src.models.registry import MIC_EXPERIMENT_NAMES, get_mic_experiment_spec
 from src.utils.wandb_logging import group_metric_history
 
@@ -123,9 +129,15 @@ def test_new_mic_models_are_registered():
     assert "catboost_mic_physchem" in MIC_EXPERIMENT_NAMES
     assert "catboost_mic_tuned" in MIC_EXPERIMENT_NAMES
     assert "mlp_mic_physchem" in MIC_EXPERIMENT_NAMES
+    assert "mlp_mic_physchem_regularized" in MIC_EXPERIMENT_NAMES
+    assert "mlp_mic_physchem_mild_regularized" in MIC_EXPERIMENT_NAMES
     assert get_mic_experiment_spec("catboost_mic_physchem").use_validation_fit
     assert get_mic_experiment_spec("catboost_mic_tuned").use_validation_fit
     assert get_mic_experiment_spec("mlp_mic_physchem").use_validation_fit
+    assert get_mic_experiment_spec("mlp_mic_physchem_regularized").use_validation_fit
+    assert get_mic_experiment_spec(
+        "mlp_mic_physchem_mild_regularized"
+    ).use_validation_fit
 
 
 def test_tuned_catboost_model_uses_mae_objective():
@@ -200,6 +212,72 @@ def test_mlp_features_are_numeric_one_hot_features(tmp_path):
     assert "gram_status_gram_positive" in features.columns
     assert "Genus_Bacillus" in features.columns
     assert np.isfinite(features.to_numpy()).all()
+
+
+def test_regularized_mlp_model_uses_intended_hyperparameters():
+    pytest.importorskip("torch")
+
+    model = build_regularized_model(random_state=7)
+
+    assert model.random_state == 7
+    assert model.hidden_layers == (128, 64, 32)
+    assert model.dropout == 0.35
+    assert model.weight_decay == 5e-4
+    assert model.learning_rate == 5e-4
+    assert model.max_epochs == 400
+    assert model.patience == 20
+    assert model.noise_std == 0.01
+
+
+def test_mild_regularized_mlp_model_uses_intended_hyperparameters():
+    pytest.importorskip("torch")
+
+    model = build_mild_regularized_model(random_state=7)
+
+    assert model.random_state == 7
+    assert model.hidden_layers == (192, 96, 48)
+    assert model.dropout == 0.25
+    assert model.weight_decay == 2e-4
+    assert model.learning_rate == 7e-4
+    assert model.max_epochs == 400
+    assert model.patience == 25
+    assert model.noise_std == 0.005
+
+
+def test_regularized_mlp_noise_is_train_only(tmp_path, monkeypatch):
+    pytest.importorskip("torch")
+    train_path = tmp_path / "train.csv"
+    _training_frame().to_csv(train_path, index=False)
+    cleaned = load_mlp_mic_data(train_path)
+    train = cleaned.iloc[:24]
+    val = cleaned.iloc[24:]
+    X_train = build_mlp_features(train)
+    X_val = build_mlp_features(val).reindex(columns=X_train.columns, fill_value=0.0)
+    y_train = train["log_mic"].to_numpy()
+    y_val = val["log_mic"].to_numpy()
+    model = MlpMicRegressor(
+        random_state=7,
+        hidden_layers=(16, 8),
+        max_epochs=2,
+        patience=2,
+        batch_size=8,
+        noise_std=0.05,
+    )
+    calls = {"count": 0}
+    original_add_noise = model._add_training_noise
+
+    def count_noise(X_batch):
+        calls["count"] += 1
+        return original_add_noise(X_batch)
+
+    monkeypatch.setattr(model, "_add_training_noise", count_noise)
+
+    model.fit(X_train, y_train, X_val=X_val, y_val=y_val)
+    first_pred = model.predict(X_val)
+    second_pred = model.predict(X_val)
+
+    assert calls["count"] > 0
+    assert np.allclose(first_pred, second_pred)
 
 
 def test_catboost_train_and_evaluate_writes_outputs(tmp_path):
@@ -288,3 +366,104 @@ def test_mlp_train_and_evaluate_writes_outputs(tmp_path):
         "val/r2",
     }.issubset(grouped_history[0])
     assert (output_dir / "tables" / "mlp_mic_physchem_predictions.csv").exists()
+
+
+def test_regularized_mlp_train_and_evaluate_writes_outputs(tmp_path):
+    pytest.importorskip("torch")
+    train_path = tmp_path / "train.csv"
+    output_dir = tmp_path / "results"
+    _training_frame().to_csv(train_path, index=False)
+
+    spec = replace(
+        get_mic_experiment_spec("mlp_mic_physchem_regularized"),
+        build_model=lambda random_state: MlpMicRegressor(
+            random_state=random_state,
+            hidden_layers=(16, 8),
+            dropout=0.35,
+            learning_rate=5e-4,
+            weight_decay=5e-4,
+            max_epochs=3,
+            patience=2,
+            batch_size=8,
+            noise_std=0.01,
+        ),
+    )
+    metrics, metric_history = train_and_evaluate_mic_baseline(
+        spec=spec,
+        input_csv=train_path,
+        output_dir=output_dir,
+        random_state=7,
+        return_history=True,
+    )
+
+    assert set(metrics) == {"train", "val"}
+    artifact = joblib.load(
+        output_dir / "models" / "mlp_mic_physchem_regularized_model.joblib"
+    )
+    assert artifact["mlp_hidden_layers"] == [16, 8]
+    assert artifact["mlp_dropout"] == 0.35
+    assert artifact["mlp_weight_decay"] == 5e-4
+    assert artifact["mlp_learning_rate"] == 5e-4
+    assert artifact["mlp_noise_std"] == 0.01
+    assert artifact["mlp_best_epoch"] is not None
+    assert artifact["mlp_train_mae_at_best_epoch"] is not None
+    assert artifact["mlp_best_validation_mae"] is not None
+    assert artifact["mlp_train_val_mae_gap_at_best_epoch"] is not None
+    history = artifact["mlp_training_history"]
+    assert history
+    for row in metric_history:
+        assert {"loss", "mae", "rmse", "r2"}.issubset(row["metrics"])
+    assert (
+        output_dir / "tables" / "mlp_mic_physchem_regularized_metrics.csv"
+    ).exists()
+    assert (
+        output_dir / "tables" / "mlp_mic_physchem_regularized_predictions.csv"
+    ).exists()
+
+
+def test_mild_regularized_mlp_train_and_evaluate_writes_outputs(tmp_path):
+    pytest.importorskip("torch")
+    train_path = tmp_path / "train.csv"
+    output_dir = tmp_path / "results"
+    _training_frame().to_csv(train_path, index=False)
+
+    spec = replace(
+        get_mic_experiment_spec("mlp_mic_physchem_mild_regularized"),
+        build_model=lambda random_state: MlpMicRegressor(
+            random_state=random_state,
+            hidden_layers=(16, 8),
+            dropout=0.25,
+            learning_rate=7e-4,
+            weight_decay=2e-4,
+            max_epochs=3,
+            patience=2,
+            batch_size=8,
+            noise_std=0.005,
+        ),
+    )
+    metrics, metric_history = train_and_evaluate_mic_baseline(
+        spec=spec,
+        input_csv=train_path,
+        output_dir=output_dir,
+        random_state=7,
+        return_history=True,
+    )
+
+    assert set(metrics) == {"train", "val"}
+    artifact = joblib.load(
+        output_dir / "models" / "mlp_mic_physchem_mild_regularized_model.joblib"
+    )
+    assert artifact["mlp_hidden_layers"] == [16, 8]
+    assert artifact["mlp_dropout"] == 0.25
+    assert artifact["mlp_weight_decay"] == 2e-4
+    assert artifact["mlp_learning_rate"] == 7e-4
+    assert artifact["mlp_noise_std"] == 0.005
+    assert artifact["mlp_train_val_mae_gap_at_best_epoch"] is not None
+    for row in metric_history:
+        assert {"loss", "mae", "rmse", "r2"}.issubset(row["metrics"])
+    assert (
+        output_dir / "tables" / "mlp_mic_physchem_mild_regularized_metrics.csv"
+    ).exists()
+    assert (
+        output_dir / "tables" / "mlp_mic_physchem_mild_regularized_predictions.csv"
+    ).exists()
