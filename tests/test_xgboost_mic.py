@@ -10,6 +10,7 @@ from src.models.registry import MIC_EXPERIMENT_NAMES, get_mic_experiment_spec
 from src.models.xgboost_mic import (
     XGBoostMicRegressor,
     aggregate_duplicate_measurements,
+    build_regularized_esm2_model,
     build_xgboost_esm2_context_features,
     build_xgboost_amp_core_features,
     build_xgboost_basic_sequence_features,
@@ -92,6 +93,28 @@ def test_xgboost_esm2_context_is_registered():
     assert get_mic_experiment_spec("xgboost_mic_esm2_context").name == (
         "xgboost_mic_esm2_context"
     )
+
+
+def test_xgboost_esm2_context_regularized_is_registered():
+    assert "xgboost_mic_esm2_context_regularized" in MIC_EXPERIMENT_NAMES
+    spec = get_mic_experiment_spec("xgboost_mic_esm2_context_regularized")
+
+    assert spec.name == "xgboost_mic_esm2_context_regularized"
+    assert spec.run_config["regularization_profile"] == "strong_dense_embedding"
+
+
+def test_regularized_esm2_xgboost_model_uses_stronger_regularization():
+    model = build_regularized_esm2_model(random_state=7)
+
+    params = model._model.get_params()
+    assert params["max_depth"] == 2
+    assert params["min_child_weight"] == 20.0
+    assert params["subsample"] == 0.65
+    assert params["colsample_bytree"] == 0.35
+    assert params["reg_alpha"] == 1.0
+    assert params["reg_lambda"] == 25.0
+    assert params["learning_rate"] == 0.01
+    assert params["early_stopping_rounds"] == 100
 
 
 def test_load_xgboost_mic_data_filters_invalid_rows(tmp_path):

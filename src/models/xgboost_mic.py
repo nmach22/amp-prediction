@@ -378,6 +378,22 @@ def build_model(random_state: int = 42) -> XGBoostMicRegressor:
     return XGBoostMicRegressor(random_state=random_state)
 
 
+def build_regularized_esm2_model(random_state: int = 42) -> XGBoostMicRegressor:
+    """Create a stronger-regularized XGBoost regressor for dense ESM2 features."""
+    return XGBoostMicRegressor(
+        random_state=random_state,
+        n_estimators=5000,
+        learning_rate=0.01,
+        max_depth=2,
+        min_child_weight=20.0,
+        subsample=0.65,
+        colsample_bytree=0.35,
+        reg_alpha=1.0,
+        reg_lambda=25.0,
+        early_stopping_rounds=100,
+    )
+
+
 def _safe_model_attribute(model: object, name: str) -> object | None:
     try:
         return getattr(model, name)
@@ -488,6 +504,7 @@ __all__ = [
     "build_xgboost_amp_core_features",
     "build_xgboost_basic_sequence_features",
     "build_model",
+    "build_regularized_esm2_model",
     "build_xgboost_esm2_context_features",
     "build_xgboost_features",
     "build_xgboost_features_with_sequence_set",
