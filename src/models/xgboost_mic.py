@@ -274,6 +274,79 @@ def select_informative_feature_columns(
     return selected_sequence_columns + protected_columns
 
 
+def pca_reduce_esm2_features(
+    X_train: pd.DataFrame,
+    validation_features: dict[str, pd.DataFrame],
+    y_train: np.ndarray,
+    n_components: int = 128,
+) -> tuple[pd.DataFrame, dict[str, pd.DataFrame], dict]:
+    """Fit PCA on train ESM2 columns and apply it to validation features."""
+    del y_train
+    from sklearn.decomposition import PCA
+    from sklearn.preprocessing import StandardScaler
+
+    esm2_columns = [column for column in X_train.columns if column.startswith("esm2_")]
+    if not esm2_columns:
+        raise ValueError("No ESM2 feature columns found for PCA reduction.")
+    context_columns = [column for column in X_train.columns if column not in esm2_columns]
+    components = min(n_components, len(esm2_columns), len(X_train))
+    if components < 1:
+        raise ValueError("PCA requires at least one training row and one ESM2 column.")
+
+    scaler = StandardScaler()
+    pca = PCA(n_components=components, random_state=42)
+    train_esm2 = scaler.fit_transform(X_train[esm2_columns].astype(float))
+    train_pca = pca.fit_transform(train_esm2)
+
+    X_train_reduced = _join_pca_context(
+        train_pca,
+        X_train[context_columns],
+        components,
+    )
+    transformed_validation = {}
+    for split_name, X_split in validation_features.items():
+        split_esm2 = scaler.transform(X_split[esm2_columns].astype(float))
+        split_pca = pca.transform(split_esm2)
+        transformed_validation[split_name] = _join_pca_context(
+            split_pca,
+            X_split[context_columns],
+            components,
+        )
+
+    metadata = {
+        "feature_transform": "train_only_standard_scaler_pca_on_esm2",
+        "esm2_original_dim": len(esm2_columns),
+        "esm2_pca_components": components,
+        "esm2_pca_explained_variance_ratio": [
+            float(value) for value in pca.explained_variance_ratio_
+        ],
+        "esm2_pca_explained_variance_total": float(
+            np.sum(pca.explained_variance_ratio_)
+        ),
+        "passthrough_feature_columns": context_columns,
+    }
+    return X_train_reduced, transformed_validation, metadata
+
+
+def _join_pca_context(
+    pca_values: np.ndarray,
+    context: pd.DataFrame,
+    n_components: int,
+) -> pd.DataFrame:
+    pca_features = pd.DataFrame(
+        pca_values,
+        columns=[f"esm2_pca_{index}" for index in range(n_components)],
+        index=context.index,
+    )
+    return pd.concat(
+        [
+            pca_features.reset_index(drop=True),
+            context.reset_index(drop=True).astype(float),
+        ],
+        axis=1,
+    )
+
+
 class XGBoostMicRegressor(BaseModel):
     """XGBoost regressor for log10(MIC)."""
 
@@ -515,6 +588,7 @@ __all__ = [
     "build_xgboost_taxonomy_gram_features",
     "evaluate_taxonomy_predictions",
     "load_xgboost_mic_data",
+    "pca_reduce_esm2_features",
     "select_informative_feature_columns",
     "xgboost_amp_core_artifact_metadata",
     "xgboost_artifact_metadata",

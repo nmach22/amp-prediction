@@ -19,6 +19,7 @@ MIC_EXPERIMENT_NAMES = (
     "xgboost_mic_sequence_only",
     "xgboost_mic_taxonomy_gram",
     "xgboost_mic_esm2_context",
+    "xgboost_mic_esm2_context_selected",
     "xgboost_mic_esm2_context_regularized",
     "xgboost_mic_interactions",
     "catboost_mic_physchem",
@@ -69,6 +70,7 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
         build_xgboost_sequence_only_features,
         build_xgboost_taxonomy_gram_features,
         load_xgboost_mic_data,
+        pca_reduce_esm2_features,
         select_informative_feature_columns,
         xgboost_amp_core_artifact_metadata,
         xgboost_artifact_metadata,
@@ -302,6 +304,34 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
                     "data/processed/embeddings/"
                     "facebook_esm2_t12_35M_UR50D_mic_embeddings.npz"
                 ),
+                "duplicate_measurements": "median_log_mic_by_sequence_target",
+                "early_stopping_rounds": 50,
+            },
+        ),
+        "xgboost_mic_esm2_context_selected": MicExperimentSpec(
+            name="xgboost_mic_esm2_context_selected",
+            default_project="xgboost-mic",
+            default_run_name="xgboost_mic_esm2_context_selected",
+            load_data=load_xgboost_mic_data,
+            build_features=build_xgboost_esm2_context_features,
+            evaluate_predictions=evaluate_taxonomy_predictions,
+            prediction_columns=PREDICTION_COLUMNS,
+            build_model=build_xgboost_model,
+            transform_features=pca_reduce_esm2_features,
+            use_estimator_checkpoints=False,
+            use_validation_fit=True,
+            artifact_metadata=xgboost_esm2_context_artifact_metadata,
+            run_config={
+                "model_name": "xgboost_regressor",
+                "target": "log10_mic",
+                "target_features": "pca_frozen_esm2_taxonomy_gram",
+                "plm_model": "facebook/esm2_t12_35M_UR50D",
+                "embedding_cache": (
+                    "data/processed/embeddings/"
+                    "facebook_esm2_t12_35M_UR50D_mic_embeddings.npz"
+                ),
+                "feature_transform": "train_only_standard_scaler_pca_on_esm2",
+                "esm2_pca_components": 128,
                 "duplicate_measurements": "median_log_mic_by_sequence_target",
                 "early_stopping_rounds": 50,
             },

@@ -33,6 +33,10 @@ class MicExperimentSpec:
     prediction_columns: tuple[str, ...]
     build_model: Callable[[int], BaseModel] = build_mic_baseline_model
     select_features: Callable[[pd.DataFrame, np.ndarray], list[str]] | None = None
+    transform_features: Callable[
+        [pd.DataFrame, dict[str, pd.DataFrame], np.ndarray],
+        tuple[pd.DataFrame, dict[str, pd.DataFrame], dict],
+    ] | None = None
     use_estimator_checkpoints: bool = True
     use_validation_fit: bool = False
     artifact_metadata: Callable[[pd.DataFrame], dict] = field(default=lambda df: {})
@@ -94,6 +98,18 @@ def train_and_evaluate_mic_baseline(
                 selected_feature_columns
             ]
         split_targets[split_name] = split_df["log_mic"].to_numpy()
+
+    feature_transform_metadata = {}
+    if spec.transform_features is not None:
+        validation_features = {
+            split_name: features
+            for split_name, features in split_features.items()
+            if split_name != "train"
+        }
+        X_train, transformed_validation, feature_transform_metadata = (
+            spec.transform_features(X_train, validation_features, y_train)
+        )
+        split_features = {"train": X_train, **transformed_validation}
 
     metric_history: list[dict] = []
     metrics_by_split: dict[str, dict[str, float]] = {}
@@ -176,6 +192,7 @@ def train_and_evaluate_mic_baseline(
             "feature_columns": X_train.columns.tolist(),
             "model_name": spec.name,
             "selected_feature_columns": selected_feature_columns,
+            **feature_transform_metadata,
             **spec.artifact_metadata(df),
             **_model_artifact_metadata(model, X_train.columns.tolist()),
         },

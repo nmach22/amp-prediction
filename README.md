@@ -122,6 +122,9 @@ Then use it in Codex prompts with:
 ###### Run the XGBoost MIC regression model with frozen ESM2 embeddings and taxonomy
 `python run_experiment.py --model xgboost_mic_esm2_context --input data/processed/amp_mic_activities_taxonomy_features.csv`
 
+###### Run the XGBoost MIC model with PCA-selected frozen ESM2 embeddings and taxonomy
+`python run_experiment.py --model xgboost_mic_esm2_context_selected --input data/processed/amp_mic_activities_taxonomy_features.csv`
+
 ###### Run the stronger-regularized XGBoost MIC model with frozen ESM2 embeddings and taxonomy
 `python run_experiment.py --model xgboost_mic_esm2_context_regularized --input data/processed/amp_mic_activities_taxonomy_features.csv`
 

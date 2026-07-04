@@ -20,6 +20,7 @@ from src.models.xgboost_mic import (
     build_xgboost_taxonomy_gram_features,
     build_xgboost_features,
     load_xgboost_mic_data,
+    pca_reduce_esm2_features,
     select_informative_feature_columns,
 )
 from src.features.plm import save_embedding_cache
@@ -92,6 +93,16 @@ def test_xgboost_esm2_context_is_registered():
     assert "xgboost_mic_esm2_context" in MIC_EXPERIMENT_NAMES
     assert get_mic_experiment_spec("xgboost_mic_esm2_context").name == (
         "xgboost_mic_esm2_context"
+    )
+
+
+def test_xgboost_esm2_context_selected_is_registered():
+    assert "xgboost_mic_esm2_context_selected" in MIC_EXPERIMENT_NAMES
+    spec = get_mic_experiment_spec("xgboost_mic_esm2_context_selected")
+
+    assert spec.name == "xgboost_mic_esm2_context_selected"
+    assert spec.run_config["feature_transform"] == (
+        "train_only_standard_scaler_pca_on_esm2"
     )
 
 
@@ -241,6 +252,50 @@ def test_xgboost_esm2_context_features_require_complete_cache(
 
     with pytest.raises(ValueError, match="missing from PLM cache"):
         build_xgboost_esm2_context_features(cleaned)
+
+
+def test_pca_reduce_esm2_features_fits_train_and_preserves_context():
+    X_train = pd.DataFrame(
+        {
+            "esm2_0": [1.0, 2.0, 3.0, 4.0],
+            "esm2_1": [1.0, 1.5, 3.0, 4.5],
+            "esm2_2": [4.0, 3.0, 2.0, 1.0],
+            "Genus_Bacillus": [1.0, 1.0, 0.0, 0.0],
+            "gram_gram_positive": [1.0, 1.0, 0.0, 0.0],
+        }
+    )
+    X_val = pd.DataFrame(
+        {
+            "esm2_0": [2.0, 5.0],
+            "esm2_1": [2.5, 5.5],
+            "esm2_2": [3.0, 0.5],
+            "Genus_Bacillus": [0.0, 1.0],
+            "gram_gram_positive": [0.0, 1.0],
+        }
+    )
+
+    transformed_train, transformed_splits, metadata = pca_reduce_esm2_features(
+        X_train,
+        {"val": X_val},
+        np.array([1.0, 2.0, 3.0, 4.0]),
+        n_components=2,
+    )
+
+    assert transformed_train.columns.tolist() == [
+        "esm2_pca_0",
+        "esm2_pca_1",
+        "Genus_Bacillus",
+        "gram_gram_positive",
+    ]
+    assert transformed_splits["val"].columns.tolist() == transformed_train.columns.tolist()
+    assert metadata["esm2_original_dim"] == 3
+    assert metadata["esm2_pca_components"] == 2
+    assert metadata["passthrough_feature_columns"] == [
+        "Genus_Bacillus",
+        "gram_gram_positive",
+    ]
+    assert np.isfinite(transformed_train.to_numpy()).all()
+    assert np.isfinite(transformed_splits["val"].to_numpy()).all()
 
 
 def test_xgboost_motif_sequence_features_include_reduced_kmers(tmp_path):
