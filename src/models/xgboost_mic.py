@@ -5,6 +5,13 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from src.features.plm import (
+    DEFAULT_ESM2_MODEL,
+    DEFAULT_MIC_EMBEDDING_PATH,
+    embeddings_for_sequences,
+    load_embedding_cache,
+    load_embedding_cache_metadata,
+)
 from src.features.sequence_descriptors import SequenceDescriptorEncoder
 from src.models.base import BaseModel
 from src.models.mic_baseline import GRAM_CLASSES
@@ -83,6 +90,28 @@ def build_xgboost_taxonomy_gram_features(df: pd.DataFrame) -> pd.DataFrame:
     gram_features = _gram_features(df)
     return pd.concat(
         [
+            taxonomy_features.reset_index(drop=True),
+            gram_features.reset_index(drop=True),
+        ],
+        axis=1,
+    )
+
+
+def build_xgboost_esm2_context_features(df: pd.DataFrame) -> pd.DataFrame:
+    """Build frozen ESM2 peptide embeddings plus taxonomy and Gram features."""
+    embeddings = embeddings_for_sequences(
+        df["sequence"].astype(str).tolist(),
+        DEFAULT_MIC_EMBEDDING_PATH,
+    )
+    embedding_features = pd.DataFrame(
+        embeddings,
+        columns=[f"esm2_{index}" for index in range(embeddings.shape[1])],
+    )
+    taxonomy_features = df[taxonomy_feature_columns(df)].astype(float)
+    gram_features = _gram_features(df)
+    return pd.concat(
+        [
+            embedding_features.reset_index(drop=True),
             taxonomy_features.reset_index(drop=True),
             gram_features.reset_index(drop=True),
         ],
@@ -439,12 +468,27 @@ def xgboost_taxonomy_gram_artifact_metadata(df: pd.DataFrame) -> dict:
     }
 
 
+def xgboost_esm2_context_artifact_metadata(df: pd.DataFrame) -> dict:
+    """Return metadata for frozen ESM2 plus target-context features."""
+    metadata = load_embedding_cache_metadata(DEFAULT_MIC_EMBEDDING_PATH)
+    _, embeddings = load_embedding_cache(DEFAULT_MIC_EMBEDDING_PATH)
+    return {
+        "taxonomy_feature_columns": taxonomy_feature_columns(df),
+        "embedding_model": metadata.get("model_name", DEFAULT_ESM2_MODEL),
+        "embedding_path": str(DEFAULT_MIC_EMBEDDING_PATH),
+        "embedding_dim": int(embeddings.shape[1]),
+        "target": "log10_mic",
+        "target_features": "frozen_esm2_taxonomy_gram",
+    }
+
+
 __all__ = [
     "XGBoostMicRegressor",
     "aggregate_duplicate_measurements",
     "build_xgboost_amp_core_features",
     "build_xgboost_basic_sequence_features",
     "build_model",
+    "build_xgboost_esm2_context_features",
     "build_xgboost_features",
     "build_xgboost_features_with_sequence_set",
     "build_xgboost_interaction_features",
@@ -458,6 +502,7 @@ __all__ = [
     "xgboost_amp_core_artifact_metadata",
     "xgboost_artifact_metadata",
     "xgboost_basic_sequence_artifact_metadata",
+    "xgboost_esm2_context_artifact_metadata",
     "xgboost_interaction_artifact_metadata",
     "xgboost_motif_sequence_artifact_metadata",
     "xgboost_sequence_only_artifact_metadata",

@@ -116,6 +116,12 @@ Then use it in Codex prompts with:
 ###### Run the XGBoost MIC regression model with sequence descriptors and taxonomy
 `python run_experiment.py --model xgboost_mic --input data/processed/amp_mic_activities_taxonomy_features.csv`
 
+###### Precompute frozen ESM2 embeddings for MIC regression
+`python scripts/make_plm_embeddings.py --input data/processed/amp_mic_activities_taxonomy_features.csv --device mps`
+
+###### Run the XGBoost MIC regression model with frozen ESM2 embeddings and taxonomy
+`python run_experiment.py --model xgboost_mic_esm2_context --input data/processed/amp_mic_activities_taxonomy_features.csv`
+
 ###### Run the CatBoost MIC regression model with engineered physicochemical features
 `python run_experiment.py --model catboost_mic_physchem --input data/processed/amp_mic_activities_taxonomy_features.csv`
 

@@ -10,6 +10,7 @@ from src.models.registry import MIC_EXPERIMENT_NAMES, get_mic_experiment_spec
 from src.models.xgboost_mic import (
     XGBoostMicRegressor,
     aggregate_duplicate_measurements,
+    build_xgboost_esm2_context_features,
     build_xgboost_amp_core_features,
     build_xgboost_basic_sequence_features,
     build_xgboost_interaction_features,
@@ -20,6 +21,7 @@ from src.models.xgboost_mic import (
     load_xgboost_mic_data,
     select_informative_feature_columns,
 )
+from src.features.plm import save_embedding_cache
 
 
 def _taxonomy_frame() -> pd.DataFrame:
@@ -83,6 +85,13 @@ def _taxonomy_frame() -> pd.DataFrame:
 def test_xgboost_mic_is_registered():
     assert "xgboost_mic" in MIC_EXPERIMENT_NAMES
     assert get_mic_experiment_spec("xgboost_mic").name == "xgboost_mic"
+
+
+def test_xgboost_esm2_context_is_registered():
+    assert "xgboost_mic_esm2_context" in MIC_EXPERIMENT_NAMES
+    assert get_mic_experiment_spec("xgboost_mic_esm2_context").name == (
+        "xgboost_mic_esm2_context"
+    )
 
 
 def test_load_xgboost_mic_data_filters_invalid_rows(tmp_path):
@@ -165,6 +174,52 @@ def test_xgboost_ablation_and_interaction_feature_builders(tmp_path):
     assert np.isfinite(interactions.to_numpy()).all()
 
 
+def test_xgboost_esm2_context_features_load_cache_in_row_order(
+    tmp_path,
+    monkeypatch,
+):
+    path = tmp_path / "esm2_cache.npz"
+    save_embedding_cache(
+        path,
+        ["CCCCCCCC", "ACDEFGHIK"],
+        np.array([[2.0, 2.5], [1.0, 1.5]], dtype=np.float32),
+        model_name="facebook/esm2_t12_35M_UR50D",
+    )
+    monkeypatch.setattr("src.models.xgboost_mic.DEFAULT_MIC_EMBEDDING_PATH", path)
+
+    cleaned = load_xgboost_mic_data_from_frame(_taxonomy_frame())
+
+    features = build_xgboost_esm2_context_features(cleaned)
+
+    assert features[["esm2_0", "esm2_1"]].to_numpy().tolist() == [
+        [1.0, 1.5],
+        [2.0, 2.5],
+    ]
+    assert "Genus_Escherichia" in features.columns
+    assert "gram_gram_negative" in features.columns
+    assert "gram_gram_positive" in features.columns
+    assert np.isfinite(features.to_numpy()).all()
+
+
+def test_xgboost_esm2_context_features_require_complete_cache(
+    tmp_path,
+    monkeypatch,
+):
+    path = tmp_path / "esm2_cache.npz"
+    save_embedding_cache(
+        path,
+        ["ACDEFGHIK"],
+        np.array([[1.0, 1.5]], dtype=np.float32),
+        model_name="facebook/esm2_t12_35M_UR50D",
+    )
+    monkeypatch.setattr("src.models.xgboost_mic.DEFAULT_MIC_EMBEDDING_PATH", path)
+
+    cleaned = load_xgboost_mic_data_from_frame(_taxonomy_frame())
+
+    with pytest.raises(ValueError, match="missing from PLM cache"):
+        build_xgboost_esm2_context_features(cleaned)
+
+
 def test_xgboost_motif_sequence_features_include_reduced_kmers(tmp_path):
     path = tmp_path / "taxonomy.csv"
     _taxonomy_frame().to_csv(path, index=False)
@@ -178,6 +233,22 @@ def test_xgboost_motif_sequence_features_include_reduced_kmers(tmp_path):
     assert "Genus_Escherichia" in features.columns
     assert "gram_gram_negative" in features.columns
     assert np.isfinite(features.to_numpy()).all()
+
+
+def load_xgboost_mic_data_from_frame(df: pd.DataFrame) -> pd.DataFrame:
+    from src.models.xgboost_mic import aggregate_duplicate_measurements
+    from src.models.mic_baseline import GRAM_CLASSES, NONSTANDARD_PATTERN
+    from src.models.taxonomy_mic_baseline import taxonomy_feature_columns
+
+    cleaned = df.copy()
+    cleaned["sequence"] = cleaned["sequence"].astype(str).str.upper().str.strip()
+    cleaned = cleaned[~cleaned["sequence"].str.contains(NONSTANDARD_PATTERN)]
+    cleaned = cleaned[cleaned["target_is_bacteria"].astype(int) == 1]
+    cleaned = cleaned[cleaned["gram_status"].isin(GRAM_CLASSES)]
+    cleaned["log_mic"] = np.log10(cleaned["activity"])
+    for column in taxonomy_feature_columns(cleaned):
+        cleaned[column] = pd.to_numeric(cleaned[column], errors="coerce").fillna(0.0)
+    return aggregate_duplicate_measurements(cleaned).reset_index(drop=True)
 
 
 def test_select_informative_feature_columns_drops_constant_and_correlated_columns():
