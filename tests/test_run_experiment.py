@@ -62,6 +62,8 @@ def test_mic_registry_lists_baseline_models():
         "mlp_mic_physchem",
         "mlp_mic_physchem_regularized",
         "mlp_mic_physchem_mild_regularized",
+        "mlp_mic_esm2_context_regularized",
+        "mlp_mic_physchem_esm2_context_regularized",
     }.issubset(specs)
     assert get_mic_experiment_spec("mic_baseline").name == "mic_baseline"
 

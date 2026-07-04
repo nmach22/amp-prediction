@@ -7,12 +7,20 @@ import pandas as pd
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler
 
+from src.features.plm import (
+    DEFAULT_ESM2_MODEL,
+    DEFAULT_MIC_EMBEDDING_PATH,
+    embeddings_for_sequences,
+    load_embedding_cache,
+    load_embedding_cache_metadata,
+)
 from src.features.sequence_descriptors import SequenceDescriptorEncoder
 from src.models.base import BaseModel
 from src.models.catboost_mic import (
     CATBOOST_CATEGORICAL_COLUMNS,
     DESCRIPTOR_FEATURE_SET,
     ENGINEERED_FEATURE_COLUMNS,
+    TAXONOMY_RANK_COLUMNS,
     build_engineered_physchem_features,
     load_catboost_mic_data,
 )
@@ -43,6 +51,68 @@ def build_mlp_features(df: pd.DataFrame) -> pd.DataFrame:
         ],
         axis=1,
     ).astype(float)
+
+
+def build_mlp_esm2_context_features(df: pd.DataFrame) -> pd.DataFrame:
+    """Build cached ESM2 embeddings plus one-hot Gram and taxonomy features."""
+    embedding_features = _esm2_embedding_features(df)
+    context_features = _one_hot_gram_taxonomy_features(df)
+    return pd.concat(
+        [
+            embedding_features.reset_index(drop=True),
+            context_features.reset_index(drop=True),
+        ],
+        axis=1,
+    ).astype(float)
+
+
+def build_mlp_physchem_esm2_context_features(df: pd.DataFrame) -> pd.DataFrame:
+    """Build physicochemical descriptors plus cached ESM2 and taxonomy context."""
+    physchem_features = build_mlp_features(df).add_prefix("physchem_")
+    embedding_features = _esm2_embedding_features(df)
+    context_features = _one_hot_gram_taxonomy_features(df).add_prefix("context_")
+    return pd.concat(
+        [
+            physchem_features.reset_index(drop=True),
+            embedding_features.reset_index(drop=True),
+            context_features.reset_index(drop=True),
+        ],
+        axis=1,
+    ).astype(float)
+
+
+def _esm2_embedding_features(df: pd.DataFrame) -> pd.DataFrame:
+    embeddings = embeddings_for_sequences(
+        df["sequence"].astype(str).tolist(),
+        DEFAULT_MIC_EMBEDDING_PATH,
+    )
+    return pd.DataFrame(
+        embeddings,
+        columns=[f"esm2_{index}" for index in range(embeddings.shape[1])],
+    )
+
+
+def _one_hot_gram_taxonomy_features(df: pd.DataFrame) -> pd.DataFrame:
+    context_columns = ("gram_status", *TAXONOMY_RANK_COLUMNS)
+    context = pd.DataFrame(index=df.index)
+    for column in context_columns:
+        if column in df.columns:
+            values = df[column]
+        else:
+            values = pd.Series("Unknown", index=df.index)
+        context[column] = (
+            values.fillna("Unknown")
+            .astype(str)
+            .str.strip()
+            .replace("", "Unknown")
+        )
+    context_features = pd.get_dummies(
+        context,
+        columns=list(context_columns),
+        prefix=list(context_columns),
+        dtype=float,
+    )
+    return context_features
 
 
 def _categorical_frame(df: pd.DataFrame) -> pd.DataFrame:
@@ -389,6 +459,38 @@ def build_mild_regularized_model(random_state: int = 42) -> MlpMicRegressor:
     )
 
 
+def build_esm2_context_regularized_model(random_state: int = 42) -> MlpMicRegressor:
+    """Create a regularized MLP for dense frozen ESM2 context features."""
+    return MlpMicRegressor(
+        random_state=random_state,
+        hidden_layers=(128, 64),
+        dropout=0.4,
+        learning_rate=5e-4,
+        weight_decay=1e-3,
+        max_epochs=400,
+        patience=25,
+        batch_size=64,
+        noise_std=0.01,
+    )
+
+
+def build_physchem_esm2_context_regularized_model(
+    random_state: int = 42,
+) -> MlpMicRegressor:
+    """Create a regularized MLP for combined physicochemical and ESM2 features."""
+    return MlpMicRegressor(
+        random_state=random_state,
+        hidden_layers=(192, 96, 48),
+        dropout=0.35,
+        learning_rate=5e-4,
+        weight_decay=7e-4,
+        max_epochs=450,
+        patience=30,
+        batch_size=64,
+        noise_std=0.01,
+    )
+
+
 def mlp_artifact_metadata(df: pd.DataFrame) -> dict:
     """Return feature metadata stored with the trained artifact."""
     return {
@@ -405,13 +507,54 @@ def mlp_artifact_metadata(df: pd.DataFrame) -> dict:
     }
 
 
+def mlp_esm2_context_artifact_metadata(df: pd.DataFrame) -> dict:
+    """Return metadata for frozen ESM2 MLP features."""
+    metadata = load_embedding_cache_metadata(DEFAULT_MIC_EMBEDDING_PATH)
+    _, embeddings = load_embedding_cache(DEFAULT_MIC_EMBEDDING_PATH)
+    return {
+        "embedding_model": metadata.get("model_name", DEFAULT_ESM2_MODEL),
+        "embedding_path": str(DEFAULT_MIC_EMBEDDING_PATH),
+        "embedding_dim": int(embeddings.shape[1]),
+        "categorical_encoding": "one_hot_gram_taxonomy",
+        "target": "log10_mic",
+        "target_features": "frozen_esm2_one_hot_taxonomy_gram",
+        "duplicate_measurements": "median_log_mic_by_sequence_target",
+        "null_policy": "taxonomy_unknown_one_hot",
+    }
+
+
+def mlp_physchem_esm2_context_artifact_metadata(df: pd.DataFrame) -> dict:
+    """Return metadata for combined physicochemical and frozen ESM2 features."""
+    metadata = mlp_esm2_context_artifact_metadata(df)
+    metadata.update(
+        {
+            "sequence_descriptor_columns": SequenceDescriptorEncoder(
+                feature_set=DESCRIPTOR_FEATURE_SET
+            ).feature_names(),
+            "engineered_feature_columns": list(ENGINEERED_FEATURE_COLUMNS),
+            "descriptor_library": "modlamp_plus_reduced_alphabet_kmers",
+            "sequence_feature_set": DESCRIPTOR_FEATURE_SET,
+            "target_features": (
+                "physicochemical_engineered_frozen_esm2_one_hot_taxonomy_gram"
+            ),
+        }
+    )
+    return metadata
+
+
 __all__ = [
     "MlpMicRegressor",
+    "build_esm2_context_regularized_model",
+    "build_mlp_esm2_context_features",
     "build_mlp_features",
+    "build_mlp_physchem_esm2_context_features",
     "build_mild_regularized_model",
     "build_model",
+    "build_physchem_esm2_context_regularized_model",
     "build_regularized_model",
     "evaluate_taxonomy_predictions",
     "load_mlp_mic_data",
+    "mlp_esm2_context_artifact_metadata",
     "mlp_artifact_metadata",
+    "mlp_physchem_esm2_context_artifact_metadata",
 ]

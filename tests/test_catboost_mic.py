@@ -15,12 +15,18 @@ from src.models.catboost_mic import (
 from src.models.mic_runner import train_and_evaluate_mic_baseline
 from src.models.mlp_mic import (
     MlpMicRegressor,
+    build_esm2_context_regularized_model,
+    build_mlp_esm2_context_features,
     build_mlp_features,
+    build_mlp_physchem_esm2_context_features,
     build_mild_regularized_model,
+    build_physchem_esm2_context_regularized_model,
     build_regularized_model,
     load_mlp_mic_data,
 )
+from src.features.plm import save_embedding_cache
 from src.models.registry import MIC_EXPERIMENT_NAMES, get_mic_experiment_spec
+from src.models.xgboost_mic import load_xgboost_mic_data
 from src.utils.wandb_logging import group_metric_history
 
 
@@ -131,6 +137,8 @@ def test_new_mic_models_are_registered():
     assert "mlp_mic_physchem" in MIC_EXPERIMENT_NAMES
     assert "mlp_mic_physchem_regularized" in MIC_EXPERIMENT_NAMES
     assert "mlp_mic_physchem_mild_regularized" in MIC_EXPERIMENT_NAMES
+    assert "mlp_mic_esm2_context_regularized" in MIC_EXPERIMENT_NAMES
+    assert "mlp_mic_physchem_esm2_context_regularized" in MIC_EXPERIMENT_NAMES
     assert get_mic_experiment_spec("catboost_mic_physchem").use_validation_fit
     assert get_mic_experiment_spec("catboost_mic_tuned").use_validation_fit
     assert get_mic_experiment_spec("mlp_mic_physchem").use_validation_fit
@@ -138,6 +146,22 @@ def test_new_mic_models_are_registered():
     assert get_mic_experiment_spec(
         "mlp_mic_physchem_mild_regularized"
     ).use_validation_fit
+    assert get_mic_experiment_spec("mlp_mic_esm2_context_regularized").use_validation_fit
+    assert get_mic_experiment_spec(
+        "mlp_mic_physchem_esm2_context_regularized"
+    ).use_validation_fit
+
+
+def test_mlp_esm2_context_uses_embedding_cache_compatible_loader():
+    spec = get_mic_experiment_spec("mlp_mic_esm2_context_regularized")
+
+    assert spec.load_data is load_xgboost_mic_data
+
+
+def test_mlp_physchem_esm2_context_uses_embedding_cache_compatible_loader():
+    spec = get_mic_experiment_spec("mlp_mic_physchem_esm2_context_regularized")
+
+    assert spec.load_data is load_xgboost_mic_data
 
 
 def test_tuned_catboost_model_uses_mae_objective():
@@ -214,6 +238,92 @@ def test_mlp_features_are_numeric_one_hot_features(tmp_path):
     assert np.isfinite(features.to_numpy()).all()
 
 
+def test_mlp_esm2_context_features_load_cache_and_context(tmp_path, monkeypatch):
+    path = tmp_path / "esm2_cache.npz"
+    save_embedding_cache(
+        path,
+        ["CCCCCCCC", "ACDEFGHIK", "DDDDDDDD"],
+        np.array(
+            [[2.0, 2.5], [1.0, 1.5], [3.0, 3.5]],
+            dtype=np.float32,
+        ),
+        model_name="facebook/esm2_t12_35M_UR50D",
+    )
+    monkeypatch.setattr("src.models.mlp_mic.DEFAULT_MIC_EMBEDDING_PATH", path)
+    cleaned = load_mlp_mic_data_from_frame(_raw_frame())
+
+    features = build_mlp_esm2_context_features(cleaned)
+
+    assert features[["esm2_0", "esm2_1"]].to_numpy().tolist() == [
+        [1.0, 1.5],
+        [2.0, 2.5],
+        [3.0, 3.5],
+    ]
+    assert "gram_status_gram_positive" in features.columns
+    assert "Genus_Bacillus" in features.columns
+    assert "target_activity_name_Bacillus subtilis" not in features.columns
+    assert np.isfinite(features.to_numpy()).all()
+
+
+def test_mlp_physchem_esm2_context_features_combine_feature_families(
+    tmp_path,
+    monkeypatch,
+):
+    path = tmp_path / "esm2_cache.npz"
+    save_embedding_cache(
+        path,
+        ["CCCCCCCC", "ACDEFGHIK", "DDDDDDDD"],
+        np.array(
+            [[2.0, 2.5], [1.0, 1.5], [3.0, 3.5]],
+            dtype=np.float32,
+        ),
+        model_name="facebook/esm2_t12_35M_UR50D",
+    )
+    monkeypatch.setattr("src.models.mlp_mic.DEFAULT_MIC_EMBEDDING_PATH", path)
+    cleaned = load_mlp_mic_data_from_frame(_raw_frame())
+
+    features = build_mlp_physchem_esm2_context_features(cleaned)
+
+    assert "physchem_modlamp_charge" in features.columns
+    assert "physchem_eng_charge_per_length" in features.columns
+    assert "esm2_0" in features.columns
+    assert "context_gram_status_gram_positive" in features.columns
+    assert "context_Genus_Bacillus" in features.columns
+    assert np.isfinite(features.to_numpy()).all()
+
+
+def load_mlp_mic_data_from_frame(df: pd.DataFrame) -> pd.DataFrame:
+    from src.models.catboost_mic import (
+        TAXONOMY_RANK_COLUMNS,
+        aggregate_duplicate_measurements,
+    )
+    from src.models.mic_baseline import GRAM_CLASSES, NONSTANDARD_PATTERN
+
+    cleaned = df.copy()
+    cleaned = cleaned.dropna(subset=["sequence", "target_activity_name", "activity"])
+    cleaned["sequence"] = cleaned["sequence"].astype(str).str.upper().str.strip()
+    cleaned["target_activity_name"] = (
+        cleaned["target_activity_name"].astype(str).str.strip()
+    )
+    cleaned["gram_status"] = cleaned["gram_status"].astype(str).str.strip()
+    cleaned["activity"] = pd.to_numeric(cleaned["activity"], errors="coerce")
+    cleaned = cleaned.dropna(subset=["activity"])
+    cleaned = cleaned[cleaned["activity"] > 0]
+    cleaned = cleaned[cleaned["sequence"].str.len() > 0]
+    cleaned = cleaned[~cleaned["sequence"].str.contains(NONSTANDARD_PATTERN)]
+    cleaned = cleaned[cleaned["gram_status"].isin(GRAM_CLASSES)].copy()
+    for column in TAXONOMY_RANK_COLUMNS:
+        cleaned[column] = (
+            cleaned[column]
+            .fillna("Unknown")
+            .astype(str)
+            .str.strip()
+            .replace("", "Unknown")
+        )
+    cleaned["log_mic"] = np.log10(cleaned["activity"])
+    return aggregate_duplicate_measurements(cleaned.reset_index(drop=True))
+
+
 def test_regularized_mlp_model_uses_intended_hyperparameters():
     pytest.importorskip("torch")
 
@@ -242,6 +352,36 @@ def test_mild_regularized_mlp_model_uses_intended_hyperparameters():
     assert model.max_epochs == 400
     assert model.patience == 25
     assert model.noise_std == 0.005
+
+
+def test_esm2_context_regularized_mlp_model_uses_intended_hyperparameters():
+    pytest.importorskip("torch")
+
+    model = build_esm2_context_regularized_model(random_state=7)
+
+    assert model.random_state == 7
+    assert model.hidden_layers == (128, 64)
+    assert model.dropout == 0.4
+    assert model.weight_decay == 1e-3
+    assert model.learning_rate == 5e-4
+    assert model.max_epochs == 400
+    assert model.patience == 25
+    assert model.noise_std == 0.01
+
+
+def test_physchem_esm2_context_regularized_mlp_model_uses_intended_hyperparameters():
+    pytest.importorskip("torch")
+
+    model = build_physchem_esm2_context_regularized_model(random_state=7)
+
+    assert model.random_state == 7
+    assert model.hidden_layers == (192, 96, 48)
+    assert model.dropout == 0.35
+    assert model.weight_decay == 7e-4
+    assert model.learning_rate == 5e-4
+    assert model.max_epochs == 450
+    assert model.patience == 30
+    assert model.noise_std == 0.01
 
 
 def test_regularized_mlp_noise_is_train_only(tmp_path, monkeypatch):
