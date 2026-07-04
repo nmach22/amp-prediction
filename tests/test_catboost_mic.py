@@ -139,6 +139,7 @@ def test_new_mic_models_are_registered():
     assert "mlp_mic_physchem_mild_regularized" in MIC_EXPERIMENT_NAMES
     assert "mlp_mic_esm2_context_regularized" in MIC_EXPERIMENT_NAMES
     assert "mlp_mic_physchem_esm2_context_regularized" in MIC_EXPERIMENT_NAMES
+    assert "mlp_mic_physchem_esm2_pca_context_regularized" in MIC_EXPERIMENT_NAMES
     assert get_mic_experiment_spec("catboost_mic_physchem").use_validation_fit
     assert get_mic_experiment_spec("catboost_mic_tuned").use_validation_fit
     assert get_mic_experiment_spec("mlp_mic_physchem").use_validation_fit
@@ -149,6 +150,9 @@ def test_new_mic_models_are_registered():
     assert get_mic_experiment_spec("mlp_mic_esm2_context_regularized").use_validation_fit
     assert get_mic_experiment_spec(
         "mlp_mic_physchem_esm2_context_regularized"
+    ).use_validation_fit
+    assert get_mic_experiment_spec(
+        "mlp_mic_physchem_esm2_pca_context_regularized"
     ).use_validation_fit
 
 
@@ -162,6 +166,17 @@ def test_mlp_physchem_esm2_context_uses_embedding_cache_compatible_loader():
     spec = get_mic_experiment_spec("mlp_mic_physchem_esm2_context_regularized")
 
     assert spec.load_data is load_xgboost_mic_data
+
+
+def test_mlp_physchem_esm2_pca_context_uses_train_only_transform():
+    spec = get_mic_experiment_spec("mlp_mic_physchem_esm2_pca_context_regularized")
+
+    assert spec.load_data is load_xgboost_mic_data
+    assert spec.transform_features is not None
+    assert spec.run_config["feature_transform"] == (
+        "train_only_standard_scaler_pca_on_esm2"
+    )
+    assert spec.run_config["esm2_pca_components"] == 128
 
 
 def test_tuned_catboost_model_uses_mae_objective():

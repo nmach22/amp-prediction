@@ -152,6 +152,9 @@ Then use it in Codex prompts with:
 ###### Run the regularized PyTorch MLP MIC model with physicochemical and frozen ESM2 features
 `python run_experiment.py --model mlp_mic_physchem_esm2_context_regularized --input data/processed/amp_mic_activities_taxonomy_features.csv`
 
+###### Run the regularized PyTorch MLP MIC model with physicochemical and PCA-compressed ESM2 features
+`python run_experiment.py --model mlp_mic_physchem_esm2_pca_context_regularized --input data/processed/amp_mic_activities_taxonomy_features.csv`
+
 ###### 3. Compare all runs visually
 Open your Weights & Biases project dashboard.
 
