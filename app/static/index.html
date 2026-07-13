@@ -4,22 +4,49 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AMP MIC Predictor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap"
+    rel="stylesheet"
+  />
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+  <div class="bg-blob bg-blob-3"></div>
+
   <div class="wrap">
     <header class="masthead">
       <span class="eyebrow">Antimicrobial Peptide Assay &middot; In Silico</span>
-      <h1>Minimum Inhibitory Concentration Predictor</h1>
+      <h1>Minimum Inhibitory Concentration <span class="accent-word">Predictor</span></h1>
       <p>
         Submit a peptide sequence and a target organism. The model estimates the
         MIC needed to inhibit visible growth of that strain.
       </p>
+      <div class="tag-row">
+        <span class="tag-pill tag-violet">Bachelor's degree project</span>
+        <span class="tag-pill tag-teal">Trained on DBAASP data</span>
+        <span class="tag-pill tag-rose">Research use only</span>
+      </div>
     </header>
 
+    <div class="project-banner">
+      <p>
+        This tool is a <strong>bachelor's degree project</strong> by
+        <strong>Zaza Elizbarashvili</strong> and <strong>Nika Macharadze</strong>.
+        The underlying model is trained on antimicrobial peptide activity data from
+        <a href="https://dbaasp.org" target="_blank" rel="noopener noreferrer">DBAASP</a>
+        (Database of Antimicrobial Activity and Structure of Peptides). It is intended
+        for research and educational purposes only &mdash; not for clinical, diagnostic,
+        or therapeutic use.
+      </p>
+    </div>
+
     <main class="assay">
-      <section class="card">
-        <h2>Specimen</h2>
+      <section class="card card-violet">
+        <h2><span class="card-dot"></span>Specimen</h2>
         <form id="predict-form">
           <label class="field-label" for="sequence">Peptide sequence</label>
           <textarea
@@ -37,8 +64,8 @@
         </form>
       </section>
 
-      <section class="card readout">
-        <h2>Assay readout</h2>
+      <section class="card card-teal readout">
+        <h2><span class="card-dot"></span>Assay readout</h2>
         <div id="result">
           <p class="readout-empty">Results will appear here once you run a prediction.</p>
         </div>
@@ -46,8 +73,15 @@
     </main>
 
     <footer>
-      Predictions are model estimates from sequence and organism context, not a
-      substitute for wet-lab susceptibility testing.
+      <p>
+        Predictions are model estimates from sequence and organism context, not a
+        substitute for wet-lab susceptibility testing.
+      </p>
+      <p class="footer-credit">
+        Bachelor's degree project &middot; Zaza Elizbarashvili &amp; Nika Macharadze
+        &middot; Data: <a href="https://dbaasp.org" target="_blank" rel="noopener noreferrer">DBAASP</a>
+        &middot; Research use only
+      </p>
     </footer>
   </div>
 
