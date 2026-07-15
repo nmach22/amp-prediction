@@ -155,6 +155,19 @@ Then use it in Codex prompts with:
 ###### Run the regularized PyTorch MLP MIC model with physicochemical and PCA-compressed ESM2 features
 `python run_experiment.py --model mlp_mic_physchem_esm2_pca_context_regularized --input data/processed/amp_mic_activities_taxonomy_features.csv`
 
+###### Run the stronger-regularized PyTorch MLP MIC model with physicochemical and PCA-compressed ESM2 features
+`python run_experiment.py --model mlp_mic_physchem_esm2_pca_context_strong_regularized --input data/processed/amp_mic_activities_taxonomy_features.csv`
+
+###### Export the current best MIC model for inference
+`python scripts/export_best_mic_model.py`
+
+This writes `results/inference/best_mic_model.joblib` and `results/inference/best_mic_model.manifest.json`. The default exported model is `mlp_mic_physchem_esm2_context_regularized`.
+
+###### Predict MIC values with the exported inference bundle
+`python scripts/predict_mic.py --input data/processed/amp_mic_activities_taxonomy_features.csv --output results/inference/mic_predictions.csv`
+
+The input CSV must include `sequence`. If frozen ESM2 features are used, new sequences must already exist in the embedding cache; otherwise run `scripts/make_plm_embeddings.py` on the same input CSV first.
+
 ###### 3. Compare all runs visually
 Open your Weights & Biases project dashboard.
 

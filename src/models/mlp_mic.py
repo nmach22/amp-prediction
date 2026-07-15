@@ -491,6 +491,23 @@ def build_physchem_esm2_context_regularized_model(
     )
 
 
+def build_physchem_esm2_context_strong_regularized_model(
+    random_state: int = 42,
+) -> MlpMicRegressor:
+    """Create a stronger-regularized MLP for combined PCA-ESM2 features."""
+    return MlpMicRegressor(
+        random_state=random_state,
+        hidden_layers=(128, 64, 32),
+        dropout=0.4,
+        learning_rate=5e-4,
+        weight_decay=1e-3,
+        max_epochs=450,
+        patience=30,
+        batch_size=64,
+        noise_std=0.01,
+    )
+
+
 def mlp_artifact_metadata(df: pd.DataFrame) -> dict:
     """Return feature metadata stored with the trained artifact."""
     return {
@@ -551,6 +568,7 @@ __all__ = [
     "build_mild_regularized_model",
     "build_model",
     "build_physchem_esm2_context_regularized_model",
+    "build_physchem_esm2_context_strong_regularized_model",
     "build_regularized_model",
     "evaluate_taxonomy_predictions",
     "load_mlp_mic_data",
