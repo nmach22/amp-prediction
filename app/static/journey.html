@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Journey · AMP MIC Predictor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/journey.css" />
+</head>
+<body>
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+  <div class="bg-blob bg-blob-3"></div>
+
+  <div class="wrap wrap-wide">
+    <nav class="site-nav">
+      <a href="/" class="site-nav-brand">AMP MIC Predictor</a>
+      <div class="site-nav-links">
+        <a href="/">Predictor</a>
+        <a href="/journey.html" class="active">Project journey</a>
+      </div>
+    </nav>
+
+    <header class="masthead">
+      <span class="eyebrow">Bachelor&rsquo;s Thesis &middot; Build Log</span>
+      <h1>From a Blank Repo to a <span class="accent-word">Working Predictor</span></h1>
+      <p>
+        How the MIC prediction model was built, tested, and improved &mdash;
+        every dataset, feature set, and experiment that got us from a first
+        physicochemical baseline to the model running behind this site.
+      </p>
+      <div class="tag-row">
+        <span class="tag-pill tag-violet">9 tracked model variants</span>
+        <span class="tag-pill tag-teal">114,881 activity records</span>
+        <span class="tag-pill tag-rose">Frozen ESM2 protein LM</span>
+      </div>
+    </header>
+
+    <!-- ── Dataset ─────────────────────────────────────────── -->
+    <section class="journey-section">
+      <div class="section-head">
+        <span class="section-kicker">01 &middot; Foundation</span>
+        <h2>The data everything is built on</h2>
+        <p>
+          Every model in this project is trained on antimicrobial peptide
+          activity measurements pulled from <a href="https://dbaasp.org" target="_blank" rel="noopener noreferrer">DBAASP</a>,
+          the Database of Antimicrobial Activity and Structure of Peptides.
+        </p>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-tile">
+          <span class="stat-value">114,881</span>
+          <span class="stat-label">Raw MIC activity records</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-value">103,613</span>
+          <span class="stat-label">Records with resolved Gram stain</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-value">75,224</span>
+          <span class="stat-label">Training rows</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-value">13,479</span>
+          <span class="stat-label">Held-out test rows</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <p>
+          Sequences are matched to their target organism&rsquo;s taxonomy
+          (Phylum &rarr; Class &rarr; Order &rarr; Family &rarr; Genus) and
+          Gram status, then de-duplicated by taking the median log-MIC per
+          sequence&ndash;target pair. The regression target is
+          <code>log10(MIC)</code>, so a validation MAE of <code>0.39</code>
+          corresponds to an average error of about
+          <code>10^0.39 &asymp; 2.4&times;</code> in raw MIC &mdash; the scale
+          used throughout this page.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Feature space ───────────────────────────────────── -->
+    <section class="journey-section">
+      <div class="section-head">
+        <span class="section-kicker">02 &middot; Feature Engineering</span>
+        <h2>How the feature space grew</h2>
+        <p>
+          Each stage of the project added a new family of features on top of
+          the last, rather than replacing it. The final production model
+          combines all of them into a single <strong>5,502-dimensional</strong>
+          input vector.
+        </p>
+      </div>
+
+      <div class="feature-stack">
+        <div class="feature-block">
+          <div class="feature-block-head">
+            <span class="feature-order">1</span>
+            <h3>Physicochemical descriptors</h3>
+            <span class="feature-count">28 &rarr; 492 features</span>
+          </div>
+          <p>
+            Started as 28 global descriptors from Biopython (amino-acid
+            composition, molecular weight, pI, aromaticity, GRAVY,
+            secondary-structure fractions). Later expanded via modlAMP and
+            custom code to 492 columns: amino-acid fractions, terminal and
+            windowed composition, hydrophobic-moment descriptors, and
+            reduced-alphabet 2&ndash;3-mer motif counts (<code>pos / neg / hyd
+            / aro / pol / gly / pro</code>).
+          </p>
+        </div>
+        <div class="feature-arrow" aria-hidden="true">+</div>
+        <div class="feature-block">
+          <div class="feature-block-head">
+            <span class="feature-order">2</span>
+            <h3>Taxonomy &amp; Gram context</h3>
+            <span class="feature-count">344+ one-hot columns</span>
+          </div>
+          <p>
+            One-hot encoded organism context &mdash; Phylum, Class, Order,
+            Family, Genus, and Gram status &mdash; resolved from NCBI
+            taxonomy lookups against each experiment&rsquo;s target species.
+            Unknown taxonomy gets its own explicit category rather than being
+            dropped.
+          </p>
+        </div>
+        <div class="feature-arrow" aria-hidden="true">+</div>
+        <div class="feature-block">
+          <div class="feature-block-head">
+            <span class="feature-order">3</span>
+            <h3>Engineered ratio features</h3>
+            <span class="feature-count">9 features</span>
+          </div>
+          <p>
+            Hand-designed ratios such as charge-per-length, hydrophobic-to-charge
+            balance, Boman index per length, and moment balance &mdash;
+            compact signals that helped the smaller baseline models before
+            a protein language model was in the picture.
+          </p>
+        </div>
+        <div class="feature-arrow" aria-hidden="true">+</div>
+        <div class="feature-block feature-block-highlight">
+          <div class="feature-block-head">
+            <span class="feature-order">4</span>
+            <h3>Frozen ESM2 embeddings</h3>
+            <span class="feature-count">480-dim (or PCA-compressed)</span>
+          </div>
+          <p>
+            Sequences are passed once through <code>facebook/esm2_t12_35M_UR50D</code>,
+            a pretrained protein language model, with no fine-tuning.
+            Per-residue outputs are mean-pooled into a single 480-dim vector
+            and cached to disk so the transformer never has to run twice on
+            the same sequence. A PCA-compressed variant reduces this block
+            further for a cheaper, near-equivalent alternative.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Timeline ────────────────────────────────────────── -->
+    <section class="journey-section">
+      <div class="section-head">
+        <span class="section-kicker">03 &middot; Timeline</span>
+        <h2>How the model evolved, step by step</h2>
+        <p>
+          Nine tracked stages, from an empty repository to the model
+          currently deployed on this site. Metrics are validation-split
+          MAE and R&sup2; on log10(MIC), single-seed unless noted.
+        </p>
+      </div>
+
+      <ol class="timeline">
+        <li class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-card">
+            <div class="timeline-meta">
+              <span class="timeline-date">Mar 2026</span>
+              <span class="timeline-stage">Stage 1 &middot; Scaffolding</span>
+            </div>
+            <h3>Project structure &amp; feature interfaces</h3>
+            <p>
+              Data loaders, a sequence cleaner, and the first encoder
+              interfaces (physicochemical, one-hot, Word2Vec, PLM
+              placeholder) behind a shared <code>BaseModel</code> contract.
+              No trained model yet &mdash; this stage built the scaffolding
+              every later experiment reused.
+            </p>
+          </div>
+        </li>
+
+        <li class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-card">
+            <div class="timeline-meta">
+              <span class="timeline-date">May 2026</span>
+              <span class="timeline-stage">Stage 2 &middot; First baseline</span>
+            </div>
+            <h3>Physicochemical-only MIC baseline</h3>
+            <p>
+              The first working regressor: 28 physicochemical descriptors,
+              no organism context at all.
+            </p>
+            <div class="metric-row">
+              <span class="metric-pill">Val MAE <strong>0.504</strong></span>
+              <span class="metric-pill">Val R&sup2; <strong>0.327</strong></span>
+            </div>
+          </div>
+        </li>
+
+        <li class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-card">
+            <div class="timeline-meta">
+              <span class="timeline-date">May 2026</span>
+              <span class="timeline-stage">Stage 3 &middot; Biological context</span>
+            </div>
+            <h3>+ Taxonomy &amp; Gram status</h3>
+            <p>
+              Adding organism taxonomy and Gram status was the single
+              biggest free win in the whole project &mdash; a large jump in
+              validation R&sup2; before touching the model architecture at all.
+            </p>
+            <div class="metric-row">
+              <span class="metric-pill metric-pill-good">Val MAE <strong>0.473</strong></span>
+              <span class="metric-pill metric-pill-good">Val R&sup2; <strong>0.390</strong></span>
+              <span class="metric-delta">&minus;6% MAE &middot; +19% R&sup2; vs. Stage 2</span>
+            </div>
+          </div>
+        </li>
+
+        <li class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-card">
+            <div class="timeline-meta">
+              <span class="timeline-date">Jun 3, 2026</span>
+              <span class="timeline-stage">Stage 4 &middot; Infrastructure</span>
+            </div>
+            <h3>Shared experiment runner &amp; model registry</h3>
+            <p>
+              Refactored training and evaluation into one shared MIC runner
+              plus a named model registry. Unglamorous, but this is what
+              made the next dozen experiments cheap to run instead of
+              copy-pasted scripts.
+            </p>
+          </div>
+        </li>
+
+        <li class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-card">
+            <div class="timeline-meta">
+              <span class="timeline-date">Jun 18, 2026</span>
+              <span class="timeline-stage">Stage 5 &middot; Gradient boosting</span>
+            </div>
+            <h3>XGBoost + richer sequence descriptors</h3>
+            <p>
+              Expanded the descriptor set to 492 features (motif k-mers,
+              windowed composition, autocorrelation) and trained XGBoost on
+              top. It did not beat the much simpler Stage 3 baseline &mdash;
+              an early lesson that more features and a stronger model
+              aren&rsquo;t automatically better on a noisy MIC target.
+            </p>
+            <div class="metric-row">
+              <span class="metric-pill">Val MAE <strong>0.502</strong></span>
+              <span class="metric-pill">Val R&sup2; <strong>0.367</strong></span>
+            </div>
+          </div>
+        </li>
+
+        <li class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-card">
+            <div class="timeline-meta">
+              <span class="timeline-date">Jun 20, 2026</span>
+              <span class="timeline-stage">Stage 6 &middot; Protein language model</span>
+            </div>
+            <h3>Frozen ESM2 embeddings enter the picture</h3>
+            <p>
+              Introduced <code>facebook/esm2_t12_35M_UR50D</code> as a frozen
+              encoder and ran five parallel experiments to see how it
+              behaved alone, regularized, and across model families.
+            </p>
+            <div class="mini-compare">
+              <div class="mini-compare-row">
+                <span>XGBoost + ESM2 + context</span>
+                <span class="mini-compare-metric">MAE 0.490 &middot; R&sup2; 0.387</span>
+              </div>
+              <div class="mini-compare-row">
+                <span>XGBoost + ESM2, feature-selected</span>
+                <span class="mini-compare-metric">MAE 0.499 &middot; R&sup2; 0.375</span>
+              </div>
+              <div class="mini-compare-row mini-compare-warn">
+                <span>XGBoost + ESM2, heavily regularized</span>
+                <span class="mini-compare-metric">MAE 0.532 &middot; R&sup2; 0.310 &mdash; underfit</span>
+              </div>
+              <div class="mini-compare-row">
+                <span>MLP + ESM2 + context</span>
+                <span class="mini-compare-metric">MAE 0.465 &middot; R&sup2; 0.419</span>
+              </div>
+              <div class="mini-compare-row">
+                <span>MLP, physicochemical only</span>
+                <span class="mini-compare-metric">MAE 0.403 &middot; R&sup2; 0.524</span>
+              </div>
+            </div>
+            <p class="timeline-note">
+              Two findings survived this stage: an MLP squeezes more out of
+              dense ESM2 embeddings than a tree model does, and frozen ESM2
+              alone still doesn&rsquo;t beat hand-crafted physicochemical
+              descriptors.
+            </p>
+          </div>
+        </li>
+
+        <li class="timeline-item timeline-item-best">
+          <div class="timeline-marker timeline-marker-best"></div>
+          <div class="timeline-card timeline-card-best">
+            <div class="timeline-meta">
+              <span class="timeline-date">Jun 20, 2026</span>
+              <span class="timeline-stage">Stage 7 &middot; Best result</span>
+              <span class="best-badge">Best validation score</span>
+            </div>
+            <h3>Physicochemical + ESM2 + taxonomy, combined</h3>
+            <p>
+              Feeding physicochemical descriptors, frozen ESM2 embeddings,
+              and taxonomy/Gram context into one regularized MLP produced
+              the best validation result of the entire project &mdash; the
+              PLM adds information <em>on top of</em> hand-crafted features,
+              not instead of them.
+            </p>
+            <div class="metric-row">
+              <span class="metric-pill metric-pill-best">Val MAE <strong>0.387</strong></span>
+              <span class="metric-pill metric-pill-best">Val R&sup2; <strong>0.552</strong></span>
+              <span class="metric-delta">&asymp; 2.44&times; average MIC error</span>
+            </div>
+          </div>
+        </li>
+
+        <li class="timeline-item timeline-item-deployed">
+          <div class="timeline-marker timeline-marker-deployed"></div>
+          <div class="timeline-card timeline-card-deployed">
+            <div class="timeline-meta">
+              <span class="timeline-date">Jul 15, 2026</span>
+              <span class="timeline-stage">Stage 8 &middot; Deployed</span>
+              <span class="deployed-badge">Running on this site</span>
+            </div>
+            <h3>PCA-compressed ESM2 variant</h3>
+            <p>
+              Compressed the ESM2 block with PCA to cut dimensionality while
+              keeping validation performance almost unchanged &mdash; a
+              near-tie with Stage 7 at a fraction of the embedding size.
+              This is the model this website calls to serve predictions.
+            </p>
+            <div class="metric-row">
+              <span class="metric-pill">Val MAE <strong>0.391</strong></span>
+              <span class="metric-pill">Val R&sup2; <strong>0.541</strong></span>
+            </div>
+          </div>
+        </li>
+
+        <li class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-card">
+            <div class="timeline-meta">
+              <span class="timeline-date">Jul 17, 2026</span>
+              <span class="timeline-stage">Stage 9 &middot; In progress</span>
+            </div>
+            <h3>Huber-loss XGBoost + ESM2</h3>
+            <p>
+              The most recent addition to the model registry: an
+              XGBoost variant trained with a pseudo-Huber loss, aimed at
+              making the tree-based branch more robust to MIC outliers.
+              Results aren&rsquo;t finalized yet.
+            </p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ── Results chart ───────────────────────────────────── -->
+    <section class="journey-section">
+      <div class="section-head">
+        <span class="section-kicker">04 &middot; Results</span>
+        <h2>Every model, side by side</h2>
+        <p>
+          Validation-split metrics for all nine tracked variants, in the
+          order they were built. Shorter MAE bars and longer R&sup2; bars are
+          better.
+        </p>
+      </div>
+
+      <div class="chart-panel">
+        <div class="chart-col">
+          <h3 class="chart-title">Validation MAE <span class="chart-sub">(log10 MIC &middot; lower is better)</span></h3>
+          <div class="bar-chart" role="img" aria-label="Validation MAE across all nine model variants">
+            <div class="bar-row" title="Physicochemical-only baseline: MAE 0.504">
+              <span class="bar-label">Physicochem. baseline</span>
+              <div class="bar-track"><div class="bar-fill" style="width:91.6%"></div></div>
+              <span class="bar-value">0.504</span>
+            </div>
+            <div class="bar-row" title="Physicochemical + taxonomy: MAE 0.473">
+              <span class="bar-label">+ Taxonomy / Gram</span>
+              <div class="bar-track"><div class="bar-fill" style="width:85.9%"></div></div>
+              <span class="bar-value">0.473</span>
+            </div>
+            <div class="bar-row" title="XGBoost, physicochemical + taxonomy: MAE 0.502">
+              <span class="bar-label">XGBoost (physchem)</span>
+              <div class="bar-track"><div class="bar-fill" style="width:91.3%"></div></div>
+              <span class="bar-value">0.502</span>
+            </div>
+            <div class="bar-row" title="XGBoost + ESM2 + context: MAE 0.490">
+              <span class="bar-label">XGBoost + ESM2</span>
+              <div class="bar-track"><div class="bar-fill" style="width:89.1%"></div></div>
+              <span class="bar-value">0.490</span>
+            </div>
+            <div class="bar-row" title="XGBoost + ESM2, heavily regularized: MAE 0.532 (underfit)">
+              <span class="bar-label">XGBoost + ESM2, reg.</span>
+              <div class="bar-track"><div class="bar-fill bar-fill-warn" style="width:96.7%"></div></div>
+              <span class="bar-value">0.532</span>
+            </div>
+            <div class="bar-row" title="MLP + ESM2 + context: MAE 0.465">
+              <span class="bar-label">MLP + ESM2</span>
+              <div class="bar-track"><div class="bar-fill" style="width:84.5%"></div></div>
+              <span class="bar-value">0.465</span>
+            </div>
+            <div class="bar-row" title="MLP, physicochemical only: MAE 0.403">
+              <span class="bar-label">MLP, physchem only</span>
+              <div class="bar-track"><div class="bar-fill" style="width:73.3%"></div></div>
+              <span class="bar-value">0.403</span>
+            </div>
+            <div class="bar-row bar-row-deployed" title="Deployed model — MLP, physchem + PCA-ESM2 + taxonomy: MAE 0.391">
+              <span class="bar-label">MLP + PCA-ESM2 <em>(deployed)</em></span>
+              <div class="bar-track"><div class="bar-fill bar-fill-deployed" style="width:71.1%"></div></div>
+              <span class="bar-value">0.391</span>
+            </div>
+            <div class="bar-row bar-row-best" title="Best result — MLP, physchem + ESM2 + taxonomy: MAE 0.387">
+              <span class="bar-label">MLP + ESM2 combined <em>(best)</em></span>
+              <div class="bar-track"><div class="bar-fill bar-fill-best" style="width:70.4%"></div></div>
+              <span class="bar-value">0.387</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-col">
+          <h3 class="chart-title">Validation R&sup2; <span class="chart-sub">(higher is better)</span></h3>
+          <div class="bar-chart" role="img" aria-label="Validation R-squared across all nine model variants">
+            <div class="bar-row" title="Physicochemical-only baseline: R² 0.327">
+              <span class="bar-label">Physicochem. baseline</span>
+              <div class="bar-track"><div class="bar-fill" style="width:59.3%"></div></div>
+              <span class="bar-value">0.327</span>
+            </div>
+            <div class="bar-row" title="Physicochemical + taxonomy: R² 0.390">
+              <span class="bar-label">+ Taxonomy / Gram</span>
+              <div class="bar-track"><div class="bar-fill" style="width:70.7%"></div></div>
+              <span class="bar-value">0.390</span>
+            </div>
+            <div class="bar-row" title="XGBoost, physicochemical + taxonomy: R² 0.367">
+              <span class="bar-label">XGBoost (physchem)</span>
+              <div class="bar-track"><div class="bar-fill" style="width:66.5%"></div></div>
+              <span class="bar-value">0.367</span>
+            </div>
+            <div class="bar-row" title="XGBoost + ESM2 + context: R² 0.387">
+              <span class="bar-label">XGBoost + ESM2</span>
+              <div class="bar-track"><div class="bar-fill" style="width:70.1%"></div></div>
+              <span class="bar-value">0.387</span>
+            </div>
+            <div class="bar-row" title="XGBoost + ESM2, heavily regularized: R² 0.310 (underfit)">
+              <span class="bar-label">XGBoost + ESM2, reg.</span>
+              <div class="bar-track"><div class="bar-fill bar-fill-warn" style="width:56.2%"></div></div>
+              <span class="bar-value">0.310</span>
+            </div>
+            <div class="bar-row" title="MLP + ESM2 + context: R² 0.419">
+              <span class="bar-label">MLP + ESM2</span>
+              <div class="bar-track"><div class="bar-fill" style="width:76.0%"></div></div>
+              <span class="bar-value">0.419</span>
+            </div>
+            <div class="bar-row" title="MLP, physicochemical only: R² 0.524">
+              <span class="bar-label">MLP, physchem only</span>
+              <div class="bar-track"><div class="bar-fill" style="width:95.0%"></div></div>
+              <span class="bar-value">0.524</span>
+            </div>
+            <div class="bar-row bar-row-deployed" title="Deployed model — MLP, physchem + PCA-ESM2 + taxonomy: R² 0.541">
+              <span class="bar-label">MLP + PCA-ESM2 <em>(deployed)</em></span>
+              <div class="bar-track"><div class="bar-fill bar-fill-deployed" style="width:98.0%"></div></div>
+              <span class="bar-value">0.541</span>
+            </div>
+            <div class="bar-row bar-row-best" title="Best result — MLP, physchem + ESM2 + taxonomy: R² 0.552">
+              <span class="bar-label">MLP + ESM2 combined <em>(best)</em></span>
+              <div class="bar-track"><div class="bar-fill bar-fill-best" style="width:100%"></div></div>
+              <span class="bar-value">0.552</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="legend">
+        <span class="legend-item"><span class="legend-swatch" style="background:var(--teal)"></span>Model variant</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:var(--violet-2)"></span>Best validation score</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:var(--rose)"></span>Deployed on this site</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:var(--amber)"></span>Underfit / regressed</span>
+      </div>
+    </section>
+
+    <!-- ── Findings ─────────────────────────────────────────── -->
+    <section class="journey-section">
+      <div class="section-head">
+        <span class="section-kicker">05 &middot; Interpretation</span>
+        <h2>What the experiments actually showed</h2>
+      </div>
+
+      <div class="finding-grid">
+        <div class="finding-card">
+          <span class="finding-number">01</span>
+          <h3>Hand-crafted descriptors are still strong</h3>
+          <p>
+            Physicochemical descriptors outperformed frozen ESM2 embeddings
+            whenever each feature family was tested alone. Pretrained protein
+            language models did not make domain expertise obsolete on this
+            dataset.
+          </p>
+        </div>
+        <div class="finding-card">
+          <span class="finding-number">02</span>
+          <h3>ESM2 adds signal on top, not instead</h3>
+          <p>
+            Combining frozen ESM2 embeddings with physicochemical descriptors
+            and taxonomy context beat either feature family alone &mdash;
+            the best model in the project is the combined one, not the
+            purely neural one.
+          </p>
+        </div>
+        <div class="finding-card">
+          <span class="finding-number">03</span>
+          <h3>A smaller train/val gap isn&rsquo;t automatically better</h3>
+          <p>
+            Every time regularization was pushed harder to shrink the
+            train&ndash;validation gap, validation error got <em>worse</em>,
+            not better &mdash; a repeated underfitting trap rather than
+            successful generalization.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Deployed model ──────────────────────────────────── -->
+    <section class="journey-section">
+      <div class="section-head">
+        <span class="section-kicker">06 &middot; In production</span>
+        <h2>The model answering predictions on this site</h2>
+      </div>
+
+      <div class="deployed-card">
+        <div class="deployed-card-head">
+          <div>
+            <span class="deployed-name">mlp_mic_physchem_esm2_pca_context_regularized</span>
+            <span class="deployed-tagline">Regularized MLP &middot; physicochemical + PCA-compressed ESM2 + taxonomy/Gram context</span>
+          </div>
+          <a class="deployed-cta" href="/">Try the live predictor &rarr;</a>
+        </div>
+
+        <div class="deployed-grid">
+          <div class="deployed-fact">
+            <span class="deployed-fact-label">Hidden layers</span>
+            <span class="deployed-fact-value">192 &rarr; 96 &rarr; 48</span>
+          </div>
+          <div class="deployed-fact">
+            <span class="deployed-fact-label">Dropout</span>
+            <span class="deployed-fact-value">0.35</span>
+          </div>
+          <div class="deployed-fact">
+            <span class="deployed-fact-label">Weight decay</span>
+            <span class="deployed-fact-value">7&times;10<sup>&minus;4</sup></span>
+          </div>
+          <div class="deployed-fact">
+            <span class="deployed-fact-label">Best epoch</span>
+            <span class="deployed-fact-value">80 <span class="deployed-fact-sub">of 450 max, patience 30</span></span>
+          </div>
+          <div class="deployed-fact">
+            <span class="deployed-fact-label">Val MAE</span>
+            <span class="deployed-fact-value">0.391</span>
+          </div>
+          <div class="deployed-fact">
+            <span class="deployed-fact-label">Val R&sup2;</span>
+            <span class="deployed-fact-value">0.541</span>
+          </div>
+        </div>
+
+        <p class="deployed-note">
+          The non-PCA sibling (<code>mlp_mic_physchem_esm2_context_regularized</code>)
+          scored marginally better on validation (MAE 0.387 vs. 0.391), but the
+          PCA-compressed embedding keeps the served feature vector smaller for
+          a near-identical result &mdash; the tradeoff chosen for this live demo.
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      <p>
+        All metrics above are single-seed validation results read from the
+        project&rsquo;s saved run tables and experiment reports; they are not
+        a substitute for wet-lab susceptibility testing.
+      </p>
+      <p class="footer-credit">
+        Bachelor's degree project &middot; Zaza Elizbarashvili &amp; Nika Macharadze
+        &middot; Data: <a href="https://dbaasp.org" target="_blank" rel="noopener noreferrer">DBAASP</a>
+        &middot; Research use only
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
