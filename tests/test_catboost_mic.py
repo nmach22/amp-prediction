@@ -21,6 +21,7 @@ from src.models.mlp_mic import (
     build_mlp_physchem_esm2_context_features,
     build_mild_regularized_model,
     build_physchem_esm2_context_regularized_model,
+    build_physchem_esm2_context_strong_regularized_model,
     build_regularized_model,
     load_mlp_mic_data,
 )
@@ -140,6 +141,7 @@ def test_new_mic_models_are_registered():
     assert "mlp_mic_esm2_context_regularized" in MIC_EXPERIMENT_NAMES
     assert "mlp_mic_physchem_esm2_context_regularized" in MIC_EXPERIMENT_NAMES
     assert "mlp_mic_physchem_esm2_pca_context_regularized" in MIC_EXPERIMENT_NAMES
+    assert "mlp_mic_physchem_esm2_pca_context_strong_regularized" in MIC_EXPERIMENT_NAMES
     assert get_mic_experiment_spec("catboost_mic_physchem").use_validation_fit
     assert get_mic_experiment_spec("catboost_mic_tuned").use_validation_fit
     assert get_mic_experiment_spec("mlp_mic_physchem").use_validation_fit
@@ -153,6 +155,9 @@ def test_new_mic_models_are_registered():
     ).use_validation_fit
     assert get_mic_experiment_spec(
         "mlp_mic_physchem_esm2_pca_context_regularized"
+    ).use_validation_fit
+    assert get_mic_experiment_spec(
+        "mlp_mic_physchem_esm2_pca_context_strong_regularized"
     ).use_validation_fit
 
 
@@ -177,6 +182,20 @@ def test_mlp_physchem_esm2_pca_context_uses_train_only_transform():
         "train_only_standard_scaler_pca_on_esm2"
     )
     assert spec.run_config["esm2_pca_components"] == 128
+
+
+def test_mlp_physchem_esm2_pca_strong_context_uses_train_only_transform():
+    spec = get_mic_experiment_spec(
+        "mlp_mic_physchem_esm2_pca_context_strong_regularized"
+    )
+
+    assert spec.load_data is load_xgboost_mic_data
+    assert spec.transform_features is not None
+    assert spec.run_config["feature_transform"] == (
+        "train_only_standard_scaler_pca_on_esm2"
+    )
+    assert spec.run_config["esm2_pca_components"] == 128
+    assert spec.run_config["regularization_profile"] == "strong_dense_embedding"
 
 
 def test_tuned_catboost_model_uses_mae_objective():
@@ -393,6 +412,21 @@ def test_physchem_esm2_context_regularized_mlp_model_uses_intended_hyperparamete
     assert model.hidden_layers == (192, 96, 48)
     assert model.dropout == 0.35
     assert model.weight_decay == 7e-4
+    assert model.learning_rate == 5e-4
+    assert model.max_epochs == 450
+    assert model.patience == 30
+    assert model.noise_std == 0.01
+
+
+def test_physchem_esm2_context_strong_regularized_mlp_model_uses_intended_hyperparameters():
+    pytest.importorskip("torch")
+
+    model = build_physchem_esm2_context_strong_regularized_model(random_state=7)
+
+    assert model.random_state == 7
+    assert model.hidden_layers == (128, 64, 32)
+    assert model.dropout == 0.4
+    assert model.weight_decay == 1e-3
     assert model.learning_rate == 5e-4
     assert model.max_epochs == 450
     assert model.patience == 30
