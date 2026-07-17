@@ -365,6 +365,8 @@ class XGBoostMicRegressor(BaseModel):
         reg_alpha: float = 0.1,
         reg_lambda: float = 5.0,
         early_stopping_rounds: int = 50,
+        objective: str = "reg:squarederror",
+        huber_slope: float | None = None,
     ):
         try:
             from xgboost import XGBRegressor
@@ -376,8 +378,8 @@ class XGBoostMicRegressor(BaseModel):
 
         self.random_state = random_state
         self._evals_result: dict = {}
-        self._model = XGBRegressor(
-            objective="reg:squarederror",
+        xgb_kwargs: dict = dict(
+            objective=objective,
             eval_metric="mae",
             n_estimators=n_estimators,
             learning_rate=learning_rate,
@@ -392,6 +394,9 @@ class XGBoostMicRegressor(BaseModel):
             n_jobs=-1,
             tree_method="hist",
         )
+        if huber_slope is not None:
+            xgb_kwargs["huber_slope"] = huber_slope
+        self._model = XGBRegressor(**xgb_kwargs)
 
     def fit(
         self,
@@ -458,6 +463,28 @@ def build_regularized_esm2_model(random_state: int = 42) -> XGBoostMicRegressor:
     """Create a stronger-regularized XGBoost regressor for dense ESM2 features."""
     return XGBoostMicRegressor(
         random_state=random_state,
+        n_estimators=5000,
+        learning_rate=0.01,
+        max_depth=2,
+        min_child_weight=20.0,
+        subsample=0.65,
+        colsample_bytree=0.35,
+        reg_alpha=1.0,
+        reg_lambda=25.0,
+        early_stopping_rounds=100,
+    )
+
+
+def build_huber_esm2_model(random_state: int = 42) -> XGBoostMicRegressor:
+    """Create an XGBoost regressor with Pseudo-Huber loss for ESM2 features.
+
+    Pseudo-Huber loss is less sensitive to outlier MIC values than squared error,
+    while remaining smooth and differentiable everywhere.
+    """
+    return XGBoostMicRegressor(
+        random_state=random_state,
+        objective="reg:pseudohubererror",
+        huber_slope=1.0,
         n_estimators=5000,
         learning_rate=0.01,
         max_depth=2,
@@ -581,6 +608,7 @@ __all__ = [
     "build_xgboost_basic_sequence_features",
     "build_model",
     "build_regularized_esm2_model",
+    "build_huber_esm2_model",
     "build_xgboost_esm2_context_features",
     "build_xgboost_features",
     "build_xgboost_features_with_sequence_set",

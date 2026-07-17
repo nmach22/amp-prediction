@@ -85,6 +85,8 @@ amp-prediction/
 ###### Create an environment with dependencies specified in env.yml:
 `conda env create -f env.yml`
 
+`conda env update -n amp -f env.yml --prune`
+
 ###### Activate the new environment:
 `conda activate amp`
 
