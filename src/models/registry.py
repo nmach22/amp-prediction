@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from functools import partial
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -22,6 +23,8 @@ MIC_EXPERIMENT_NAMES = (
     "xgboost_mic_esm2_context_selected",
     "xgboost_mic_esm2_context_regularized",
     "xgboost_mic_esm2_context_huber",
+    "xgboost_mic_esm2_context_huber_slope05",
+    "xgboost_mic_esm2_context_huber_slope20",
     "xgboost_mic_interactions",
     "catboost_mic_physchem",
     "catboost_mic_tuned",
@@ -406,6 +409,78 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
                 ),
                 "loss_function": "PseudoHuber",
                 "huber_slope": 1.0,
+                "regularization_profile": "strong_dense_embedding",
+                "duplicate_measurements": "median_log_mic_by_sequence_target",
+                "n_estimators": 5000,
+                "learning_rate": 0.01,
+                "max_depth": 2,
+                "min_child_weight": 20.0,
+                "subsample": 0.65,
+                "colsample_bytree": 0.35,
+                "reg_alpha": 1.0,
+                "reg_lambda": 25.0,
+                "early_stopping_rounds": 100,
+            },
+        ),
+        "xgboost_mic_esm2_context_huber_slope05": MicExperimentSpec(
+            name="xgboost_mic_esm2_context_huber_slope05",
+            default_project="xgboost-mic",
+            default_run_name="xgboost_mic_esm2_context_huber_slope05",
+            load_data=load_xgboost_mic_data,
+            build_features=build_xgboost_esm2_context_features,
+            evaluate_predictions=evaluate_taxonomy_predictions,
+            prediction_columns=PREDICTION_COLUMNS,
+            build_model=partial(build_huber_esm2_xgboost_model, huber_slope=0.5),
+            use_estimator_checkpoints=False,
+            use_validation_fit=True,
+            artifact_metadata=xgboost_esm2_context_artifact_metadata,
+            run_config={
+                "model_name": "xgboost_regressor",
+                "target": "log10_mic",
+                "target_features": "frozen_esm2_taxonomy_gram",
+                "plm_model": "facebook/esm2_t12_35M_UR50D",
+                "embedding_cache": (
+                    "data/processed/embeddings/"
+                    "facebook_esm2_t12_35M_UR50D_mic_embeddings.npz"
+                ),
+                "loss_function": "PseudoHuber",
+                "huber_slope": 0.5,
+                "regularization_profile": "strong_dense_embedding",
+                "duplicate_measurements": "median_log_mic_by_sequence_target",
+                "n_estimators": 5000,
+                "learning_rate": 0.01,
+                "max_depth": 2,
+                "min_child_weight": 20.0,
+                "subsample": 0.65,
+                "colsample_bytree": 0.35,
+                "reg_alpha": 1.0,
+                "reg_lambda": 25.0,
+                "early_stopping_rounds": 100,
+            },
+        ),
+        "xgboost_mic_esm2_context_huber_slope20": MicExperimentSpec(
+            name="xgboost_mic_esm2_context_huber_slope20",
+            default_project="xgboost-mic",
+            default_run_name="xgboost_mic_esm2_context_huber_slope20",
+            load_data=load_xgboost_mic_data,
+            build_features=build_xgboost_esm2_context_features,
+            evaluate_predictions=evaluate_taxonomy_predictions,
+            prediction_columns=PREDICTION_COLUMNS,
+            build_model=partial(build_huber_esm2_xgboost_model, huber_slope=2.0),
+            use_estimator_checkpoints=False,
+            use_validation_fit=True,
+            artifact_metadata=xgboost_esm2_context_artifact_metadata,
+            run_config={
+                "model_name": "xgboost_regressor",
+                "target": "log10_mic",
+                "target_features": "frozen_esm2_taxonomy_gram",
+                "plm_model": "facebook/esm2_t12_35M_UR50D",
+                "embedding_cache": (
+                    "data/processed/embeddings/"
+                    "facebook_esm2_t12_35M_UR50D_mic_embeddings.npz"
+                ),
+                "loss_function": "PseudoHuber",
+                "huber_slope": 2.0,
                 "regularization_profile": "strong_dense_embedding",
                 "duplicate_measurements": "median_log_mic_by_sequence_target",
                 "n_estimators": 5000,
