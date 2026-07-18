@@ -1,4 +1,4 @@
-"""Per-genus XGBoost MIC regression: train a separate model per genus_label."""
+"""Per-genus MIC regression: train a separate model per genus_label."""
 
 from __future__ import annotations
 
@@ -16,6 +16,7 @@ from src.models.xgboost_mic import (
 )
 
 GENUS_GROUPS = ("Staphylococcus", "Escherichia", "Pseudomonas", "Bacillus", "Klebsiella")
+TAXONOMY_RANK_COLUMNS = ("Phylum", "Class", "Order", "Family", "Genus")
 
 
 def load_per_genus_mic_data(path: str | Path) -> pd.DataFrame:
@@ -47,6 +48,47 @@ def load_per_genus_mic_data(path: str | Path) -> pd.DataFrame:
     keep_columns = list(dict.fromkeys([
         "sequence", "target_activity_name", "activity", "log_mic",
         "genus_label", "gram_status",
+    ]))
+    return aggregate_duplicate_measurements(cleaned[keep_columns].reset_index(drop=True))
+
+
+def load_per_genus_mlp_mic_data(path: str | Path) -> pd.DataFrame:
+    """Load MIC data with taxonomy columns preserved for MLP features."""
+    df = pd.read_csv(path)
+    required = {"sequence", "target_activity_name", "activity", "genus_label", "gram_status"}
+    missing = required - set(df.columns)
+    if missing:
+        raise ValueError(f"Missing required columns: {sorted(missing)}")
+
+    from src.models.mic_baseline import NONSTANDARD_PATTERN
+
+    cleaned = df.copy()
+    cleaned = cleaned.dropna(subset=["sequence", "target_activity_name", "activity"])
+    cleaned["sequence"] = cleaned["sequence"].astype(str).str.upper().str.strip()
+    cleaned["target_activity_name"] = cleaned["target_activity_name"].astype(str).str.strip()
+    cleaned["activity"] = pd.to_numeric(cleaned["activity"], errors="coerce")
+    cleaned = cleaned.dropna(subset=["activity"])
+    cleaned = cleaned[cleaned["activity"] > 0]
+    cleaned = cleaned[cleaned["sequence"].str.len() > 0]
+    cleaned = cleaned[~cleaned["sequence"].str.contains(NONSTANDARD_PATTERN)]
+    if "target_is_bacteria" in cleaned.columns:
+        cleaned = cleaned[cleaned["target_is_bacteria"].fillna(0).astype(int) == 1]
+
+    for column in TAXONOMY_RANK_COLUMNS:
+        if column not in cleaned.columns:
+            cleaned[column] = "Unknown"
+        cleaned[column] = (
+            cleaned[column].fillna("Unknown").astype(str).str.strip().replace("", "Unknown")
+        )
+
+    cleaned["log_mic"] = np.log10(cleaned["activity"])
+    cleaned = cleaned[cleaned["gram_status"].isin(GRAM_CLASSES)].reset_index(drop=True)
+    cleaned = cleaned[cleaned["genus_label"].isin(GENUS_GROUPS)].reset_index(drop=True)
+
+    keep_columns = list(dict.fromkeys([
+        "sequence", "target_activity_name", "activity", "log_mic",
+        "genus_label", "gram_status",
+        *TAXONOMY_RANK_COLUMNS,
     ]))
     return aggregate_duplicate_measurements(cleaned[keep_columns].reset_index(drop=True))
 
@@ -92,11 +134,23 @@ def per_genus_artifact_metadata(df: pd.DataFrame) -> dict:
     }
 
 
+def mlp_per_genus_artifact_metadata(df: pd.DataFrame) -> dict:
+    """Return feature metadata for MLP per-genus artifacts."""
+    return {
+        "target": "log10_mic",
+        "genus_groups": list(GENUS_GROUPS),
+        "model_name": "pytorch_mlp_regressor",
+        "training_strategy": "per_genus",
+    }
+
+
 __all__ = [
     "GENUS_GROUPS",
     "build_per_genus_features",
     "build_xgboost_model",
     "evaluate_per_genus_predictions",
     "load_per_genus_mic_data",
+    "load_per_genus_mlp_mic_data",
+    "mlp_per_genus_artifact_metadata",
     "per_genus_artifact_metadata",
 ]

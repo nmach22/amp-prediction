@@ -271,6 +271,18 @@ def train_and_evaluate_per_genus_mic(
             )
             split_targets[split_name] = split_df["log_mic"].to_numpy()
 
+        feature_transform_metadata: dict = {}
+        if spec.transform_features is not None:
+            validation_features = {
+                split_name: features
+                for split_name, features in split_features.items()
+                if split_name != "train"
+            }
+            X_train, transformed_validation, feature_transform_metadata = (
+                spec.transform_features(X_train, validation_features, y_train)
+            )
+            split_features = {"train": X_train, **transformed_validation}
+
         if spec.use_validation_fit and "val" in split_features:
             model.fit(
                 X_train, y_train,
@@ -328,6 +340,7 @@ def train_and_evaluate_per_genus_mic(
                 "model_name": spec.name,
                 "genus": genus,
                 **_model_artifact_metadata(model, X_train.columns.tolist()),
+                **feature_transform_metadata,
             },
             models_dir / f"{spec.name}_{genus}_model.joblib",
         )

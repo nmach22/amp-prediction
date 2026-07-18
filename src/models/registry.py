@@ -36,6 +36,7 @@ MIC_EXPERIMENT_NAMES = (
     "mlp_mic_physchem_esm2_pca_context_regularized",
     "mlp_mic_physchem_esm2_pca_context_strong_regularized",
     "xgboost_mic_per_genus",
+    "mlp_mic_per_genus",
 )
 
 PREDICTION_COLUMNS = (
@@ -117,6 +118,8 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
         build_per_genus_features,
         evaluate_per_genus_predictions,
         load_per_genus_mic_data,
+        load_per_genus_mlp_mic_data,
+        mlp_per_genus_artifact_metadata,
         per_genus_artifact_metadata,
     )
 
@@ -860,6 +863,55 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
                 "sequence_descriptor_library": "modlamp",
                 "duplicate_measurements": "median_log_mic_by_sequence_target",
                 "early_stopping_rounds": 50,
+            },
+        ),
+        "mlp_mic_per_genus": MicExperimentSpec(
+            name="mlp_mic_per_genus",
+            default_project="mlp-mic-per-genus",
+            default_run_name="mlp_mic_per_genus",
+            load_data=load_per_genus_mlp_mic_data,
+            build_features=build_mlp_physchem_esm2_context_features,
+            evaluate_predictions=evaluate_per_genus_predictions,
+            prediction_columns=PREDICTION_COLUMNS,
+            build_model=build_physchem_esm2_context_mlp_model,
+            transform_features=pca_reduce_esm2_features,
+            use_estimator_checkpoints=False,
+            use_validation_fit=True,
+            artifact_metadata=mlp_per_genus_artifact_metadata,
+            run_config={
+                "model_name": "pytorch_mlp_regressor",
+                "target": "log10_mic",
+                "training_strategy": "per_genus",
+                "target_features": (
+                    "physicochemical_engineered_pca_frozen_esm2_one_hot_taxonomy_gram"
+                ),
+                "genus_groups": [
+                    "Staphylococcus", "Escherichia", "Pseudomonas",
+                    "Bacillus", "Klebsiella",
+                ],
+                "sequence_descriptor_library": "modlamp_plus_reduced_alphabet_kmers",
+                "sequence_feature_set": "motif_core",
+                "plm_model": "facebook/esm2_t12_35M_UR50D",
+                "embedding_cache": (
+                    "data/processed/embeddings/"
+                    "facebook_esm2_t12_35M_UR50D_mic_embeddings.npz"
+                ),
+                "feature_transform": "train_only_standard_scaler_pca_on_esm2",
+                "esm2_pca_components": 128,
+                "categorical_encoding": (
+                    "one_hot_target_gram_taxonomy_plus_one_hot_gram_taxonomy"
+                ),
+                "duplicate_measurements": "median_log_mic_by_sequence_target",
+                "null_policy": "taxonomy_unknown_one_hot",
+                "hidden_layers": [192, 96, 48],
+                "dropout": 0.35,
+                "weight_decay": 7e-4,
+                "learning_rate": 5e-4,
+                "loss_function": "HuberLoss",
+                "max_epochs": 450,
+                "patience": 30,
+                "noise_std": 0.01,
+                "early_stopping_metric": "validation_mae",
             },
         ),
     }
