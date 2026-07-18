@@ -35,6 +35,7 @@ MIC_EXPERIMENT_NAMES = (
     "mlp_mic_physchem_esm2_context_regularized",
     "mlp_mic_physchem_esm2_pca_context_regularized",
     "mlp_mic_physchem_esm2_pca_context_strong_regularized",
+    "xgboost_mic_per_genus",
 )
 
 PREDICTION_COLUMNS = (
@@ -111,6 +112,12 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
         mlp_esm2_context_artifact_metadata,
         mlp_artifact_metadata,
         mlp_physchem_esm2_context_artifact_metadata,
+    )
+    from src.models.per_genus_mic import (
+        build_per_genus_features,
+        evaluate_per_genus_predictions,
+        load_per_genus_mic_data,
+        per_genus_artifact_metadata,
     )
 
     return {
@@ -827,6 +834,32 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
                 "patience": 30,
                 "noise_std": 0.01,
                 "early_stopping_metric": "validation_mae",
+            },
+        ),
+        "xgboost_mic_per_genus": MicExperimentSpec(
+            name="xgboost_mic_per_genus",
+            default_project="xgboost-mic-per-genus",
+            default_run_name="xgboost_mic_per_genus",
+            load_data=load_per_genus_mic_data,
+            build_features=build_per_genus_features,
+            evaluate_predictions=evaluate_per_genus_predictions,
+            prediction_columns=PREDICTION_COLUMNS,
+            build_model=build_xgboost_model,
+            use_estimator_checkpoints=False,
+            use_validation_fit=True,
+            artifact_metadata=per_genus_artifact_metadata,
+            run_config={
+                "model_name": "xgboost_regressor",
+                "target": "log10_mic",
+                "target_features": "sequence_descriptors_gram",
+                "training_strategy": "per_genus",
+                "genus_groups": [
+                    "Staphylococcus", "Escherichia", "Pseudomonas",
+                    "Bacillus", "Klebsiella",
+                ],
+                "sequence_descriptor_library": "modlamp",
+                "duplicate_measurements": "median_log_mic_by_sequence_target",
+                "early_stopping_rounds": 50,
             },
         ),
     }

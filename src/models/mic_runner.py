@@ -214,3 +214,135 @@ def _model_artifact_metadata(model: BaseModel, feature_columns: list[str]) -> di
     if not callable(metadata_fn):
         return {}
     return metadata_fn(feature_columns)
+
+
+def train_and_evaluate_per_genus_mic(
+    spec: MicExperimentSpec,
+    input_csv: str | Path,
+    output_dir: str | Path,
+    random_state: int = 42,
+    return_history: bool = False,
+) -> dict[str, dict[str, float]] | tuple[dict[str, dict[str, float]], list[dict]]:
+    """Train one MIC model per genus_label and write per-genus artifacts."""
+    from src.utils import get_logger
+
+    log = get_logger(__name__)
+
+    output_path = Path(output_dir)
+    tables_dir = output_path / "tables"
+    models_dir = output_path / "models"
+    tables_dir.mkdir(parents=True, exist_ok=True)
+    models_dir.mkdir(parents=True, exist_ok=True)
+
+    df = spec.load_data(input_csv)
+    if "genus_label" not in df.columns:
+        raise ValueError("Per-genus training requires a 'genus_label' column.")
+
+    genus_groups = df["genus_label"].unique()
+    all_metrics: dict[str, dict[str, float]] = {}
+    all_metric_history: list[dict] = []
+    summary_rows: list[dict] = []
+
+    for genus in sorted(genus_groups):
+        genus_df = df[df["genus_label"] == genus].reset_index(drop=True)
+        if len(genus_df) < 20:
+            log.warning("Skipping genus '%s' — only %d rows.", genus, len(genus_df))
+            continue
+        log.info(
+            "Training %s for genus '%s' (%d rows) …",
+            spec.name, genus, len(genus_df),
+        )
+
+        splits = split_train_val_by_sequence(genus_df, random_state=random_state)
+        split_frames = [("train", splits.train), ("val", splits.val)]
+
+        X_train = spec.build_features(splits.train)
+        y_train = splits.train["log_mic"].to_numpy()
+        model = spec.build_model(random_state=random_state)
+        _assert_base_model(model, spec.name)
+
+        split_features: dict[str, pd.DataFrame] = {"train": X_train}
+        split_targets: dict[str, np.ndarray] = {"train": y_train}
+        for split_name, split_df in split_frames:
+            if split_df.empty or split_name == "train":
+                continue
+            split_features[split_name] = spec.build_features(split_df).reindex(
+                columns=X_train.columns, fill_value=0.0,
+            )
+            split_targets[split_name] = split_df["log_mic"].to_numpy()
+
+        if spec.use_validation_fit and "val" in split_features:
+            model.fit(
+                X_train, y_train,
+                X_val=split_features["val"],
+                y_val=split_targets["val"],
+            )
+        else:
+            model.fit(X_train, y_train)
+
+        genus_metrics: dict[str, dict[str, float]] = {}
+        for split_name, split_df in split_frames:
+            if split_df.empty:
+                continue
+            y_pred = model.predict(split_features[split_name])
+            metrics = spec.evaluate_predictions(
+                split_df, split_targets[split_name], y_pred,
+            )
+            genus_metrics[split_name] = metrics
+            all_metric_history.append({
+                "step": 1,
+                "split": split_name,
+                "genus": genus,
+                "metrics": metrics,
+            })
+
+        all_metrics[genus] = genus_metrics.get("val", genus_metrics.get("train", {}))
+
+        prediction_columns = [
+            column for column in spec.prediction_columns if column in df.columns
+        ]
+        prediction_frames = []
+        for split_name, split_df in split_frames:
+            if split_df.empty or split_name != "val":
+                continue
+            y_pred = model.predict(split_features[split_name])
+            pred_df = split_df[prediction_columns].copy()
+            pred_df["split"] = split_name
+            pred_df["genus"] = genus
+            pred_df["pred_log_mic"] = y_pred
+            pred_df["pred_mic"] = np.power(10.0, y_pred)
+            prediction_frames.append(pred_df)
+
+        if prediction_frames:
+            pd.concat(prediction_frames, ignore_index=True).to_csv(
+                tables_dir / f"{spec.name}_{genus}_predictions.csv", index=False,
+            )
+
+        pd.DataFrame(genus_metrics).T.to_csv(
+            tables_dir / f"{spec.name}_{genus}_metrics.csv", index_label="split",
+        )
+        joblib.dump(
+            {
+                "model": model,
+                "feature_columns": X_train.columns.tolist(),
+                "model_name": spec.name,
+                "genus": genus,
+                **_model_artifact_metadata(model, X_train.columns.tolist()),
+            },
+            models_dir / f"{spec.name}_{genus}_model.joblib",
+        )
+
+        val_metrics = genus_metrics.get("val", {})
+        summary_rows.append({"genus": genus, "n_rows": len(genus_df), **val_metrics})
+        for metric_name, value in val_metrics.items():
+            log.info("[%s/val] %s = %.4f", genus, metric_name, value)
+
+    summary_df = pd.DataFrame(summary_rows)
+    summary_df.to_csv(
+        tables_dir / f"{spec.name}_summary.csv", index=False,
+    )
+    log.info("Per-genus summary saved to %s", tables_dir / f"{spec.name}_summary.csv")
+
+    if return_history:
+        return all_metrics, all_metric_history
+    return all_metrics
