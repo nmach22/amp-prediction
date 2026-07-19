@@ -378,9 +378,12 @@ class XGBoostMicRegressor(BaseModel):
 
         self.random_state = random_state
         self._evals_result: dict = {}
+        eval_metric = (
+            "mphe" if objective == "reg:pseudohubererror" else "mae"
+        )
         xgb_kwargs: dict = dict(
             objective=objective,
-            eval_metric="mae",
+            eval_metric=eval_metric,
             n_estimators=n_estimators,
             learning_rate=learning_rate,
             max_depth=max_depth,
@@ -475,7 +478,10 @@ def build_regularized_esm2_model(random_state: int = 42) -> XGBoostMicRegressor:
     )
 
 
-def build_huber_esm2_model(random_state: int = 42) -> XGBoostMicRegressor:
+def build_huber_esm2_model(
+    random_state: int = 42,
+    huber_slope: float = 1.0,
+) -> XGBoostMicRegressor:
     """Create an XGBoost regressor with Pseudo-Huber loss for ESM2 features.
 
     Pseudo-Huber loss is less sensitive to outlier MIC values than squared error,
@@ -484,7 +490,7 @@ def build_huber_esm2_model(random_state: int = 42) -> XGBoostMicRegressor:
     return XGBoostMicRegressor(
         random_state=random_state,
         objective="reg:pseudohubererror",
-        huber_slope=1.0,
+        huber_slope=huber_slope,
         n_estimators=5000,
         learning_rate=0.01,
         max_depth=2,

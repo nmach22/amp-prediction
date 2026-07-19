@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from functools import partial
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -22,6 +23,8 @@ MIC_EXPERIMENT_NAMES = (
     "xgboost_mic_esm2_context_selected",
     "xgboost_mic_esm2_context_regularized",
     "xgboost_mic_esm2_context_huber",
+    "xgboost_mic_esm2_context_huber_slope05",
+    "xgboost_mic_esm2_context_huber_slope20",
     "xgboost_mic_interactions",
     "catboost_mic_physchem",
     "catboost_mic_tuned",
@@ -32,6 +35,8 @@ MIC_EXPERIMENT_NAMES = (
     "mlp_mic_physchem_esm2_context_regularized",
     "mlp_mic_physchem_esm2_pca_context_regularized",
     "mlp_mic_physchem_esm2_pca_context_strong_regularized",
+    "xgboost_mic_per_genus",
+    "mlp_mic_per_genus",
 )
 
 PREDICTION_COLUMNS = (
@@ -108,6 +113,14 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
         mlp_esm2_context_artifact_metadata,
         mlp_artifact_metadata,
         mlp_physchem_esm2_context_artifact_metadata,
+    )
+    from src.models.per_genus_mic import (
+        build_per_genus_features,
+        evaluate_per_genus_predictions,
+        load_per_genus_mic_data,
+        load_per_genus_mlp_mic_data,
+        mlp_per_genus_artifact_metadata,
+        per_genus_artifact_metadata,
     )
 
     return {
@@ -406,6 +419,78 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
                 ),
                 "loss_function": "PseudoHuber",
                 "huber_slope": 1.0,
+                "regularization_profile": "strong_dense_embedding",
+                "duplicate_measurements": "median_log_mic_by_sequence_target",
+                "n_estimators": 5000,
+                "learning_rate": 0.01,
+                "max_depth": 2,
+                "min_child_weight": 20.0,
+                "subsample": 0.65,
+                "colsample_bytree": 0.35,
+                "reg_alpha": 1.0,
+                "reg_lambda": 25.0,
+                "early_stopping_rounds": 100,
+            },
+        ),
+        "xgboost_mic_esm2_context_huber_slope05": MicExperimentSpec(
+            name="xgboost_mic_esm2_context_huber_slope05",
+            default_project="xgboost-mic",
+            default_run_name="xgboost_mic_esm2_context_huber_slope05",
+            load_data=load_xgboost_mic_data,
+            build_features=build_xgboost_esm2_context_features,
+            evaluate_predictions=evaluate_taxonomy_predictions,
+            prediction_columns=PREDICTION_COLUMNS,
+            build_model=partial(build_huber_esm2_xgboost_model, huber_slope=0.5),
+            use_estimator_checkpoints=False,
+            use_validation_fit=True,
+            artifact_metadata=xgboost_esm2_context_artifact_metadata,
+            run_config={
+                "model_name": "xgboost_regressor",
+                "target": "log10_mic",
+                "target_features": "frozen_esm2_taxonomy_gram",
+                "plm_model": "facebook/esm2_t12_35M_UR50D",
+                "embedding_cache": (
+                    "data/processed/embeddings/"
+                    "facebook_esm2_t12_35M_UR50D_mic_embeddings.npz"
+                ),
+                "loss_function": "PseudoHuber",
+                "huber_slope": 0.5,
+                "regularization_profile": "strong_dense_embedding",
+                "duplicate_measurements": "median_log_mic_by_sequence_target",
+                "n_estimators": 5000,
+                "learning_rate": 0.01,
+                "max_depth": 2,
+                "min_child_weight": 20.0,
+                "subsample": 0.65,
+                "colsample_bytree": 0.35,
+                "reg_alpha": 1.0,
+                "reg_lambda": 25.0,
+                "early_stopping_rounds": 100,
+            },
+        ),
+        "xgboost_mic_esm2_context_huber_slope20": MicExperimentSpec(
+            name="xgboost_mic_esm2_context_huber_slope20",
+            default_project="xgboost-mic",
+            default_run_name="xgboost_mic_esm2_context_huber_slope20",
+            load_data=load_xgboost_mic_data,
+            build_features=build_xgboost_esm2_context_features,
+            evaluate_predictions=evaluate_taxonomy_predictions,
+            prediction_columns=PREDICTION_COLUMNS,
+            build_model=partial(build_huber_esm2_xgboost_model, huber_slope=2.0),
+            use_estimator_checkpoints=False,
+            use_validation_fit=True,
+            artifact_metadata=xgboost_esm2_context_artifact_metadata,
+            run_config={
+                "model_name": "xgboost_regressor",
+                "target": "log10_mic",
+                "target_features": "frozen_esm2_taxonomy_gram",
+                "plm_model": "facebook/esm2_t12_35M_UR50D",
+                "embedding_cache": (
+                    "data/processed/embeddings/"
+                    "facebook_esm2_t12_35M_UR50D_mic_embeddings.npz"
+                ),
+                "loss_function": "PseudoHuber",
+                "huber_slope": 2.0,
                 "regularization_profile": "strong_dense_embedding",
                 "duplicate_measurements": "median_log_mic_by_sequence_target",
                 "n_estimators": 5000,
@@ -746,6 +831,81 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
                 "hidden_layers": [128, 64, 32],
                 "dropout": 0.4,
                 "weight_decay": 1e-3,
+                "learning_rate": 5e-4,
+                "loss_function": "HuberLoss",
+                "max_epochs": 450,
+                "patience": 30,
+                "noise_std": 0.01,
+                "early_stopping_metric": "validation_mae",
+            },
+        ),
+        "xgboost_mic_per_genus": MicExperimentSpec(
+            name="xgboost_mic_per_genus",
+            default_project="xgboost-mic-per-genus",
+            default_run_name="xgboost_mic_per_genus",
+            load_data=load_per_genus_mic_data,
+            build_features=build_per_genus_features,
+            evaluate_predictions=evaluate_per_genus_predictions,
+            prediction_columns=PREDICTION_COLUMNS,
+            build_model=build_xgboost_model,
+            use_estimator_checkpoints=False,
+            use_validation_fit=True,
+            artifact_metadata=per_genus_artifact_metadata,
+            run_config={
+                "model_name": "xgboost_regressor",
+                "target": "log10_mic",
+                "target_features": "sequence_descriptors_gram",
+                "training_strategy": "per_genus",
+                "genus_groups": [
+                    "Staphylococcus", "Escherichia", "Pseudomonas",
+                    "Bacillus", "Klebsiella",
+                ],
+                "sequence_descriptor_library": "modlamp",
+                "duplicate_measurements": "median_log_mic_by_sequence_target",
+                "early_stopping_rounds": 50,
+            },
+        ),
+        "mlp_mic_per_genus": MicExperimentSpec(
+            name="mlp_mic_per_genus",
+            default_project="mlp-mic-per-genus",
+            default_run_name="mlp_mic_per_genus",
+            load_data=load_per_genus_mlp_mic_data,
+            build_features=build_mlp_physchem_esm2_context_features,
+            evaluate_predictions=evaluate_per_genus_predictions,
+            prediction_columns=PREDICTION_COLUMNS,
+            build_model=build_physchem_esm2_context_mlp_model,
+            transform_features=pca_reduce_esm2_features,
+            use_estimator_checkpoints=False,
+            use_validation_fit=True,
+            artifact_metadata=mlp_per_genus_artifact_metadata,
+            run_config={
+                "model_name": "pytorch_mlp_regressor",
+                "target": "log10_mic",
+                "training_strategy": "per_genus",
+                "target_features": (
+                    "physicochemical_engineered_pca_frozen_esm2_one_hot_taxonomy_gram"
+                ),
+                "genus_groups": [
+                    "Staphylococcus", "Escherichia", "Pseudomonas",
+                    "Bacillus", "Klebsiella",
+                ],
+                "sequence_descriptor_library": "modlamp_plus_reduced_alphabet_kmers",
+                "sequence_feature_set": "motif_core",
+                "plm_model": "facebook/esm2_t12_35M_UR50D",
+                "embedding_cache": (
+                    "data/processed/embeddings/"
+                    "facebook_esm2_t12_35M_UR50D_mic_embeddings.npz"
+                ),
+                "feature_transform": "train_only_standard_scaler_pca_on_esm2",
+                "esm2_pca_components": 128,
+                "categorical_encoding": (
+                    "one_hot_target_gram_taxonomy_plus_one_hot_gram_taxonomy"
+                ),
+                "duplicate_measurements": "median_log_mic_by_sequence_target",
+                "null_policy": "taxonomy_unknown_one_hot",
+                "hidden_layers": [192, 96, 48],
+                "dropout": 0.35,
+                "weight_decay": 7e-4,
                 "learning_rate": 5e-4,
                 "loss_function": "HuberLoss",
                 "max_epochs": 450,

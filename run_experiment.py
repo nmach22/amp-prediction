@@ -367,7 +367,10 @@ def run_classification_experiment(args: argparse.Namespace) -> None:
 
 
 def run_named_mic_experiment(args: argparse.Namespace) -> None:
-    from src.models.mic_runner import train_and_evaluate_mic_baseline
+    from src.models.mic_runner import (
+        train_and_evaluate_mic_baseline,
+        train_and_evaluate_per_genus_mic,
+    )
     from src.models.registry import get_mic_experiment_spec
 
     spec = get_mic_experiment_spec(args.model)
@@ -375,7 +378,10 @@ def run_named_mic_experiment(args: argparse.Namespace) -> None:
     seed = args.seed if args.seed is not None else 42
     set_seed(seed)
 
-    metrics, metric_history = train_and_evaluate_mic_baseline(
+    is_per_genus = spec.run_config.get("training_strategy") == "per_genus"
+    runner = train_and_evaluate_per_genus_mic if is_per_genus else train_and_evaluate_mic_baseline
+
+    metrics, metric_history = runner(
         spec=spec,
         input_csv=Path(args.input),
         output_dir=output_dir,
