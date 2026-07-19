@@ -172,7 +172,7 @@
         <span class="section-kicker">03 &middot; Timeline</span>
         <h2>How the model evolved, step by step</h2>
         <p>
-          Nine tracked stages, from an empty repository to the model
+          Ten tracked stages, from an empty repository to the model
           currently deployed on this site. Metrics are validation-split
           MAE and R&sup2; on log10(MIC), single-seed unless noted.
         </p>
@@ -379,6 +379,47 @@
               XGBoost variant trained with a pseudo-Huber loss, aimed at
               making the tree-based branch more robust to MIC outliers.
               Results aren&rsquo;t finalized yet.
+            </p>
+          </div>
+        </li>
+
+        <li class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-card">
+            <div class="timeline-meta">
+              <span class="timeline-date">Jul 19, 2026</span>
+              <span class="timeline-stage">Stage 10 &middot; Two-tower + uncertainty</span>
+            </div>
+            <h3>Two-tower deep model with calibrated confidence intervals</h3>
+            <p>
+              A new architecture rather than a bigger MLP: a <strong>peptide
+              tower</strong> (frozen <code>esm2_t33_650M_UR50D</code>, 14&times;
+              larger than the ESM2 model used earlier, followed by a
+              learnable Transformer encoder and attention pooling) combined
+              with an <strong>organism tower</strong> (an FT-Transformer over
+              species identity and numeric organism features). Trained on
+              ~106k aggregated pairs, split by k-mer Jaccard clustering to
+              keep near-duplicate sequences out of the test set. For the
+              first time, the model outputs a calibrated 90% confidence
+              interval alongside each point prediction, via one of two
+              interchangeable heads.
+            </p>
+            <div class="mini-compare">
+              <div class="mini-compare-row">
+                <span>Gaussian head (NLL loss)</span>
+                <span class="mini-compare-metric">MAE 0.576 &middot; Spearman 0.449 &middot; PICP 82.8%</span>
+              </div>
+              <div class="mini-compare-row">
+                <span>Quantile head (pinball loss)</span>
+                <span class="mini-compare-metric">MAE 0.555 &middot; Spearman 0.478 &middot; PICP 75.9%</span>
+              </div>
+            </div>
+            <p class="timeline-note">
+              Evaluated on a stricter, leakage-safe split than the random
+              validation split used by earlier stages, so these numbers
+              aren&rsquo;t directly comparable to the MAE/R&sup2; chart below
+              &mdash; see the dedicated section further down the page for the
+              full breakdown.
             </p>
           </div>
         </li>
@@ -599,6 +640,122 @@
           PCA-compressed embedding keeps the served feature vector smaller for
           a near-identical result &mdash; the tradeoff chosen for this live demo.
         </p>
+      </div>
+    </section>
+
+    <!-- ── Two-tower model ─────────────────────────────────── -->
+    <section class="journey-section">
+      <div class="section-head">
+        <span class="section-kicker">07 &middot; Latest experiment</span>
+        <h2>Two-tower model with calibrated confidence intervals</h2>
+        <p>
+          The newest addition to the registry swaps the single MLP for a
+          two-tower deep learning architecture and, for the first time,
+          reports a calibrated 90% confidence interval alongside every point
+          prediction &mdash; not just a single MIC estimate.
+        </p>
+      </div>
+
+      <div class="feature-stack">
+        <div class="feature-block">
+          <div class="feature-block-head">
+            <span class="feature-order">P</span>
+            <h3>Peptide tower</h3>
+            <span class="feature-count">Frozen ESM2-650M + Transformer</span>
+          </div>
+          <p>
+            Uppercased sequences pass through a frozen
+            <code>esm2_t33_650M_UR50D</code> protein language model
+            (14&times; larger than the 35M-parameter model used earlier in
+            the project) to get per-residue embeddings, then through a
+            learnable Transformer encoder with attention pooling.
+          </p>
+        </div>
+        <div class="feature-arrow" aria-hidden="true">+</div>
+        <div class="feature-block">
+          <div class="feature-block-head">
+            <span class="feature-order">O</span>
+            <h3>Organism tower</h3>
+            <span class="feature-count">FT-Transformer</span>
+          </div>
+          <p>
+            A Feature Tokenizer + Transformer jointly encodes species
+            identity and numeric organism-level features, replacing the
+            earlier one-hot taxonomy block with a learned representation.
+          </p>
+        </div>
+      </div>
+
+      <div class="info-card" style="margin-top: 1rem;">
+        <p>
+          Trained on ~106k aggregated (peptide, organism) pairs across 15
+          named species plus an &ldquo;other&rdquo; category, with replicate
+          measurements combined by geometric mean in log-space. The
+          train/test split uses <strong>k-mer Jaccard similarity
+          clustering</strong> to keep near-duplicate sequences out of the
+          test set &mdash; a stricter, leakage-safe split than the random
+          validation split used earlier in the project, so its numbers
+          aren&rsquo;t directly comparable to the MAE/R&sup2; chart above.
+        </p>
+      </div>
+
+      <div class="table-card" style="margin-top: 1.25rem;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Metric (held-out test)</th>
+              <th>Gaussian head</th>
+              <th>Quantile head</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>RMSE (log&#8321;&#8320; MIC)</td><td class="cell-best">0.753</td><td>0.744</td></tr>
+            <tr><td>MAE</td><td>0.576</td><td class="cell-best">0.555</td></tr>
+            <tr><td>Pearson r</td><td>0.455</td><td class="cell-best">0.493</td></tr>
+            <tr><td>Spearman &rho;</td><td>0.449</td><td class="cell-best">0.478</td></tr>
+            <tr><td>Within 2-fold</td><td>34.3%</td><td class="cell-best">37.8%</td></tr>
+            <tr><td>Within 4-fold</td><td>61.8%</td><td class="cell-best">65.1%</td></tr>
+            <tr><td>PICP (nominal 90%)</td><td class="cell-best">82.8%</td><td>75.9%</td></tr>
+            <tr><td>MPIW (interval width)</td><td>1.923</td><td class="cell-best">1.564</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="finding-grid" style="margin-top: 1.25rem;">
+        <div class="finding-card">
+          <span class="finding-number">A</span>
+          <h3>Quantile head wins on accuracy</h3>
+          <p>
+            The quantile head beats the Gaussian head on every
+            point-prediction metric and produces narrower 90% intervals
+            (1.56 vs. 1.92 log&#8321;&#8320; units), at the cost of
+            under-covering the nominal 90% target (75.9% vs. 82.8%). Both
+            heads support post-hoc split-conformal calibration to correct
+            this gap without retraining.
+          </p>
+        </div>
+        <div class="finding-card">
+          <span class="finding-number">B</span>
+          <h3>Organism biology still drives error</h3>
+          <p>
+            Gram-negative species (<em>P. aeruginosa</em>,
+            <em>A. baumannii</em>, <em>K. pneumoniae</em>) get the best
+            Spearman correlation (0.47&ndash;0.54), while the fungal
+            <em>C. albicans</em> is the weakest (0.24&ndash;0.28) &mdash; the
+            same pattern seen throughout the project.
+          </p>
+        </div>
+        <div class="finding-card">
+          <span class="finding-number">C</span>
+          <h3>D-peptides are the easiest group</h3>
+          <p>
+            D-amino acid peptides are predicted <em>better</em> than
+            standard L-peptides (Spearman 0.55&ndash;0.57 vs.
+            0.46&ndash;0.49), likely because they cluster in a distinct MIC
+            range; modified/X peptides remain the hardest group (Spearman
+            0.31&ndash;0.38).
+          </p>
+        </div>
       </div>
     </section>
 

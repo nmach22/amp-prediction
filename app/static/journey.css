@@ -582,6 +582,60 @@
   color: var(--ink-soft);
 }
 
+/* ── Data table ───────────────────────────────────────── */
+
+.table-card {
+  background: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.25rem 1.4rem;
+  backdrop-filter: blur(14px);
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+}
+
+.data-table th,
+.data-table td {
+  text-align: left;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.data-table th {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.data-table td {
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.data-table td:first-child {
+  color: var(--ink);
+  font-weight: 500;
+  white-space: normal;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table .cell-best {
+  color: var(--teal);
+  font-weight: 700;
+}
+
 /* ── Deployed model card ──────────────────────────────── */
 
 .deployed-card {
