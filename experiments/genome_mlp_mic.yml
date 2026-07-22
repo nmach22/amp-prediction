@@ -1,0 +1,50 @@
+# Experiment: Genome-Encoded MLP MIC Regression
+# Ablation study: genome-only vs genome + peptide (ESM-2) features
+experiment_name: genome_mlp_mic
+wandb_project: amp-prediction
+
+tags:
+  author: nika
+  approach: genome-encoding
+  feature_type: oligonucleotide+dDDH+gyrB
+  model_type: mlp
+
+# Genome feature settings
+genome:
+  genome_dir: data/processed/embeddings/genome
+  n_pca_components: null     # Set to integer (e.g., 128) to reduce dimensionality
+  landmarks:                  # Top species for similarity encoding
+    - Escherichia coli
+    - Staphylococcus aureus
+    - Pseudomonas aeruginosa
+    - Klebsiella pneumoniae
+    - Acinetobacter baumannii
+    - Bacillus subtilis
+    - Salmonella enterica
+    - Staphylococcus epidermidis
+    - Enterococcus faecalis
+    - Enterococcus faecium
+
+# Ablation modes to run
+ablation:
+  modes:
+    - genome_only     # Only genome features (oligo + dDDH + gyrB)
+    - combined        # Genome features + ESM-2 peptide embeddings
+
+# MLP architecture
+model:
+  hidden_layers: [512, 256, 128]
+  dropout: 0.25
+  learning_rate: 0.0005
+  weight_decay: 0.0001
+  max_epochs: 400
+  patience: 40
+  batch_size: 64
+  noise_std: 0.01
+
+# Data
+data:
+  train: data/processed/splits/train.csv
+  test: data/processed/splits/test.csv
+
+seed: 42
