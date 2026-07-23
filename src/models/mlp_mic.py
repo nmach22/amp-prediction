@@ -540,6 +540,73 @@ def mlp_esm2_context_artifact_metadata(df: pd.DataFrame) -> dict:
     }
 
 
+def build_mlp_physchem_esm2_genome_features(df: pd.DataFrame) -> pd.DataFrame:
+    """Build physicochemical descriptors plus ESM2 plus genome oligo features.
+
+    Replaces one-hot taxonomy/gram context with continuous genome-level
+    oligonucleotide composition vectors from GenomeEncoder.
+    """
+    from src.features.genome import GenomeEncoder
+
+    physchem_features = build_mlp_features(df).add_prefix("physchem_")
+    embedding_features = _esm2_embedding_features(df)
+
+    genome_encoder = GenomeEncoder()
+    genome_vectors = genome_encoder.encode(df["target_activity_name"])
+    genome_df = pd.DataFrame(
+        genome_vectors,
+        columns=[f"genome_{name}" for name in genome_encoder.feature_names()],
+    )
+
+    return pd.concat(
+        [
+            physchem_features.reset_index(drop=True),
+            embedding_features.reset_index(drop=True),
+            genome_df.reset_index(drop=True),
+        ],
+        axis=1,
+    ).astype(float)
+
+
+def build_physchem_esm2_genome_regularized_model(
+    random_state: int = 42,
+) -> MlpMicRegressor:
+    """Create a regularized MLP for physchem + PCA-ESM2 + genome oligo features."""
+    return MlpMicRegressor(
+        random_state=random_state,
+        hidden_layers=(192, 96, 48),
+        dropout=0.35,
+        learning_rate=5e-4,
+        weight_decay=7e-4,
+        max_epochs=450,
+        patience=30,
+        batch_size=64,
+        noise_std=0.01,
+    )
+
+
+def mlp_physchem_esm2_genome_artifact_metadata(df: pd.DataFrame) -> dict:
+    """Return metadata for combined physicochemical, ESM2, and genome features."""
+    metadata = load_embedding_cache_metadata(DEFAULT_MIC_EMBEDDING_PATH)
+    _, embeddings = load_embedding_cache(DEFAULT_MIC_EMBEDDING_PATH)
+    return {
+        "embedding_model": metadata.get("model_name", DEFAULT_ESM2_MODEL),
+        "embedding_path": str(DEFAULT_MIC_EMBEDDING_PATH),
+        "embedding_dim": int(embeddings.shape[1]),
+        "sequence_descriptor_columns": SequenceDescriptorEncoder(
+            feature_set=DESCRIPTOR_FEATURE_SET
+        ).feature_names(),
+        "engineered_feature_columns": list(ENGINEERED_FEATURE_COLUMNS),
+        "descriptor_library": "modlamp_plus_reduced_alphabet_kmers",
+        "sequence_feature_set": DESCRIPTOR_FEATURE_SET,
+        "genome_features": "oligonucleotide_k3_k4_k5_ddh_gyrb",
+        "genome_feature_dim": 1364,
+        "target": "log10_mic",
+        "target_features": "physicochemical_engineered_pca_frozen_esm2_genome_oligo",
+        "duplicate_measurements": "median_log_mic_by_sequence_target",
+    }
+
+
 def mlp_physchem_esm2_context_artifact_metadata(df: pd.DataFrame) -> dict:
     """Return metadata for combined physicochemical and frozen ESM2 features."""
     metadata = mlp_esm2_context_artifact_metadata(df)
@@ -565,14 +632,17 @@ __all__ = [
     "build_mlp_esm2_context_features",
     "build_mlp_features",
     "build_mlp_physchem_esm2_context_features",
+    "build_mlp_physchem_esm2_genome_features",
     "build_mild_regularized_model",
     "build_model",
     "build_physchem_esm2_context_regularized_model",
     "build_physchem_esm2_context_strong_regularized_model",
+    "build_physchem_esm2_genome_regularized_model",
     "build_regularized_model",
     "evaluate_taxonomy_predictions",
     "load_mlp_mic_data",
     "mlp_esm2_context_artifact_metadata",
     "mlp_artifact_metadata",
     "mlp_physchem_esm2_context_artifact_metadata",
+    "mlp_physchem_esm2_genome_artifact_metadata",
 ]
