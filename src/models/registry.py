@@ -39,6 +39,7 @@ MIC_EXPERIMENT_NAMES = (
     "mlp_mic_per_genus",
     "genome_mlp_mic",
     "genome_mlp_mic_combined",
+    "genome_transformer_mic",
 )
 
 PREDICTION_COLUMNS = (
@@ -130,6 +131,11 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
         build_combined_features as _build_combined_features,
         GenomeMlpMicRegressor,
     )
+    from src.models.transformer_mic import (
+        load_transformer_mic_data,
+        build_transformer_mic_features,
+        GenomeTransformerMicRegressor,
+    )
     from src.features.genome import GenomeEncoder
 
     # Genome MLP helper closures
@@ -147,6 +153,9 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
 
     def build_genome_combined_mlp_model(**kwargs):
         return GenomeMlpMicRegressor(mode="combined", **kwargs)
+
+    def build_transformer_mic_model(**kwargs):
+        return GenomeTransformerMicRegressor(**kwargs)
 
     return {
         "mic_baseline": MicExperimentSpec(
@@ -995,10 +1004,44 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
                 "plm_model": "facebook/esm2_t12_35M_UR50D",
             },
         ),
+        "genome_transformer_mic": MicExperimentSpec(
+            name="genome_transformer_mic",
+            default_project="genome-transformer-mic",
+            default_run_name="genome_transformer_mic",
+            load_data=load_transformer_mic_data,
+            build_features=build_transformer_mic_features,
+            evaluate_predictions=evaluate_taxonomy_predictions,
+            prediction_columns=PREDICTION_COLUMNS,
+            build_model=build_transformer_mic_model,
+            use_estimator_checkpoints=False,
+            use_validation_fit=True,
+            run_config={
+                "model_name": "cross_attention_transformer",
+                "target": "log10_mic",
+                "target_features": "esm2_peptide_plus_oligonucleotide_genome",
+                "architecture": "cross_attention_transformer",
+                "peptide_encoding": "esm2_t12_35M_UR50D (480d)",
+                "genome_encoding": "oligonucleotide_k3_k4_k5 (1344d)",
+                "d_model": 256,
+                "n_heads": 8,
+                "n_self_layers": 2,
+                "n_cross_layers": 2,
+                "n_tokens_peptide": 8,
+                "n_tokens_genome": 16,
+                "dropout": 0.15,
+                "learning_rate": 3e-4,
+                "weight_decay": 1e-4,
+                "scheduler": "OneCycleLR_cosine",
+                "loss_function": "HuberLoss",
+                "max_epochs": 300,
+                "patience": 35,
+                "batch_size": 128,
+            },
+        ),
     }
 
 
-def get_mic_experiment_spec(name: str) -> MicExperimentSpec:
+def get_mic_experiment_spec(name: str) -> "MicExperimentSpec":
     """Return one MIC baseline spec by name."""
     specs = mic_experiment_specs()
     if name not in specs:
