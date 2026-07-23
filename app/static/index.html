@@ -69,6 +69,108 @@
       </section>
     </main>
 
+    <section class="how-it-works">
+      <div class="section-head">
+        <span class="section-kicker">How it works</span>
+        <h2>What to enter, and what you get back</h2>
+      </div>
+
+      <div class="how-grid">
+        <div class="how-card">
+          <span class="how-step">1</span>
+          <h3>Enter a peptide sequence</h3>
+          <p>
+            Type or paste an amino-acid sequence into the
+            <strong>Peptide sequence</strong> box using the standard one-letter
+            codes (<code>ACDEFGHIKLMNPQRSTVWY</code>) &mdash; e.g.
+            <code>GIGKFLHSAKKFGKAFVGEIMNS</code>. Lowercase is fine, it&rsquo;s
+            uppercased automatically. Sequences work best between roughly
+            5&ndash;60 residues; much shorter or longer ones still run but
+            come back with a reliability warning.
+          </p>
+        </div>
+        <div class="how-card">
+          <span class="how-step">2</span>
+          <h3>Pick a target organism</h3>
+          <p>
+            Choose the bacterial or fungal strain you want the MIC estimated
+            against from the <strong>Target organism</strong> dropdown, then
+            hit <strong>Run prediction</strong>. The model looks at that
+            organism&rsquo;s taxonomy and Gram status alongside the sequence
+            &mdash; the same peptide can get very different MIC estimates
+            against different organisms.
+          </p>
+        </div>
+        <div class="how-card">
+          <span class="how-step">3</span>
+          <h3>Read the assay readout</h3>
+          <p>
+            The big number is the predicted <strong>MIC in &micro;g/mL</strong>
+            &mdash; the lowest peptide concentration expected to stop visible
+            growth of that organism. <strong>Lower means more potent.</strong>
+            Underneath it, <code>log10(MIC)</code> is the raw value the model
+            was trained to predict; the &micro;g/mL figure is just
+            <code>10</code> raised to that number, shown because it&rsquo;s
+            the unit used in real susceptibility assays.
+          </p>
+        </div>
+        <div class="how-card">
+          <span class="how-step">4</span>
+          <h3>Check the residue chain &amp; warnings</h3>
+          <p>
+            The colored chain below the MIC value shows each residue&rsquo;s
+            chemical class (basic, acidic, polar, hydrophobic, aromatic,
+            structural) so you can eyeball the sequence&rsquo;s composition.
+            Any amber warnings mean the sequence falls outside the typical
+            range of the training data &mdash; treat that prediction with
+            more caution.
+          </p>
+        </div>
+      </div>
+
+      <div class="example-card">
+        <span class="example-kicker">A real, held-out example the model was not trained on</span>
+        <h3>RWLRLNGRWLRL vs. <em>E. coli</em> (ATCC 25922)</h3>
+        <div class="example-body">
+          <div class="example-seq">
+            <span class="example-seq-label">Sequence</span>
+            <span class="example-seq-value">RWLRLNGRWLRL</span>
+          </div>
+          <div class="example-arrow" aria-hidden="true">&rarr;</div>
+          <div class="example-readout">
+            <span class="example-number">1.15</span>
+            <span class="example-unit">log10(MIC)</span>
+            <span class="example-equals">=</span>
+            <span class="example-number">14.1<span class="example-small">&micro;g/mL</span></span>
+          </div>
+        </div>
+        <p>
+          <strong>RWLRLNGRWLRL</strong> is a sequence from DBAASP&rsquo;s
+          held-out test set &mdash; it never appears in the model&rsquo;s
+          training data. Seven independent lab assays measured its MIC
+          against <em>E. coli</em> ATCC 25922 at between 7.7 and 31.1
+          &micro;g/mL; the median of those measurements is
+          <strong>&asymp;14.3 &micro;g/mL</strong> (<code>log10(MIC)
+          &asymp; 1.15</code>). Run this same sequence and organism through
+          the model above and it predicts <strong>&asymp;14.1
+          &micro;g/mL</strong> &mdash; within a couple percent of the real
+          assay result. In plain terms: a concentration of about 14
+          micrograms of peptide per milliliter of broth was the lowest dose
+          that stopped visible <em>E. coli</em> growth in these experiments,
+          and that&rsquo;s what the model estimated too. A <em>lower</em>
+          number means the same thing but with less peptide needed &mdash;
+          e.g. a predicted <code>log10(MIC) = 0.56</code> corresponds to
+          MIC &asymp; 10<sup>0.56</sup> &asymp; 3.6 &micro;g/mL, a
+          <strong>more potent</strong> result than this peptide against the
+          same strain; <code>log10(MIC) = 2.0</code> (MIC = 100
+          &micro;g/mL) would be a weaker one. Predictions won&rsquo;t always
+          land this close &mdash; see the
+          <a href="/journey.html">project journey</a> page for the model&rsquo;s
+          overall accuracy across the full test set.
+        </p>
+      </div>
+    </section>
+
     <footer>
       <p>
         Predictions are model estimates from sequence and organism context, not a

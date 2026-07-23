@@ -628,6 +628,217 @@ button:disabled {
   font-size: 0.9rem;
 }
 
+/* ── How it works ─────────────────────────────────────── */
+
+.how-it-works {
+  margin-top: 3rem;
+}
+
+.section-head {
+  max-width: 62ch;
+  margin: 0 auto 1.5rem;
+  text-align: center;
+}
+
+.section-kicker {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--violet-2);
+  margin-bottom: 0.6rem;
+}
+
+.section-head h2 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 2.6vw, 1.8rem);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .how-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .how-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.how-card {
+  background: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.35rem 1.4rem;
+  backdrop-filter: blur(14px);
+}
+
+.how-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #14081f;
+  background: linear-gradient(135deg, var(--violet-2), var(--teal));
+  margin-bottom: 0.75rem;
+}
+
+.how-card h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0 0 0.55rem;
+}
+
+.how-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+
+.how-card code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  color: var(--teal);
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.1em 0.4em;
+  border-radius: 5px;
+}
+
+.example-card {
+  margin-top: 1.25rem;
+  background: linear-gradient(120deg, rgba(45, 212, 191, 0.1), rgba(139, 92, 246, 0.1));
+  border: 1px solid rgba(45, 212, 191, 0.35);
+  border-radius: 16px;
+  padding: 1.5rem 1.6rem;
+  backdrop-filter: blur(14px);
+}
+
+.example-kicker {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 0.5rem;
+}
+
+.example-card h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0 0 1.1rem;
+}
+
+.example-card h3 em {
+  font-style: normal;
+  color: var(--violet-2);
+}
+
+.example-body {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.example-seq {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.example-seq-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.example-seq-value {
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+}
+
+.example-arrow {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--ink-soft);
+  opacity: 0.6;
+}
+
+.example-readout {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  font-family: var(--display);
+}
+
+.example-number {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--teal);
+  font-variant-numeric: tabular-nums;
+}
+
+.example-small {
+  font-size: 0.65em;
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin-left: 0.25rem;
+}
+
+.example-unit,
+.example-equals {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+.example-card p {
+  margin: 0;
+  font-size: 0.87rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.example-card code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  color: var(--teal);
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.1em 0.4em;
+  border-radius: 5px;
+}
+
 footer {
   position: relative;
   z-index: 1;
