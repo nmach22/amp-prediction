@@ -493,8 +493,6 @@ wandb/
 # Results – figures and tables are reproducible; ignore to keep repo clean
 results/figures/*
 !results/figures/.gitkeep
-results/tables/*
-!results/tables/.gitkeep
 results/*.joblib
 /data/processed/amp_mic_activities_gram_classified.csv
 /data/processed/splits/test.csv

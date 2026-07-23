@@ -1,0 +1,839 @@
+sequence,target_activity_name,activity,log_mic,gram_status,Phylum,Class,Order,Family,Genus,split,genus,pred_log_mic,pred_mic
+RVKRVWPLVIRTVIAGYNLYRAIKKK,Bacillus subtilis KCTC 3068,6.291900000000001,0.7987818115683328,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.4206486,2.6341991
+KAAAKWAAKAAK,Bacillus subtilis ATCC 6051,4.542533000000001,0.6572980909973191,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0705295,11.763308
+ALWKTLLKKVLKAAA,Bacillus cereus ATCC 11778,4.971509999999999,0.6964883173181682,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.9776422,9.498219
+KTLLKKVLKAAA,Bacillus cereus ATCC 11778,64.33550000000001,1.808450680539911,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.8631897,72.97762
+GLRKRLRKFRNKIKEKLKKI,Bacillus megaterium,10.241199999999997,1.0103508475425793,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.0181967,10.4278965
+GLRKRLRKPRNKPKEKLKKI,Bacillus megaterium,159.62879999999996,2.2031112488737454,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.3363838,2.1696205
+GLRKRLRKFRNKIKQKLKKI,Bacillus megaterium,10.23724,1.0101828849272851,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.80353725,6.3611736
+YVLWKRKRFIFI,Bacillus subtilis,33.422599999999996,1.5240402313662285,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.65537924,4.5225067
+YVLFKRKRFIFI,Bacillus subtilis,326.4179999999999,2.5137740994848,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0275835,10.655737
+KKLFKKILKYL,Bacillus subtilis PY79,2.85186,0.45512820185309877,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.10795,12.821829
+KHKHKHKHKH,Bacillus subtilis IFO 3336,7.4373037156100015,0.8714155170421736,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1054035,12.74687
+GLKDKFKSMGEKLKQYIQTWKAKF,Bacillus subtilis VKM B-501,3.2005269999999997,0.5052214953035794,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.6613804,4.5854335
+GLKDKFKSMGEKLKQYIQTWKAKF,Bacillus subtilis subsp. spizizenii DSM 347,2.7553499941999884,0.44017677229688673,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.84243107,6.957145
+GLFGKLIKKFGRKAISYAVKKARGKH,Bacillus subtilis VKM B-501,1.539631477442573,0.1874167815728962,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.20496483,1.6031156
+GLFGKLIKKFGRKAISYAVKKARGKH,Bacillus subtilis subsp. spizizenii DSM 347,0.6890539134730884,-0.16174679636837114,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.118882805,1.31487
+SWASMAKKLKEYMEKLKQRA,Bacillus subtilis VKM B-501,7.049928999999999,0.8481847432235285,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.47461042,2.9827058
+KWKVFKKIEKMGRNIRNGIVKAGPAIAVLGEAKAL,Bacillus subtilis ATCC 6633,192.09,2.28350475654383,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2372633,17.268847
+ILPWKWPKKPWRR,Bacillus subtilis KCTC 3068,5.582867875681369,0.7468573499458101,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.5726321,3.737938
+FWGALFKVASK,Bacillus subtilis,39.88861821358982,1.6008489921231488,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.8570267,71.94932
+FLWALFKVASK,Bacillus subtilis,9.544923257671616,0.9797724409639728,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3863771,24.343168
+FLGLLFKVASK,Bacillus subtilis,40.89919999528841,1.6117148131166394,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.9812485,95.77419
+FLGFLFKVASK,Bacillus subtilis,9.947999815365124,0.9977357685373929,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0823525,12.087946
+FLGALFKFASK,Bacillus subtilis,20.35033674516226,1.308571600065208,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4379697,27.413828
+LVIRTVIAGYNLYRAIKKK,Bacillus subtilis KCTC 3068,4.445579999999999,0.6479284299557516,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0985653,12.547735
+GLFDIAKKVIGVIGSL,Bacillus cereus,61.350438489989024,1.7878176711070664,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.477227,30.007303
+LLGDFFRKSKEKIGKEFKRIVQRIKDFLRNLVPRTES,Bacillus subtilis KCTC 2213,1.7804433388484793,0.25052815716388194,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.40776733,2.5572155
+LLGDFFRKSKEKIGKEFKRIVQRIKDFLRNLVPRTES,Bacillus cereus ATCC 11778,170.97795,2.232940105650683,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.4672153,29.323465
+LLGDFFRKSKEKIGKEFKRIVQRIKDFLRNLVPRTES,Bacillus subtilis KCTC 3068,35.99536,1.5562465214264292,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.9436866,8.783884
+LLGDFFRKSKEKIGKEFKRIVQRIKDFLRNLVPRTES,Bacillus subtilis ATCC 11774,0.022255541735605896,-1.6525618298280635,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.7014307,5.02841
+LLGDFFRKSKEKIGKEFKRIVQRIKDFLRNLVPRTES,Bacillus subtilis,2.3846924,0.377432367611754,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.7520802,5.650413
+GIGAVLKVLTTGLPALISWIKRKRQQ,Bacillus subtilis,0.2979961023415877,-0.5257894162680765,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.39860517,2.5038319
+GIGAVLKVLTTGLPALISWIKRKRQQ,Bacillus subtilis KCCM 11495,1.404767098219314,0.1476043268442517,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.27118385,1.86717
+GIGAVLKVLTTGLPALISWIKRKRQQ,Bacillus subtilis ATCC 6633,7.978712000000001,0.9019327890399783,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.01241,10.289874
+GIGAVLKVLTTGLPALISWIKRKRQQ,Bacillus subtilis KCTC 3068,2.014929057262315,0.3042597598657685,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.7911247,6.1819386
+GLLNTFKDWAISIAKGAGKGVLTTLSCKLDKSC,Bacillus subtilis ATCC 6633,3.6336782556390914,0.5603464700312819,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3140117,20.606853
+GSKKPVPIIYCNRRTGKCQRM,Bacillus megaterium,5.9743789673404555,0.776292767348246,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.7732624,5.9328365
+GSKKPVPIIYCNRRTGKCQRM,Bacillus subtilis,25.365911,1.4042504643340188,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2076303,16.129848
+GSKKPVPIIYCNRRTGKCQRM,Bacillus subtilis ATCC 21332,1.6420789293973796,0.21539402840942576,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.43599582,2.7289515
+GSKKPVPIIYCNRRTGKCQ,Bacillus megaterium,21.516399999999997,1.3327696094236208,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.0894885,12.288207
+GSKKPVPIIYCNRRKCQRM,Bacillus subtilis,11.860524,1.0741038766573665,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4217857,26.411053
+RAGLQFLVGRVHRLLRK,Bacillus subtilis,15.845933161061632,1.1999178197185918,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.11414632,1.3006077
+RAGLQFPVGGIGKFLHSAKKFGK,Bacillus subtilis,6.5469429929439915,0.8160385593491171,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.7651018,5.8223968
+AKKVFKRLEKLFSKIQNDK,Bacillus subtilis KCTC 1918,7.280004500000001,0.8621316477642137,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.5272646,3.3671665
+FLGWLFKWAWK,Bacillus subtilis ATCC 6633,4.2516387030315395,0.6285563518186903,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.4224226,2.6449811
+GSPALISWIKRKRQQ,Bacillus subtilis,38.177191260488684,1.581803973692495,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2808478,19.09184
+LLPALISWIKRKRQQ,Bacillus subtilis,1.1890233686329148,0.07519039016839114,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.5617552,3.645484
+GLPLLISWIKRKRQQ,Bacillus subtilis,1.307024811796596,0.11628383205190464,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.12815773,1.3432528
+GLPASISWIKRKRQQ,Bacillus subtilis,17.646346182625887,1.246654794879913,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.3757261,2.3753417
+GLPALSSWIKRKRQQ,Bacillus subtilis,22.057932728282363,1.3435648078879694,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6246972,42.14026
+FWGALAKGALKLIPSLFSSFSKKD,Bacillus subtilis ATCC 6051,12.557616,1.0989071986115764,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.0559468,113.7488
+FWGALAKGALKLIPSLFSSFSKKD,Bacillus subtilis ATCC 6633,98.10638000000003,1.991697251097564,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.2004845,158.66623
+GFFGKRKEYFKKFGASFKRRFANLKKRL,Bacillus subtilis VKM B-501,2.423575,0.3844564639523821,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.3172043,2.0758898
+GLVTSLIKGAGKLLGGLFGSVTGGQS,Bacillus megaterium,60.49625000000001,1.7817284547387087,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.71265715,5.1600885
+KWKSFIKKLTKKFLHSAKKF,Bacillus subtilis DB430,0.801900986478546,-0.09587925226525745,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.68238235,4.8126287
+KWKSFIKKLTKKFLHSAKKF,Bacillus pumilus CMCC 63202,0.20047524661963653,-0.6979392435932198,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.8668102,7.3588543
+IAPIIVAGLGYLVKDAWDHSDQIISGFKKGWNGGRRK,Bacillus coagulans JCM 2257T,13.233253000000001,1.1216666156382178,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Heyndrickxia,val,Bacillus,0.33642828,2.169843
+IAPIIVAGLGYLVKDAWDHSDQIISGFKKGWNGGRRK,Bacillus subtilis JCM 1465T,13.233253000000001,1.1216666156382178,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.5383451,3.454181
+GIGKFIHAVKKWGKTFIGEIAKS,Bacillus subtilis DSM 347,4.032144000000001,0.6055360336777128,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.9627216,9.177441
+PFWRIRIRR,Bacillus megaterium Bm11,1.6232876,0.2103954711680182,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.041960686,1.1014396
+KKLGAPSITCVRRAFA,Bacillus cereus ACM 446,172.0140000000001,2.2355637950198353,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.4025773,25.268373
+ATCDLLSGFGVGDSACAAHCIARGNRGGYCNSKKVCVCRN,Bacillus megaterium NCIB 9376,2.3537244821328036,0.3717556246534043,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.31470814,2.0639927
+ATCDLLSGFGVGDSACAAHCIARGNRGGYCNSKKVCVCRN,Bacillus subtilis NCIB 6276,8.139963834042613,0.9106224753178722,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.740574,5.502677
+ATCDLLSGFGVGDSACAAHCIARGNRGGYCNSKKVCVCRN,Bacillus megaterium,4.896936,0.6899244280883688,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.4082792,2.5602314
+GLLSVLGSVAKHVLPHVVPVIAEHL,Bacillus cereus,19.341652693934403,1.2864935806668343,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.4082257,25.599157
+RQRVEELSKFSKKGAAARRRK,Bacillus subtilis,3.1975798157890254,0.5048213938462709,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5773516,37.787796
+GLFDIVKKIAGHIAGSI,Bacillus cereus,57.50211722795632,1.7596838357068505,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.6644366,46.178154
+GLIGSIGKALGGLLVDVLKPKL,Bacillus cereus,46.26054503341468,1.665210745244156,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.3125372,20.537008
+ACNFQSCWATCQAQHSIYFRRAFCDRSQCKCVFVRG,Bacillus megaterium,422.19899999999996,2.625517200324086,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.8731068,7.466323
+KRFHSVGSLIQRHQQMIRDKSEATRHGIRIITRPKLLLAS,Bacillus megaterium Bm11,32.0549594674654,1.5058952320677543,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.26563495,1.8434652
+KWKSFLKTFKSAAKTVLHTALKAISS,Bacillus subtilis C971,0.6184586389662567,-0.20868933963932934,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-0.26558045,0.54252476
+KWKSFLKTFKLAVKTVLHTALKAISS,Bacillus subtilis C971,1.073205193126843,0.030682765510221005,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-0.24622414,0.5672518
+GLFSVVTGVLKAVGKNVAKNVGGSLLEQLKCKISGGC,Bacillus subtilis ATCC 6633,13.604083249262363,1.133669280904366,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4220315,26.426006
+GVLGAVKDLLIGAGKSAAQSVLKTLSCKLSNDC,Bacillus subtilis,5.035538574157507,0.7020459271787972,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3068793,20.271193
+GLGGAKKNFIIAANKTAPQSVKKTFSCKLYNG,Bacillus subtilis,1.3945565095752397,0.14443611723918512,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.9580455,90.79156
+GLFTLIKCAYQLIAPTVACN,Bacillus subtilis,16.638785794889014,1.2211216307395818,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0585139,11.442314
+TSRCYIGYRRKVVCS,Bacillus subtilis,9.770497708594965,0.9899166872183542,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.7351204,54.3401
+GLLSGILGAGKQKVCGLSGLC,Bacillus subtilis,18.99319071321103,1.2785979290729843,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.986333,9.690207
+SIITMTKEAKLPQLWKQIACRLYNTC,Bacillus subtilis,39.297062014104114,1.5943600822136306,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6121162,40.93702
+IDWKKLLDAAKQIL,Bacillus subtilis CCT 2576,2.416933178867134,0.3832646436015129,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.896351,7.876821
+IDWKKLLDAAKQIL,Bacillus subtilis ATCC 23857,13.256480000000003,1.122428220937624,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1993066,15.8236475
+IDWKKLLDAAKQIL,Bacillus subtilis,7.552916183959795,0.878114665281607,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.5050758,3.1994536
+WLNALLHHGLNCAK,Bacillus subtilis KCCM 11495,40.25507375893136,1.6048206267320957,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6500252,44.670956
+KWLNALLKKGLNCAKGVLA,Bacillus subtilis KCCM 11495,7.841146987299008,0.89437959505947,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.810285,6.46078
+FLPLVLGALSGILPKIL,Bacillus subtilis,5.316732732833501,0.7256448292867218,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0181986,10.427942
+FPVKLKFPKVKL,Bacillus subtilis,103.88821019105943,2.0165662642126954,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.069317,117.30515
+HSSGYTRPLRKPSRPIFIRPIGCDVCYGIPSSTARLCCFRYGDCCHL,Bacillus megaterium,265.2180000000001,2.4236029957334644,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.9313117,8.537127
+HSSGYTRPLRKPSRPIFIRPIGCDVCYGIPSSTARLCCFRYGDCCHL,Bacillus cereus,265.2180000000001,2.4236029957334644,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.5398893,34.664852
+HSSGYTRPLRKPSRPIFIRPIGCDVCYGIPSSTARLCCFRYGDCCHL,Bacillus subtilis,132.60900000000004,2.122573000069483,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.295347,19.739992
+ILKWKWPWWPWRR,Bacillus subtilis KCTC 3068,2.5795449104959824,0.41154309344630935,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.39463985,2.4810748
+GLFKVIKKVASVIGGL,Bacillus cereus,30.692951701264278,1.4870386559759619,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.2470486,17.662355
+GWLKKIGKKIERVGQHTRDATIQGLGIAQQAANVAATAR,Bacillus megaterium,6.6558079999999995,0.8232007853765362,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.4577219,2.8689427
+GIFSLIKTAAKFVGKNLLKQAGKAGVEHLACKANNQC,Bacillus pumilus,0.6455672229923982,-0.1900585279063362,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,-0.02708438,0.93954074
+GIFSLIKTAAKFVGKNLLKQAGKAGVEHLACKANNQC,Bacillus cereus,1.9367016689771948,0.28706272681332623,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.63927865,4.357914
+FFPIVGKLLFGLSGLL,Bacillus pumilus,2.9050648061856963,0.46315582507571607,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.4227784,2.647149
+FFPIVGKLLFGLSGLL,Bacillus cereus,8.715194418557088,0.9402770797953784,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.6146102,41.17278
+FLPIVGKLLSGLSGLS,Bacillus pumilus,4.684750636969928,0.6706864789228041,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.59940535,3.9756243
+FLPIVGKLLSGLSGLS,Bacillus cereus,46.84750636969929,1.6706864789228042,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.5513574,35.59241
+FFPIVGKLLFGLL,Bacillus pumilus,10.246980932008002,1.0105959280547334,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.42302808,2.6486714
+FFPIVGKLLFGLL,Bacillus cereus,51.23490466004001,1.7095659323907522,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.3816686,24.08067
+GIFSKFAGKGIKNLLVKGVKNIGKEVGMDVIRTGIDIAGCKIKGEC,Bacillus subtilis ATCC 6633,120.37274999999995,2.0805281824028565,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2330072,17.100437
+SLLDTFKNLAVNAAKSAGVSVLNALSCKISRTC,Bacillus subtilis ATCC 6633,42.48837699999999,1.6282701419295633,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0382503,10.920696
+GLWNTIKEAGKKFAINVLDKIRCGIAGGCKT,Bacillus licheniformis X39,62.90976,1.7987180283597881,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.4686611,29.421247
+GFMDTAKNVAKNVAATLLDKLKCKITGGC,Bacillus subtilis ATCC 6633,37.708748,1.5764421132669892,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6587081,45.57305
+ATAWNLGPHGLRPIRPIRIRPLCGKDKS,Bacillus subtilis ATCC 6633,312.5790000000001,2.4949597974500466,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4266093,26.706026
+RISFKKGKGSWIKNGLIKGIKGLGKEISLDVIRTGIDIAGCKIKGEC,Bacillus licheniformis X39,50.391799999999996,1.702359871673997,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.3012037,20.008001
+FLGSLLGLVGKVVPTLFCKISKKC,Bacillus licheniformis X39,9.799294380249703,0.99119480448874,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.4737315,29.766756
+ISRLAGLLRKGGEKIGEKLKKIGQKIKNFFQKLVPQPE,Bacillus megaterium Bm11,17.197119999999998,1.235455721742721,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.1437296,13.922895
+ISRLAGLLRKGGEKIGEKLKKIGQKIKNFFQKLVPQPE,Bacillus subtilis KCTC 1918,26.870500000000003,1.4292757477588338,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.626286,42.29471
+KWKLFKKIGIGAVLKVLTTG,Bacillus subtilis ATCC 6633,3.4395504,0.5365016775831257,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.74181294,5.518397
+LKIAKGIIKSL,Bacillus subtilis CCT 2471,84.49323534483845,1.9268219400738351,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6609547,45.80941
+FDVMGIIKKIASAL,Bacillus subtilis ATCC 6633,45.20760000000001,1.6552114516389551,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.7734766,59.357635
+DLHIPPPDNKINWPQLSGGGGGSPKTGYDININAQQK,Bacillus subtilis,25.456429970913995,1.4057974977997685,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.1223183,132.53123
+DLHIPPPDNKINWPQLSGGGGGSPKTGYDININAQQK,Bacillus megaterium,25.456429970913995,1.4057974977997685,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.8028994,63.51837
+GALRGCWTKSYPPKPCK,Bacillus megaterium Bm11,5.68305,0.754581477024595,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.6958752,49.64496
+GRLKRLRKKLKKLLKKLS,Bacillus subtilis KCTC 3068,8.8518,0.9470315927972865,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.83981085,6.915297
+GRIKRIRKKIKKLIKKLS,Bacillus subtilis KCTC 3068,8.8518,0.9470315927972865,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.7928735,6.206882
+IWLTALKFLGKHAAKHLAKQQLSKL,Bacillus thuringiensis serovar israelensis,14.242750000000003,1.1535938512754675,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.8202273,66.10393
+GFKDLLKGAAKALVKTVLF,Bacillus subtilis 168,12.640938000000002,1.1017793012493415,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5912447,39.016174
+GFKDLLKGAAKALVKTVLF,Bacillus subtilis ATCC 23857,2.02255,0.3058992667271703,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6402838,43.68012
+GFKDLLKGAAKALVKTVLF,Bacillus cereus ATCC 14579,8.0902,0.9079592580551327,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.7141964,51.7841
+KVYLPRYKVYSTAAGRYQLL,Bacillus cereus ATCC 11778,358.78050000000013,2.5548288307696736,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.2304091,169.98444
+RRKKWFW,Bacillus subtilis CECT 498,9.19536,0.9635687366141135,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.8874676,7.71734
+LRKKWFW,Bacillus subtilis CECT 498,8.85112,0.9469982287818767,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1211566,13.217721
+ARKKWFW,Bacillus subtilis CECT 498,17.028959999999998,1.2311881253523205,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2906259,19.52657
+SGRGKQGGKVRAKAKTRSS,Bacillus subtilis ATCC 62037,2.0416302703537013,0.3099770961819972,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1304364,13.503191
+KRGKQGGKVRAKAKTRSS,Bacillus subtilis ATCC 62037,8.233577114113725,0.9155885573756742,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.6946068,4.950018
+INWKKIFEKVKNLV,Bacillus subtilis,9.57135860236022,0.9809735878949353,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5368235,34.421
+INWLKLGKKILGAL,Bacillus subtilis,7.043224645731527,0.8477715405640873,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.697361,49.815098
+INWLRLGRRILGAL,Bacillus subtilis,28.876224999999998,1.4605404171237704,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2534257,17.92362
+KIASIGKEVLKAL,Bacillus subtilis,137.175,2.137274968868117,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.9586816,90.92464
+INWKKIASIGKEVL,Bacillus subtilis,160.10000000000002,2.2043913319193,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.9696598,93.25236
+INWKKIASIGKEV,Bacillus subtilis,148.78400000000002,2.1725562303676296,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.9282875,84.77885
+INWKKIASIGKEVLKA,Bacillus subtilis,126.08820000000004,2.1006744449023755,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.9233723,83.82475
+KNWKKIASIGKEVLKAL,Bacillus subtilis,115.82639999999996,2.0638075582479543,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.8098166,64.53816
+RLWRRWRRWLR,Bacillus subtilis KCTC 3068,4.919059034002337,0.6918820345917802,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.7386238,5.478022
+KLWKKWKKWLK,Bacillus subtilis KCTC 3068,4.4606841341659695,0.6494014714717186,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0412388,10.996102
+KWLLKWL,Bacillus subtilis ATCC 6633,20.278782563288818,1.3070418785746885,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.95970464,9.113908
+LKWLKKWLK,Bacillus subtilis ATCC 6633,32.19064329057263,1.5077296556155428,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1410413,13.836979
+LKWLLKWLL,Bacillus subtilis ATCC 6633,1.0721050874107894,0.030237356854694888,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.2690912,1.8581946
+KLWKKWKKWKK,Bacillus subtilis KCTC 3068,3.18622,0.5032757593770356,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.79912317,6.2968473
+GLFDIVKKVVGAIGSL,Bacillus cereus,61.882964956419556,1.7915711135820183,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.4668391,29.298075
+GLFDIVKKVVGAIGSL,Bacillus cereus C737,79.21019514421702,1.8987810832298866,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.8212584,66.26107
+GFLSILKKVLKVMAHMK,Bacillus subtilis 168,1.751922,0.2435147663733422,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.48036402,3.022484
+GFLSILKKVLP,Bacillus subtilis 168,15.802669999999997,1.1987304710241509,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.81701314,6.561651
+PRPPHPPRPPHPPRPPHPRL,Bacillus subtilis,149.29919999999996,2.1740574806217676,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.8686408,73.899376
+ILPWKWPWWKWRR,Bacillus subtilis KCTC 3068,5.159089820991965,0.7125730891102906,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.5607483,3.6370418
+GKKLKKIGQKIKNFFQKL,Bacillus subtilis KCTC 1918,6.719699999999999,0.8273498844745276,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1421797,13.873299
+GEKLKKIGQKIKNFFQKL,Bacillus subtilis KCTC 1918,107.68449999999999,2.032153195880028,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5443935,35.02624
+VRRFAWWWAFLRR,Bacillus subtilis KCTC 3068,8.647808175183838,0.9369060475753286,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.63199335,4.2854195
+VRRFPFFFPFLRR,Bacillus subtilis KCTC 3068,4.481425918024302,0.6514162215424548,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.83205986,6.7929726
+GILDTLKQFAKGVGKDLVKGAAQGVLSTVS,Bacillus subtilis,24.98770521611017,1.397726373863873,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1791229,15.105077
+GILDTLKQFAKGVGKDLVKGAAQGVLS,Bacillus subtilis,18.421879386134343,1.265333934514016,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3481237,22.290699
+GLLKRIKTLL,Bacillus subtilis CCT 2471,17.323684733883944,1.2386402715955336,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.9405937,87.21551
+GLLKRIKTLL,Bacillus thuringiensis,173.23684733883954,2.238640271595534,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.7857666,61.06138
+GLLKRIKTLL,Bacillus subtilis PS832,4.62216,0.6648449748761959,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.4213443,2.6384223
+GLLKRIKTLL,Bacillus subtilis ATCC 23857,36.97728000000001,1.5679349618681395,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4230994,26.491064
+GLLKRIKTLL,Bacillus subtilis DELTA,173.23684733883954,2.238640271595534,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.036681,108.81304
+SHQDCYEALHKCMASHSKPFSCSMKFHMCLQQQ,Bacillus subtilis RIMD 0225014,0.6455843438256198,-0.19004701030672166,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3562679,22.712656
+KVFLGLK,Bacillus subtilis ATCC 23631,29.84958792643868,1.4749383400714484,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.8754257,75.062965
+TESYFVFSVGM,Bacillus subtilis,118.44431447155007,2.0735142186856788,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.7423387,55.250813
+FFFLSRIF,Bacillus megaterium,3.2260199000000003,0.5086670420465986,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.0300553,10.7165575
+FFFLSRIF,Bacillus subtilis JC443,160.22565999999995,2.204732069201448,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.9521524,89.567894
+LKKWLK,Bacillus subtilis ATCC 6633,245.38152102925764,2.389841854164422,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.1803033,151.46188
+LKKWLKK,Bacillus subtilis ATCC 6633,212.03745090272815,2.326412574532254,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.2172725,164.9197
+KKLLKWLLKLL,Bacillus subtilis ATCC 6633,1.1462467582708868,0.059278120440732704,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.2476399,1.7686418
+GMWSKILGHLIR,Bacillus subtilis 168,3.385872,0.5296705359511708,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.23194087,1.7058501
+GKWSKILGKLIR,Bacillus subtilis 168,2.38136,0.37682505445366365,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.44899788,2.811887
+GKWKKILGKLIR,Bacillus subtilis 168,1.87577,0.2731795857197407,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.28826606,1.9420753
+GMWSKIPGHLIR,Bacillus subtilis 168,139.47400000000005,2.1444932562911267,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1272106,13.403265
+GMWSKLLGHLLR,Bacillus subtilis 168,1.8340139999999998,0.2634026465464015,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.24729267,1.7672284
+GKWKSLLKHILK,Bacillus subtilis 168,1.744656,0.24170980835571204,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.40289205,2.5286694
+GKWMSWLKHILK,Bacillus subtilis 168,2.29344,0.3604873827894463,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.21851224,1.6539114
+GKFMSLLKHILK,Bacillus subtilis 168,2.12529,0.32741819876591266,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.32136875,2.0958912
+GKWMHLLKHILK,Bacillus subtilis 168,1.656556,0.21920612182371613,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.1688191,1.4750919
+GKWMSFLKHILK,Bacillus subtilis 168,1.638912,0.21455563511996306,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.29948997,1.9929205
+HKWMSLLKHILK,Bacillus subtilis 168,2.303985,0.3624796473039373,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.2887507,1.9442438
+FIGGIISFFKRLF,Bacillus subtilis IAM 1026,2.02604890428945,0.30664992404830804,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.54782945,3.530445
+NWRKILGQIASVGAGLLGSLLAGYE,Bacillus subtilis IAM 1026,19.327546717386273,1.2861767316944375,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1996111,15.834744
+LNWGAKLKHIIK,Bacillus subtilis 168,79.39280000000001,1.8997811187740359,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.7195961,52.431965
+LNWGAVLKHVVK,Bacillus subtilis 168,31.388099999999994,1.4967650275672104,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.69997704,5.011607
+LNWGAALKHAAK,Bacillus subtilis 168,128.055,2.1073965404773545,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6864042,48.57404
+LDVKKIICVACKIKPNPACKKICPK,Bacillus subtilis 168,9.113477999999999,0.9596841495249117,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.8784105,7.558063
+LDVKKIICVACKIRPNPACKKICPK,Bacillus subtilis 168,4.1830050000000005,0.621488383698754,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.83337283,6.8135405
+VNWKKILAKIIKVAK,Bacillus subtilis 168,1.229424,0.08970168687645157,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.031331807,1.0748103
+VNWKKILPKIIKVVK,Bacillus subtilis 168,1.448328,0.16086692681887685,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.12898341,1.345809
+VNWKKILG,Bacillus subtilis 168,191.64399999999998,2.2824952268897096,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.9394822,8.699258
+GKIIKVVK,Bacillus subtilis 168,88.62,1.9475317456955932,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6533284,45.012012
+GFGMALKLLKKVL,Bacillus subtilis 168,2.8398,0.45328775485163764,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.18510944,1.5314733
+AFGMALKLLKKVL,Bacillus subtilis 168,2.369241190460988,0.37460927446460507,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.45305133,2.8382545
+KLLKKLLKWLK,Bacillus subtilis ATCC 6633,1.417560326228828,0.15154154995705107,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.26453507,1.8388025
+LKKLLKKLLKW,Bacillus subtilis ATCC 6633,1.417560326228828,0.15154154995705107,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.2829616,1.9184991
+FLPLIASLAANFVPKIFCKITKKC,Bacillus licheniformis X39,6.40908,0.8067956926078945,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.8447266,6.994016
+IIGHLIKTALGMLGL,Bacillus cereus,38.75025,1.588274508733174,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.8261302,67.00854
+KLKKLWKKLLK,Bacillus subtilis KCTC 3068,12.397644256043765,1.0933391703399815,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1246388,13.324128
+FFSLLPSLIGGLVSAIK,Bacillus thuringiensis AB92037,28.374599648586262,1.4529297425664156,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.4757853,29.907854
+FFSLLPSLIGGLVSAIK,Bacillus subtilis AB91021,28.374599648586262,1.4529297425664156,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5058839,32.054127
+INWKKIFEKVKDLV,Bacillus subtilis,8.81605,0.9452740446046379,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5557847,35.957104
+IDWKKIFEKVKNLV,Bacillus subtilis,14.987285,1.1757229659829118,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5073631,32.163483
+NALSSPRNKCDRASSCFG,Bacillus cereus,6.533896837505069,0.8151722731978853,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.8700752,74.14387
+GLLQTIKEKLESLESLAKGIVSGIQA,Bacillus cereus,36.681499564645634,1.564447081614637,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.7217103,52.68783
+FGVLAKVAAHVVPAIAEHF,Bacillus cereus,50.59901645631812,1.7041420751057048,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.5002606,31.641758
+FGVLAKVAAHVVPAIAEHF,Bacillus subtilis IFO 3134,126.48832000000004,2.1020504243755296,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.7988728,62.932186
+GLWEKIKEKASELVSGIVEGVK,Bacillus cereus,41.670482988400366,1.6198285342461303,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.6278476,42.447052
+FHEAIAPVVHAAVKALVGFLG,Bacillus cereus,46.586775626302135,1.6682626530074967,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.8357103,68.50311
+CRFCCRCCPRMRGCGLCCRF,Bacillus subtilis CGMCC 1.3343,23.741099999999996,1.3755008373170852,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.0528667,112.944916
+CRFCCRCCPRMRGCGLCCRF,Bacillus cereus CGMCC 1.1846,142.44660000000005,2.153652087700729,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.9227383,83.70248
+KSLRPRCWIKIKFRCKSLKF,Bacillus subtilis ATCC 6633,39.3983493825136,1.5954780271788132,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.8727577,7.460324
+FLGKVFKKASKVFPAVFGKV,Bacillus cereus,58.2425890286888,1.7652406722095386,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.8293931,67.51389
+FLGKVFKLASKVFPKVFGKV,Bacillus cereus,14.287090693826665,1.1549438016214484,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.4150771,26.006212
+FLGVVVKLASKVFPAVFGKV,Bacillus cereus,15.197527248335243,1.1817729307234324,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.5380688,34.51984
+FLGKVFKGVSKVFPAVFGKV,Bacillus cereus,59.40676956847387,1.7738359368787837,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.7871656,61.2584
+FLGKVFKGASKVFGAVFGKV,Bacillus cereus,61.346176666636644,1.7877875009778714,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.6351981,43.171597
+AATGTGKTAAFALPVLERLI,Bacillus cereus,127.97814773127493,2.107135820195413,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.002626,100.606476
+THIHMNARLLIRSPFTDPQL,Bacillus cereus,108.44077123923702,2.0351925976557164,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.5096543,323.33615
+THIHMNARLLIRSPFTDPQL,Bacillus anthracis,108.44077123923702,2.0351925976557164,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.5394502,346.29816
+MVVFSVPKFKSTVAKLLSSA,Bacillus cereus,119.64858276487405,2.0779075587702667,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.9135901,81.957756
+VVFRVASKVFPAVYCTVSKK,Bacillus cereus,114.86531749873053,2.060188917350871,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.8461843,70.17529
+LYSPTCVKAAVSRFIGKVSA,Bacillus cereus,122.05124082964902,2.0865421990152333,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.8735893,74.74622
+KYGPALVIAVKKSCSLTFRA,Bacillus cereus,118.92587819212044,2.075276367092854,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.5568987,36.049458
+PVVFSVASKVVPSLISALKR,Bacillus cereus,122.0475808214813,2.0865291754263415,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.079803,120.17192
+SVKPVGSSVVKGTALVKFFG,Bacillus cereus,127.5297213993677,2.105611410930811,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.4737167,29.765743
+LPAVFKLASKVVPSVFGLVK,Bacillus cereus,121.92800370470617,2.0861034632696396,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.7501047,56.24769
+SVIGKIASKVVPSVYCAISK,Bacillus cereus,124.90994042088597,2.096597001209654,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.0875363,122.33095
+SSSIPIKMVLVRALVFVKSG,Bacillus cereus,120.09626090612444,2.079529486227918,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.0535827,113.13127
+PSLLYKAKAVFCKPSAVAVF,Bacillus cereus,59.8242466456475,1.7768772383394116,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.87149,74.385796
+VFSVKGGKPSVVIKVVVAST,Bacillus cereus,127.90968936382464,2.106903444227328,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.8672092,73.65618
+SVVFGVASKVVPSVIGKVKT,Bacillus cereus,127.90968936382464,2.106903444227328,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.1111252,129.15916
+FVGSLASKVVPSVFGAIKTK,Bacillus cereus,125.77204877361451,2.0995841354482216,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.0205657,104.84935
+KIVKVITVKSISPASLVPVF,Bacillus cereus,60.21728560705727,1.7797211750816633,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.8803095,75.91183
+GALFSLASKVVPAVIGLIKK,Bacillus cereus,127.26864437168585,2.104721418157025,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.687646,48.71313
+MQFITDLIKKAVDFFKGLFGNK,Bacillus megaterium F04,4.685581656978641,0.6707635108558797,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.61723346,4.142223
+GIGTKFLGGVKTALKGALKELASTYVN,Bacillus subtilis ATCC 6633,27.400290070430806,1.4377551604598275,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5209298,33.184082
+GIGGKILGGLKTALKGAAKELASTYLH,Bacillus subtilis ATCC 6633,37.47931095186318,1.5737915978893162,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4447346,27.844189
+GIGGALLSVGKSALKGLTKGLAEHF,Bacillus subtilis ATCC 6633,41.23990411062457,1.6153176468084955,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5809793,38.10477
+GIGGVLLSAGKAALKGLTKVLAEKYAN,Bacillus subtilis ATCC 6633,37.83394462268227,1.5778816238344935,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2808865,19.093544
+KRGLWESLKRKATKLGDDIRNTLRNFKIKFPVPRQG,Bacillus subtilis,9.14666,0.9612625357737687,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.6480088,4.446403
+RPWAGNGSVHRYTVLSPRLKTQ,Bacillus subtilis,8.509014000000002,0.9298792382081695,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.7795773,60.197334
+LGAWLAGKVAGTVATYAWNRYV,Bacillus megaterium,59.19474999999999,1.772283190724001,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.26337987,1.8339179
+GLLGVLGSVAKHVLPHVVPVIAEHL,Bacillus cereus,19.568946977351096,1.2915674565098167,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.3311738,21.437483
+GLFKVLGSVAKHLLPHVVPVIAEKL,Bacillus cereus,18.759858540161087,1.2732295592317942,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.4057434,25.453257
+DVIKKVASVIGGL,Bacillus subtilis ATCC 9372,788.5591768612713,2.896834290207669,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.4688306,294.32733
+GLFDVIK,Bacillus subtilis ATCC 9372,1294.6517355223732,3.1121529578518086,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.7097173,512.52765
+GNPANPLNLKKHHGVFCDVCKALVEGGEKVGDDDLDAWLDVNIGTLCWTMLLPLHHECEEELKKVKKELKKDIENKDSPDKACKDVDLC,Bacillus megaterium ATCC 14581,2.7411149,0.4379272403516514,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.2015942,1.5907217
+GNPANPLNLKKHHGVFCDVCKALVEGGEKVGDDDLDAWLDVNIGTLCWTMLLPLHHECEEELKKVKKELKKDIENKDSPDKACKDVDLC,Bacillus thuringiensis B-18247,99.67690000000003,1.998594522755813,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.6879503,48.747265
+RKGWFKAMKSIAKFIAKEKLKEHL,Bacillus subtilis CGMCC 1.88,36.1955,1.5586545802942398,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0766889,11.931331
+RKGWFKAMKSIAKFIAKEKLKEHL,Bacillus thuringiensis serovar israelensis H14,36.1955,1.5586545802942398,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.3642827,23.135704
+RKGWFKAMKSIAKFIAKEKLKEHL,Bacillus cereus CMCC 1.126,17.952969,1.2541362809751153,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.3642827,23.135704
+LVKRFKKFFRKLKKSV,Bacillus subtilis,31.180021557087404,1.493876411113274,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4986567,31.52512
+FLGLIFHGLVHAGKLIHGLIHRNRG,Bacillus subtilis,133.31280000000004,2.124871850107694,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.7812801,6.0433826
+GLPRKILCAIAKKKGKAKGPLKLVCKA,Bacillus subtilis,1.420875,0.15255587300271206,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2449739,17.57818
+GLPRKILAAIAKKK,Bacillus subtilis,52.849650000000004,1.7230421155115248,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.5992381,3.9740937
+GIRCPKSWKCKAFKQRVLKRLLAMLRQHAF,Bacillus subtilis,18.0979,1.2576281841883428,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.17699808,1.5031353
+FIKRIARLLRKIF,Bacillus subtilis AB91021,3.7332812465933816,0.5720907087161768,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.848178,7.04982
+FIKRIARLLRKIF,Bacillus thuringiensis AB92037,3.7332812465933816,0.5720907087161768,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.84869397,7.0582
+LLIILRRRWRKQARARSK,Bacillus subtilis KCTC 3068,9.28768,0.9679072436999072,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.82203496,6.6379647
+LLQWLSKLLGRLL,Bacillus megaterium Bm11,2.3295,0.3672627147842398,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.74419224,5.5487127
+FVPWFSKFLPRIL,Bacillus megaterium Bm11,4.95027,0.6946288870774563,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.80489445,6.381084
+FAPLIGRVLSGIL,Bacillus megaterium Bm11,6.77355,0.8308163409639878,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.2787962,19.001863
+FLALIGRVLSGIL,Bacillus megaterium Bm11,3.4268749999999994,0.5348982632275561,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.31956804,2.087219
+INWKKLLDAAKQIL,Bacillus subtilis CCT 2576,2.962505980181077,0.4716592356956358,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.77723384,5.987339
+ILPLKLPLLPLRR,Bacillus subtilis IFO 3513,4.053157188958448,0.6077934468143568,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1665401,14.6737175
+ILPWKWPKLPWRR,Bacillus subtilis IFO 3513,1.762209380426324,0.24605750870791226,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.12154594,1.3229576
+ILPWKWPWLPWKK,Bacillus subtilis IFO 3513,1.7602166517395046,0.24556612512339462,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.122235656,1.3250604
+FFHHIFRGIVHVAKTIHRLVTG,Bacillus subtilis KCTC 3068,1.293555,0.11178489898893257,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.86503446,7.328827
+FFHHIFRAIVHVAKTIHRLVTG,Bacillus subtilis KCTC 3068,2.60114,0.4151637276634615,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.9227967,8.371373
+FFHHIFRPIVHVAKTIHRLVTG,Bacillus subtilis KCTC 3068,5.25436,0.7205198249512651,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.75371397,5.6717095
+KWKKLLKKLLKLLKKLLK,Bacillus subtilis KCTC 3068,18.1692,1.2593358055009731,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1466591,14.017131
+LFCKGGSCHFGGCPSHLIKVGSCFGFRSCCKWPWNA,Bacillus subtilis,1.5306524,0.18487657678470362,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.547289,3.5260544
+LFCKGGSCHFGGCPSHLIKVGSCFGFRSCCKWPWNA,Bacillus cereus ATCC 14579,2.390556171832718,0.37849895293888824,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.7402584,5.498679
+KWKKLLKKLLKLLKKLLKKLKKLLK,Bacillus subtilis KCTC 3068,50.03759999999999,1.6992964710503045,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2926749,19.618912
+GRLKKLGKKIEGAGKRVFKAAEKALPVVAGVKAL,Bacillus cereus,353.9440000000001,2.5489345546392226,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.4820135,30.339853
+GRLKKLGKKIEGAGKRVFKAAEKALPVVAGVKAL,Bacillus megaterium,3.53944,0.5489345546392225,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.6564406,4.533573
+GGYYCPFFQDKCHRHCRSFGRKAGYCGGFLKKTCICV,Bacillus subtilis 168,6.363165,0.8036731848518828,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.52405286,3.3423572
+RWKVFKKIEKMGRNIRDGIVKAGPAIEVLGSAKALGK,Bacillus subtilis,2.6474564,0.4228288165999838,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-0.0818778,0.8281752
+RWKVFKKIEKMGRNIRDGIVKAGPAIEVLGSAKALGK,Bacillus thuringiensis,3.3805983,0.5289935687374184,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.051650226,1.12629
+ACADLRGKTFCRLFKSYCDKKGIRGRLMRDKCSYSCGCR,Bacillus megaterium IBMC,90.0302,1.9543882149206997,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.5894078,3.8851502
+AKKVFKRLGIGAVLWVLTTG,Bacillus subtilis KCTC 1918,6.741415000000001,0.8287510630329241,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.9325355,8.561217
+KWKLFKKIKFLHSAKKF,Bacillus subtilis KCTC 1918,3.4067748,0.532343426098015,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.87331223,7.4698563
+KWKLFKKIGIGKFLHSAKKF,Bacillus subtilis KCTC 1918,1.88065,0.27430797831905496,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.5657203,3.6789198
+KWKLFKKIGIGKFLHSAKKF,Bacillus subtilis ATCC 6633,3.7612999999999994,0.5753379739830361,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.9774833,9.494744
+ATCDLLSGIGVQHSACALHCVFRGNRGGYCTGKGICVCRN,Bacillus subtilis ATCC 9372,32.72899,1.5149326034077686,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.25328702,1.7917897
+ATCDLLSGIGVQHSACALHCVFRGNRGGYCTGKGICVCRN,Bacillus anthracis Sterne 34F2,327.28990000000005,2.5149326034077686,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.5609379,36.3863
+AWASFFKKAAHVGKHVGKAALTHYL,Bacillus subtilis IFO 3143,2.9205804726703946,0.46546917714144065,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.050777465,1.1240289
+DTLACRQSHGSCSFVACRAPSVDIGTCRGGKLKCCKWAPSS,Bacillus cereus ATCC 9193,29.851252375477532,1.4749625561806192,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.94534516,8.817493
+FSCDVLSFQSKWVSPNHSACAVRCLAQRRKGGKCKNGDCVCR,Bacillus megaterium CGMCC 1.0459,6.975795000000001,0.8435937093561393,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.35676005,2.273841
+GGKCKNGDCVCR,Bacillus megaterium CGMCC 1.0459,11.077753999999999,1.0444517166845788,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.7666686,58.434395
+GGKCKNGDCVCR,Bacillus subtilis CGMCC 1.2428,13.360292,1.1258159501008214,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.8314332,67.83177
+GGKCKNGDCVCR,Bacillus sp. DM-1,41.929237,1.6225169594771511,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.838038,68.871254
+KWFKKIPKFLHLAKKF,Bacillus subtilis KCTC 1918,1.6104583,0.2069494840055346,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.21378031,1.6359887
+KWFKKIPKFLHLAKKF,Bacillus megaterium KCTC 1096,3.2209165000000004,0.5079794661859476,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.40624395,2.5482612
+KWKKLLKKPLLKKLLKKL,Bacillus subtilis KCTC 1918,3.6081760000000003,0.5572877134498895,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.73572373,5.441564
+KWKKLLKKPLLKKLLKKL,Bacillus subtilis KCTC 2217,3.5179715,0.5462923168034008,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.54169524,3.4809296
+KWKLKPLLKKLLKKL,Bacillus subtilis KCTC 1918,5.839129,0.7663480699369031,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.71967185,5.2441106
+WKKIPKFLHLAKKF,Bacillus subtilis KCTC 1918,1.3948973,0.1445422336417491,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.27757686,1.8948588
+WKKIPKFLHLAKKF,Bacillus megaterium KCTC 1096,2.7897947,0.44557224487298647,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.5334741,3.4156556
+RGLRRLGRKIAHGVKKYGPTVKRIKRKA,Bacillus subtilis KCTC 3068,15.917078287374226,1.20186335233877,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0950943,12.447849
+RGLRRLGRKIAHGVKKY,Bacillus subtilis KCTC 3068,22.746097800123874,1.356906902125774,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4579494,28.704462
+RKLRRLKRKIAHKVKKY,Bacillus subtilis KCTC 3068,8.90752,0.9497568061428833,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2477393,17.690468
+VTCDVLSFEAKGIAVNHSACALHCIALRKKGGSCQNGVCVCRN,Bacillus subtilis KCTC 3068,7.167008,0.8553378892405625,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.9489418,88.9082
+FKLFKKIPKFLHLAKKF,Bacillus subtilis KCTC 1918,1.6682718,0.2222668086661307,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.32661593,2.1213677
+FKLFKKIPKFLHLAKKF,Bacillus megaterium KCTC 1096,1.6682718,0.2222668086661307,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.48467323,3.0526235
+VKLKVFPLKVKLFP,Bacillus subtilis,7.849538595064222,0.8948441291647602,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.189028,15.453542
+AIFIFIRWLLKLGHHGRAPP,Bacillus subtilis NBRC 3513,18.751199999999997,1.2730290660211823,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.8114042,64.77452
+AIFIFIRWLLKLGHHGRAPP,Bacillus megaterium ATCC 19213,9.3756,0.9719990703572011,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.5328934,34.11092
+RWLLKLGHHGR,Bacillus subtilis NBRC 3513,87.91424,1.9440592260696392,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.882936,76.37232
+RWLLKLGHHGR,Bacillus megaterium ATCC 19213,43.957119999999996,1.643029230405658,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.6476264,44.424892
+GAGALAKFLAKKVAKTVAKQAAKQGAKYVVNKQME,Bacillus subtilis,4.568087600000001,0.6597344235722564,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1036003,12.694052
+AGYLLGKINLKALAALAKKIL,Bacillus subtilis 168,21.8681,1.3398110511966959,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.4947162,3.1240373
+AGYLLGKINLKALAALAKKIL,Bacillus subtilis ATCC 23857,3.6651295724094917,0.5640893327527926,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.55145085,3.5600069
+GIGAVLKVLTTGLPALISWIKRKRQQ,Bacillus megaterium Bm11,2.279632,0.35786474468970264,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,-0.08635476,0.8196817
+GIGAVLKVLTTGLPALISWIKRKRQQ,Bacillus subtilis ATCC 6051,9.973389999999998,0.9988428020480347,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.32570663,2.1169307
+IIKVPLKKFKSMREVMRDHGIKAPVVDPATKY,Bacillus subtilis,1.6231676229784155,0.2103633713207237,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5642724,36.666748
+SGRGKQGGKVRAKAKTRSSRAGLQFPVGRVHRLLRKGNY,Bacillus subtilis,0.9348123560505822,-0.029275555876385712,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.08479455,1.2156109
+SLFSLIKAGAKFLGKNLLKQGACYAACKASKQC,Bacillus subtilis KCTC 1021,14.441858003954986,1.1596230705851402,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.38228667,2.4114966
+GILDTLKQFAKGVGKDLVKGAAQGVLSTVSCKLALTC,Bacillus subtilis KCTC 1021,2.6777839688143135,0.42777553722554634,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.37054834,2.3471904
+YSKSLPLSVLNP,Bacillus subtilis,24.287881220116894,1.385389630303416,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2185286,16.539738
+YSKSLPLSVLNP,Bacillus cereus ATCC 14579,48.575762440233795,1.6864196259673974,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.2859597,19.317892
+YSKSLPLSVLNP,Bacillus anthracis,97.15152488046756,1.9874496216313784,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.5506356,35.533302
+YSKSLPLSVLNP,Bacillus licheniformis,97.15152488046756,1.9874496216313784,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.7218443,52.70409
+YSKSLPLSVLNP,Bacillus subtilis ATCC 6633,12.143940610058445,1.0843596346394349,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.360267,22.922768
+AATAKKGAKKADAPAKPKKATKPKSPKKAAKKAGAKKGVKRAGKKGAKKTTKAKK,Bacillus subtilis KCTC 1021,0.23348703365679657,-0.6317372323041266,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.62052035,4.1736917
+GLFGVLAKVAAHVVPAIAKHF,Bacillus subtilis IFO 3134,8.586599999999999,0.9338212321034549,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.94644916,8.839937
+AFGVLAKVAAHVVPAIAEHF,Bacillus subtilis IFO 3134,131.03744999999998,2.1173954330907607,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.7994509,63.016006
+GLFGVLAKVAAKVVPAIAKHF,Bacillus subtilis IFO 3134,4.277379999999999,0.6311778344448484,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.93196523,8.549983
+GFGVLAKVAAHVVPAIAEHF,Bacillus subtilis IFO 3134,130.13953,2.114409233942519,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6860363,48.532913
+GLFGVLAKVAAHVVPAIAEH,Bacillus subtilis IFO 3134,127.96224000000001,2.107081833874751,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6460431,44.263226
+YEALVASILGKLSGLWHSDTVDFMGHTCHIRRRPKFRKFKLYHEGKFWCPGWTHLEGNSRTKSRSGSARDAIKDFVYKALQNKLITENNAAAWLK,Bacillus subtilis CGMCC 1.108,34.11206,1.5329079468954852,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0728917,11.827466
+GIIPIISIIGKII,Bacillus subtilis 168,40.493700000000004,1.6073874610402894,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.8250189,66.837296
+DFGCARGMIFVCMRRCARMYPGSTGYCQGFRCMCDTHIPIRRPPFIMG,Bacillus licheniformis,1.7058007605838952,0.23192830371772222,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.6406956,43.721554
+RRSRRGRGGGRRGGSGGRGGRGGGGRSGAGSSIAGVGSRGGGGGRHYA,Bacillus subtilis,22.458171767374125,1.351374399135677,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.8583844,72.1746
+RLWLAWKRR,Bacillus subtilis KCTC 3068,2.56924,0.40980467484138067,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.7416216,5.5159664
+MTPFWRGVSLRPIGASCRDDSECITRLCRKRRCSLSVAQE,Bacillus subtilis ATCC 6051,917.2919999999997,2.962507605901573,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.0594618,114.67317
+MTPFWRGVSLRPIGASCRDDSECITRLCRKRRCSLSVAQE,Bacillus megaterium ATCC 14581,917.2919999999997,2.962507605901573,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.0043862,10.101507
+GVITDALKGAAKTVAAELLKKAHCKLTNSC,Bacillus subtilis CMCC 63501,306.073,2.4858250203252203,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.223446,16.728077
+GRAKRFRKKAKKLFKKLSPVIPLLHL,Bacillus subtilis ATCC 6633,19.960550579007087,1.300172516416624,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5222414,33.284447
+GGARSLGRKILRAWKKYGPIIVPIIRI,Bacillus subtilis ATCC 6633,3.6417839999999995,0.5613141835264532,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.6693406,4.670255
+GLRILLLKV,Bacillus subtilis,12.702311500000002,1.10388275877877,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0260563,10.618332
+GLRILLLKV,Bacillus thuringiensis,31.550902999999998,1.4990117934471927,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.4797152,30.179722
+PF,Bacillus subtilis,3.812366019161715,0.5811945898863325,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.718079,5.2249117
+RQIKIWFQNRRMKWKK,Bacillus subtilis KCTC 3068,1.124915,0.05111970784684812,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4086763,25.62573
+RRRRRRWFWFWF,Bacillus subtilis DSM 357,2.93304,0.46731798581069867,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.67049634,4.6827
+RRRRRRWFWFWF,Bacillus subtilis L170,11.732160000000002,1.0693779771386611,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5334749,34.156624
+VGALAVVVWKWKWLW,Bacillus subtilis ATCC 6633,4.78595,0.6799681571195572,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.7501277,5.6250668
+VGALAVVVWRWRWRW,Bacillus subtilis ATCC 6633,10.057150000000002,1.0024749275755314,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.7877867,6.134607
+RGLRRLGKKIAHGVKKYGPTVLRIIRIAG,Bacillus subtilis var. niger ATCC 9372,6.08791,0.7844682234615497,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.90048766,7.9522066
+RGLRRLGKKIAHGVKKYGPTVLRIIRIAG,Bacillus anthracis Sterne 34F2,4.5168366,0.6548343799123106,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.0524904,11.284709
+KLKFPKLKFP,Bacillus subtilis NBRC 3513,40.14137148776045,1.6035922067013166,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3294998,21.355013
+KLKFPKLKFP,Bacillus megaterium ATCC 19213,20.070685743880222,1.3025622110373354,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.2519295,17.861977
+ATYDGKCYKKDNICKYKAQSGKTAICKCYVKVCPRDGAKCEFDSYKGKCYC,Bacillus cereus ATCC 11778,1.7307866884157324,0.23824354635461345,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.790765,6.1768208
+FNKLKQGSSKRTCAKCFRKIMPSVHELDERRRGANRWAAGFRKCVSSICRY,Bacillus megaterium CGMCC 1.151,0.836405814331894,-0.0775829568162492,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.40307203,2.5297174
+PY,Bacillus subtilis MTCC 2756,162.60953050907708,2.211145995908758,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.0649405,116.12894
+PF,Bacillus subtilis MTCC 2756,121.99571261317486,2.0863445682062385,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1540585,14.257995
+PY,Bacillus subtilis ATCC 6633,35.93196928391538,1.5554810197568614,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.0699968,117.4889
+PY,Bacillus subtilis,96.2258137423254,1.9832915924328516,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.0501425,112.23867
+KRIVQRIKDWLR,Bacillus subtilis KCTC 3068,6.44804,0.8094277229231809,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.8135307,6.509246
+KRIRKRIKKWKR,Bacillus subtilis KCTC 3068,6.80092,0.8325676662205516,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.9974681,9.941871
+GRFRRLRKKTRKRLKKIGKVLKWIPPIVGSIPLG,Bacillus megaterium Bm11,4.00312,0.6023986089801238,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.34769905,2.2268915
+ILGTIPGLLKGL,Bacillus subtilis ATCC 23857,305.80480000000017,2.4854442979407643,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5575085,36.100105
+LLPIVGNLLKSLLGWKRKAFG,Bacillus subtilis,116.29750000000001,2.065570378977163,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3954407,24.85654
+WKKIWSKIKKLLK,Bacillus cereus AS1.126,5.334365,0.7270827286509233,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.85979414,7.2409267
+FAHHIFRGIVHVGKTIHRLVTG,Bacillus subtilis KCTC 3068,9.987919999999999,0.9994750551352879,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.89287114,7.813959
+FAHHIFRGIVHVGKTIHRLVTG,Bacillus subtilis KCTC 1021,19.975839999999998,1.300505050799269,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.9616225,9.154243
+FAHHIFRGIVHVGKTIHRLVTG,Bacillus subtilis KCTC 1022,2.49698,0.39741506380732555,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.57449913,3.7540421
+FKHHIFRGIVHVGKTIHRLVTG,Bacillus subtilis KCTC 3068,10.220319999999997,1.009464493847474,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.8193712,6.597376
+FKHHIFRGIVHVGKTIHRLVTG,Bacillus subtilis KCTC 1021,10.220319999999997,1.009464493847474,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.93156934,8.542192
+FKHHIFRGIVHVGKTIHRLVTG,Bacillus subtilis KCTC 1022,2.55508,0.4074045025195116,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.5844683,3.8412123
+IKKIVSKIKKLL,Bacillus cereus AS1.126,4.414613,0.6448926378499041,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.02896,10.689564
+IKKIVSKIKKLLK,Bacillus cereus AS1.126,4.817654600000001,0.6828356601929993,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.0033176,10.076683
+KKVLKAAA,Bacillus cereus ATCC 11778,41.504999999999995,1.6181004181966332,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.8385687,68.95547
+GWFDVVKHIASAV,Bacillus subtilis ATCC 9372,142.967,2.155235804095712,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.0432606,110.47413
+GWFDVVKHIASAV,Bacillus anthracis Sterne 34F2,142.967,2.155235804095712,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.1307597,135.13248
+KYYGNGVSCNKKGCSVDWGKAIGIIGNNSAANLATGGAAGWSK,Bacillus subtilis ATCC 9372,433.5960000000002,2.637085267105191,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.983021,96.165886
+KYYGNGVSCNKKGCSVDWGKAIGIIGNNSAANLATGGAAGWSK,Bacillus anthracis Sterne 34F2,433.5960000000002,2.637085267105191,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.285404,192.93187
+IKWAGKLFKLFK,Bacillus subtilis ATCC 6633,5.40955760637895,0.7331617499560341,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.9249935,8.413826
+IKWAGKWWKLFK,Bacillus subtilis ATCC 6633,2.514217270108144,0.40040280522417565,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.47608408,2.992844
+P,Bacillus subtilis ATCC 6633,54.28622302517579,1.7346896265813403,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5444194,35.028328
+P,Bacillus cereus ATCC 11778,217.1448921007031,2.3367496179093026,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.8625534,72.87077
+IRCRRRFCRI,Bacillus subtilis CMCC 63501,5.51112,0.7412398675252785,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.9536269,8.987251
+WRCRRRFCRW,Bacillus subtilis CMCC 63501,3.0478,0.4839864647193324,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.6005564,3.986175
+PRPRCRRRFCRPRP,Bacillus subtilis CMCC 63501,14.818559999999996,1.1708060029389273,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1454191,13.977166
+YPYYGTNLYQRRPAIAINNPYVPRTYYANPAVVRPHAQIPQRQYLPNSHPPTVVRRP,Bacillus subtilis MTCC 441,4.771455340997126,0.6786508633512913,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6746995,47.282402
+GRRRRSVQWCAVSQPEATKCFQWQRNMRKVRGPPVSCIKRDSPIQCIQA,Bacillus subtilis MTCC 441,5.571355377747297,0.7459608615059644,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.1132407,129.78984
+ATCDLLSPFKVGHAACAAHCIARGKRGGWCDKRAVCNCRK,Bacillus subtilis KCCM 11316,0.1711672,-0.7665794535826878,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.79086316,6.178217
+FLPLILPSIVTALSSFLKQG,Bacillus cereus ATCC 14579,49.993877000000005,1.698916817377061,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.9322126,85.54854
+FLPLILPSIVTALSSFLKQG,Bacillus subtilis ATCC 23858,49.993877000000005,1.698916817377061,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.7343544,54.244335
+YCSFNVTPKFKRWQLYFRGRMWCP,Bacillus simplex,6.31568,0.8004201172585348,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Peribacillus,val,Bacillus,2.121005,132.1311
+YCSFNVTPKFKRWQLYFRGRMWCP,Bacillus licheniformis,101.05087999999995,2.0045400999144594,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.688837,48.846905
+YCLLSRSPYLKKLEVHYRAELKCP,Bacillus simplex,94.54752000000002,1.9756501417009886,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Peribacillus,val,Bacillus,1.9544742,90.04803
+ECKFTVKPYIKRFQLYYKGRMWCP,Bacillus simplex,200.37632999999994,2.301846418005964,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Peribacillus,val,Bacillus,1.9929734,98.395096
+KWKLFKKIAKKFAKAFVAEIM,Bacillus anthracis UM23-CL2,34.98896124874111,1.5439310493524059,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.9211849,83.40362
+GYGCPFNQYQCHSHCKGIRGYKGGYCKGAFKQTCKCY,Bacillus subtilis ATCC 13933,0.0573368016046086,-1.2415665367856101,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2104368,16.23442
+KGIRGYKGGYKGAFKQTKY,Bacillus subtilis ATCC 13933,55.801469531700114,1.7466456362333609,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.0081136,101.88579
+KGIRGYKGGYCKGAFKQTCKCY,Bacillus subtilis ATCC 13933,48.782278471441465,1.6882620810220934,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.424423,26.571922
+FKRLKKLISWIKRKRQQ,Bacillus subtilis KCTC 1998,4.52176,0.6553075077126321,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.3264402,2.1205094
+LEQLLRLKKY,Bacillus subtilis ATCC 6051,1265.733061960165,3.1023421243690077,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5338966,34.1898
+GIGKFLHSAKKAGKAFVGEIMNS,Bacillus subtilis DSM 347,19.159040000000005,1.282373744139822,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6207051,41.754677
+GIGKFLHSAKKFGKAAVGEIMNS,Bacillus subtilis DSM 347,38.318079999999995,1.583403739803803,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6472797,44.389446
+GIGKFLHSAKKFGKAFVAEIMNS,Bacillus subtilis DSM 347,2.48501,0.3953281407297456,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.7401052,5.4967403
+AIPWSIWWHLLFKG,Bacillus cereus NCDC 0240,87.75749999999998,1.9432842427381494,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.2293427,169.56754
+ATCDLLSISTPWGSVNHAACAAHCLALNRGFRGGYCSSKAVCTCRK,Bacillus subtilis ATCC 6633,4.9958377,0.6986083209872578,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.665304,4.627048
+ATCDLLSISTPWGSVNHAACAAHCLALNRGFRGGYCSSKAVCTCRK,Bacillus cereus ATCC 14579,9.991675,0.999638299264986,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.3986715,25.042145
+GLALNRLMNKAVDAIVYMVGQQDAGVSLLGHPCLVESAKQPEGIYTAVMSCASWTPRFVGEGTSEVELEALKGSIRSFIRKASDYQLLSKEDLEDWLASY,Bacillus subtilis CGMCC 1.108,273.2669999999999,2.436587189017123,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.2792337,190.21016
+DTFDYKKFGYRYDSLELEGR,Bacillus subtilis,2.50478,0.3987695868971392,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.772583,5.923563
+VDRGWGNGCGLFGKGG,Bacillus subtilis,158.07800000000006,2.1988714325923735,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.14691,140.25229
+VARGWKRKCPLFGKGG,Bacillus subtilis,88.15900000000002,1.945266655271945,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.797557,62.741802
+IKKIWSKIKKWLK,Bacillus cereus AS1.126,31.973624999999995,1.5047918770677355,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.9754244,9.449839
+GILGKLWEGVKSIF,Bacillus subtilis AB91021,8.080937637012298,0.9074617551997207,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.7764479,5.9765134
+GILGKLWEGVKSIF,Bacillus cereus KCTC 1012,19.348874999999996,1.286655718941719,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.3727703,23.592302
+GIMSSLMKKLAAIIAK,Bacillus subtilis 168,11.740539999999996,1.069688072518653,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0213337,10.503491
+GIMSSLMKKLKKIIKK,Bacillus subtilis 168,12.960640000000001,1.112626447646127,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1476337,14.04862
+PMLRVRLASHLRKLRKRLLR,Bacillus subtilis PY79,62.88075,1.7985177130396042,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.9196844,83.11596
+CVRVRPGRVRVC,Bacillus subtilis CMCC 63501,11.430740003246333,1.0580743466615565,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3668774,23.274343
+FFHHVFRGIVHVGKTIHRLVTG,Bacillus subtilis ATCC 6633,20.464480000000002,1.311000713750418,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3086201,20.35261
+SKVWRHWRRFW,Bacillus cereus AS1.126,10.281000000000002,1.0120353591495295,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.2024463,15.938459
+VWRHWRRFWHR,Bacillus cereus AS1.126,5.389954,0.7315850587616153,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.8012094,6.3271685
+WRHWRRFWHR,Bacillus cereus AS1.126,10.143124999999998,1.0061717775977976,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.6843719,4.8347263
+RHWRRFWHR,Bacillus cereus AS1.126,8.97925,0.9532400633416792,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.91763175,8.272404
+RRFWHR,Bacillus cereus AS1.126,95.713,1.9809709288409136,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.8141242,65.18148
+GIGKALKKAKKGIGAVLKVLTTGL,Bacillus subtilis,18.968239999999998,1.2780270360152737,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1864852,15.363323
+RIPCQYEDATEDTICQQHCLPKGYSYGICVSYRCSCV,Bacillus cereus,15.245748,1.183148736953498,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.721231,52.62971
+RIPCQYEDATEDTICQQHCLPKGYSYGICVSYRCSCV,Bacillus thuringiensis HD73,6.775888000000001,0.8309662188421356,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.8006955,63.196865
+RIPCQYEDATEDTICQQHCLPKGYSYGICVSYRCSCV,Bacillus subtilis,11.010818,1.0418195841570288,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6307982,42.736427
+RIPCQYEDATEDTICQQHCLPKGYSYGICVSYRCSCV,Bacillus pumilus,13.128283,1.1182079300204835,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.0283444,10.674422
+FLGALWEVAKSVF,Bacillus subtilis ATCC 6633,18.334750000000003,1.263274992597102,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.449589,28.157171
+WWWLKKIW,Bacillus subtilis 168,7.734996000000001,0.8884600934486537,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.86669666,7.3569307
+WGRAFRRLVRRLARGLRR,Bacillus cereus CMCC 63301,128.00507000000002,2.1072271714401887,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.86986816,7.4108524
+WGRAFRRLVRRLARGLRR,Bacillus pumilus CMCC 63202,128.00507000000002,2.1072271714401887,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.7096063,5.1239667
+WRPGRWWRPGRWWRPGRW,Bacillus subtilis CMCC 63501,7.167234334106843,0.8553516040433942,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.66125417,4.5841007
+WMQKVIDRFGG,Bacillus subtilis CMCC 63501,171.21280000000004,2.2335362297428096,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.2266238,168.50926
+APKGVQGPNG,Bacillus subtilis ATCC 6633,69.26312476691336,1.8405020806066783,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.355933,22.695145
+RKKTRKR,Bacillus subtilis CMCC 63501,249.40799999999996,2.3969103797765774,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6536076,45.04096
+KKSAGWVIPIGTLVK,Bacillus megaterium,200.0012499999999,2.3010327099960106,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.3389108,21.822817
+KKSAGWVIPIGTLVK,Bacillus pumilus TISTR 905,200.0012499999999,2.3010327099960106,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.6053703,40.306053
+MLLKKLLKKLLKKM,Bacillus subtilis ATCC 23857,17.935801056557544,1.2537207780944282,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2234575,16.728518
+CLLKKLLKKC,Bacillus subtilis ATCC 23857,105.07550852132952,2.0215015004854493,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.8707559,74.26016
+LLKKLLKKLLKKC,Bacillus subtilis ATCC 23857,10.196683834483347,1.0084589534727744,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3909383,24.60018
+ALLKTMLKKLGTMAL,Bacillus subtilis ATCC 9466,39.2208,1.5935164478743995,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5189091,33.03004
+KIAGKIAKIAGKIAKIAGKIAK,Bacillus subtilis DSM 347,0.9124968866746848,-0.039768608627445357,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.2271529,1.6871469
+KIAGKIAKIAGKIAKIAGKIAKIAGK,Bacillus subtilis DSM 347,0.7808695091305902,-0.10742153487997934,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.07223377,1.1809561
+FKCRRWQWRMKKLGAPS,Bacillus subtilis ATCC 6633,29.376255347224355,1.4679964345554803,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4459717,27.92362
+FKAFRWAWRMKKLAAPS,Bacillus subtilis ATCC 6633,15.277899987715612,1.1840636627197145,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0998805,12.58579
+FKAWRWAWRMKKLAAPS,Bacillus subtilis ATCC 6633,14.998372676564596,1.1760441406605215,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.8953142,7.85804
+RRWWHWWRR,Bacillus subtilis ATCC 6633,6.598097299999999,0.8194187156563565,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.40816012,2.5595293
+FIHHIIGALGHLF,Bacillus subtilis ATCC 6633,77.96348999999998,1.8918912718747372,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.8410001,69.34259
+FFPGIIKVAGAILPTAICAITKRC,Bacillus subtilis MTCC 14416,169.16850000000005,2.22831949847979,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.8721677,74.50196
+FFPGIIKVAGAILPTAICAITKRC,Bacillus coagulans ATCC 7050,62.655000000000015,1.7969557343208025,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Heyndrickxia,val,Bacillus,1.5874064,38.67287
+QGDGNFVIYTWKP,Bacillus mycoides MTCC 8920,114.42975000000004,2.058538949117452,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.00799489,1.0185794
+NILSSIVNGINRALSFFG,Bacillus pumilus,39.01803975657321,1.5912654469065755,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.1980268,15.777085
+FRRFFKWPRRPFKFF,Bacillus subtilis ATCC 6633,4.760118000000001,0.6776177187107608,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.6290301,4.256279
+KGKG,Bacillus subtilis ATCC 6633,10.2970042153361,1.0127108905311268,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.1523478,142.01944
+RLLFRKIRRLKR,Bacillus cereus ATCC 11778,38.66853129546952,1.5873576770540232,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.5160537,32.813583
+ILGKVWEGVKSLF,Bacillus cereus ATCC 11778,67.76113090074938,1.830980645549577,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.7401252,54.96993
+FVPWFSKFLWRIL,Bacillus megaterium Bm11,3.840027633594789,0.5843343496473618,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.5024005,3.1798053
+RRLRKKTRKRLKKIGKVLKWI,Bacillus subtilis CMCC 63501,2.71155,0.43321761707827383,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.31556845,2.0680852
+TRKRLKKIGKVLKWI,Bacillus subtilis CMCC 63501,3.7429200000000002,0.5732105447393622,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.47635132,2.9946861
+AAHCLAMRRK,Bacillus subtilis KCTC 3068,17.347200000000004,1.2392293856005003,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4290187,26.854603
+AARCLSQRRK,Bacillus subtilis KCTC 3068,35.6538,1.5521058239798111,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4565467,28.611898
+AAHCIALRKGYK,Bacillus subtilis KCTC 3068,39.94980000000001,1.6015146094544208,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2916477,19.572561
+AAHCIVLHHN,Bacillus subtilis KCTC 3068,16.6998,1.2227112699849187,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.0078232,101.81769
+AAHCLLKRKR,Bacillus subtilis KCTC 3068,17.948099999999997,1.25401848059177,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0050869,10.117819
+VTCDVLSFEAKGIAVNHSAAALHCIALRKKGGSCQNGVAVCRN,Bacillus subtilis KCTC 3068,441.62299999999993,2.645051683636379,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.9999759,99.99445
+GLFDIVKKVVGAAGSL,Bacillus cereus C737,81.32798949140714,1.9102400362423562,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.856977,71.941086
+APKVNVNALRKGGRVIRKGLGVIGAAGTAHEVYNHVRNRNQG,Bacillus cereus CMCC 63301,268.1020103874696,2.4283000705920217,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.2414162,174.3477
+APKVNVNALRKGGRVIRKGLGVIGAAGTAHEVYNHVRNRNQG,Bacillus cereus,16.473028,1.2167734366209386,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.6512605,44.79819
+APKVNVNALRKGGRVIRKGLGVIGAAGTAHEVYNHVRNRNQG,Bacillus subtilis,29.829537999999996,1.4746465270595344,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5996269,39.77653
+VIDKAKMESLGITSRDTT,Bacillus subtilis 168,7.938003379452286,0.8997112794637079,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.2784593,189.87129
+RWTWRGSGRWTWR,Bacillus subtilis,8.933629498040577,0.9510279371336829,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.5486579,3.537186
+TTSIRRRYQVSLIRRHRGKR,Bacillus amyloliquefaciens ATCC 23842,25.19737914185364,1.4013553708044055,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.6008649,39.89008
+TTSIRRRYQVSLIRRHRGKR,Bacillus cereus ATCC 14579,25.19737914185364,1.4013553708044055,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.5166498,32.858658
+TTSIRRRYQVSLIRRHRGKR,Bacillus licheniformis ATCC 14580,25.19737914185364,1.4013553708044055,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.3851635,24.27524
+TTSIRRRYQVSLIRRHRGKR,Bacillus subtilis ATCC 6051,25.19737914185364,1.4013553708044055,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.99306154,9.841506
+AIGSILGRLAKGLPTLKSWIKNR,Bacillus subtilis CGMCC 1.3376,31.188750000000006,1.493997969211106,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.178113,15.069991
+NGKTWKKNRKACQVK,Bacillus subtilis 168 HT,71.54380006459063,1.8545720040720022,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.976855,94.810196
+WKKVWKPGVKKWVK,Bacillus subtilis CMCC 63501,59.01952,1.770995673103639,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.0045445,101.0519
+FWGALAKGALKLIPSLVSSFT,Bacillus magaterium AB90008,3.3115649999999994,0.5200332838776309,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.699703,50.084457
+ILGKIWKGIKNIL,Bacillus magaterium AB90008,74.898,1.8744702208962534,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.6811953,47.99492
+FFGHIWHGARTLFRDVFA,Bacillus subtilis ATCC 23857,7.247878,0.860210874462808,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.1252222,133.4204
+FFGHIWHGARTLFRDVFA,Bacillus cereus ATCC 14579,139.29855000000006,2.143946595747178,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.026833,106.373405
+ANRLLEAYKMLLKFLGNLR,Bacillus subtilis ATCC 23857,2.26484,0.35503752662632915,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.8579513,7.210266
+ANRLLEAYKMLLKFLGNLR,Bacillus cereus ATCC 14579,9.05936,0.9570975179542915,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.8517605,7.1082144
+IKYLLVKLQGASQKTITLMLRRN,Bacillus subtilis subsp. spizizenii,50.58992502387122,1.7040640357686556,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6441256,44.068226
+VSGPAGPPGTH,Bacillus cereus AS1.1846,16.392700248615792,1.2146504975902024,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.0656502,11.631888
+GVIAAAKKVVNVLKNLF,Bacillus cereus,14.01193704941113,1.1464981775212764,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.3448876,22.125221
+GILSKLGKALKKAAKHAAKA,Bacillus megaterium Bm11,8.0382,0.9051588077549704,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.3714356,2.3519907
+SKFFRKARKKLGKGLQKIKNVLRKY,Bacillus cereus ATCC 10876,21.082295200490325,1.3239178901574968,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.1532062,14.230043
+KWKIFKKIEKVGRNIRNGIIKAVAVLGEAKAL,Bacillus subtilis ATCC 6633,11.266435000000001,1.0517865154465087,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2202988,16.60729
+LLGDFFRKSKEKIGKEFKRIVQRIKDFLRNLVPRTESDYKDDDDKCQDSERTFY,Bacillus subtilis,38.63331199999999,1.5869619414263794,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5793037,37.95804
+RKCNFLCKVKNKLKSVGSKSLIGSATHHGIYRV,Bacillus subtilis,54.44602126171576,1.735966148422069,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0889311,12.272445
+AWCFRVCYRGICYRRCR,Bacillus subtilis ATCC 6051,0.013564451695698799,-1.8675977566642814,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-0.966027,0.10813667
+KWCARVCYRGICYRRCR,Bacillus subtilis ATCC 6051,0.11401667142648261,-0.9430316418287468,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-0.40446368,0.39403638
+KWCFRVAYRGISYRRCR,Bacillus subtilis ATCC 6051,0.11258081106908942,-0.94853562686465,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-0.989944,0.1023425
+KWCFRVSYRGIAYRRCR,Bacillus subtilis ATCC 6051,0.056290405534544716,-1.2495656225286311,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-1.0192405,0.095666416
+KWCFRVCYRGICYRACR,Bacillus subtilis ATCC 6051,0.0137384660425647,-1.8620617553725132,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-1.0223334,0.094987534
+KWSFRVCYRGICYRRAR,Bacillus subtilis ATCC 6051,0.056290405534544716,-1.2495656225286311,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-1.0846858,0.08228377
+KWCFRRCYAGICYRRCR,Bacillus subtilis ATCC 6051,0.1115720474711392,-0.9524445970615585,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-0.56907713,0.26972604
+KWCSRVCYRGICYRRCR,Bacillus subtilis ATCC 6051,0.22638148395054883,-0.6451590975674835,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-0.29190913,0.51061183
+KWCFVCYRGICYRRCG,Bacillus subtilis ATCC 6051,0.4966630204978788,-0.3039381745962418,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-0.9620931,0.10912064
+AWCFRVCARGICYRRCR,Bacillus subtilis ATCC 6051,0.2358971262068497,-0.6272773498312741,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-0.74080443,0.18163334
+KWCFRVCYAGICYRRCA,Bacillus subtilis ATCC 6051,0.0285912777256172,-1.5437664358702208,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-0.9669409,0.10790936
+KWKVLKKKIMKMLRNRINGLVKAGPALKVKLQALAL,Bacillus subtilis ATCC 6633,28.75859000000001,1.4587675892827934,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.97926104,9.53369
+LNALKKVFQGIHEAIKKI,Bacillus subtilis KCTC 1998,8.21428,0.9145695025573681,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2469751,17.659365
+RRPFWIIRR,Bacillus megaterium Bm11,1.6232876,0.2103954711680182,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.34976768,2.2375238
+PRFRWRIRI,Bacillus megaterium Bm11,3.2465749999999995,0.5114254400779913,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.27792585,1.8963821
+CWWKKKKC,Bacillus subtilis BR151,14.422078904816175,1.1590278673053738,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.46832526,2.9398506
+CWWWWKKKKKKC,Bacillus subtilis BR151,1.1506324595142778,0.06093662137477092,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.15870199,1.4411261
+CWWKKKKWWWC,Bacillus subtilis BR151,1.1990121578633794,0.07882358682379241,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-0.15949717,0.69263244
+GVWGIAKIAGKVLGNILPHVFSSNQS,Bacillus subtilis subsp. subtilis CIP 52.65,33.68974999999999,1.5274977882437109,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5351945,34.292133
+IGLRGLGRKIALIHKKYG,Bacillus subtilis 168,239.58,2.379450560577981,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1560065,14.322092
+LKLCKKLCL,Bacillus subtilis BR151,30.14748526635869,1.4792510915842136,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5947866,39.33568
+WKKKWKCWCKWWKKWW,Bacillus subtilis BR151,0.8247502604664415,-0.08367753862697085,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.1996245,1.5835234
+LCKKKLKCLKKLLLLLK,Bacillus subtilis BR151,1.9735855312497532,0.29525595259364473,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.29423273,1.9689411
+LKLLKKLKLKCKCLKLKL,Bacillus subtilis BR151,0.9280999571078604,-0.032405247399029294,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.12683043,1.3391538
+LKKLLCKLKLKCLKKKLL,Bacillus subtilis BR151,0.9280999571078604,-0.032405247399029294,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.13524976,1.3653681
+KLKLCKKLKLLKLKLCLK,Bacillus subtilis BR151,0.9280999571078604,-0.032405247399029294,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.3869265,2.4373982
+LKKLKCCLLLLKKLKK,Bacillus subtilis BR151,0.5225724107686706,-0.2818535225980003,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-0.09790376,0.7981715
+KKLKCLLCLLLLKKLKK,Bacillus subtilis BR151,0.4933963828124383,-0.30680403873431766,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-0.07121846,0.84875345
+LLRIALRKK,Bacillus subtilis KCTC 3068,14.408708046795159,1.158625041653552,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.70551306,5.0759
+IHKFWRCRRRFCRWFKHI,Bacillus subtilis CMCC 63501,41.235519999999994,1.6152714755987168,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.6293034,4.2589583
+IHFKWRRWKFHI,Bacillus subtilis CMCC 63501,112.33087999999996,2.0504991611597125,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3907422,24.589075
+WKRIVRRIWRWLR,Bacillus subtilis KCTC 3068,3.8488600000000006,0.5853321141776626,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.59367144,3.92348
+KRFIKWYKAWNKKRRVY,Bacillus subtilis KCTC 3068,18.999679999999998,1.2787462864578536,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0915567,12.346864
+QREPQVQWLEQQVAKRRTKR,Bacillus subtilis,256.69799999999987,2.409422484984854,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.5128894,325.75372
+YYHFWHRGVTKRSLSPHRPR,Bacillus subtilis,15.49194,1.1901058063027248,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4253869,26.630964
+YYHFWHRGVTKR,Bacillus subtilis,66.03640000000001,1.8197833895036817,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.147517,140.44846
+RRLRPRRPRLPRPRPR,Bacillus subtilis VKM B-886,12.081061785555567,1.0821051054228004,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.582116,3.8204632
+GRFKRFRKKLKRLWHKVGPFVGPILHY,Bacillus subtilis VKM B-886,1.685095,0.22662438996270812,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.5488929,3.5391006
+GGHRRWKIVVIRWRR,Bacillus subtilis,1.6395986,0.2147375388146677,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.48570856,3.0599093
+YGRKKRRQRRRSISLL,Bacillus subtilis KCTC 3068,5.073656763840376,0.7053210835770418,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1715807,14.8450165
+EEESEVAHLRVRRGFGCPLNQGACHRHCRSIRRRGGYCSGIIKQTCTCYRN,Bacillus cereus ATCC 11779,293.3415,2.4673735084153843,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.6680534,46.564335
+RMWR,Bacillus subtilis DSM 4181,4.82407486593703,0.6834140391012156,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.3914004,2.462637
+SNCWARCPGYPNGDSLCCRQYGACCSTSYPVPYKG,Bacillus subtilis CGMCC 1.108,140.94854999999998,2.1490606124514104,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1909158,15.520862
+SNCWARCPGYPNGDSLCCRQYGACCSTSYPVPYKG,Bacillus cereus CGMCC 1.447,140.94854999999998,2.1490606124514104,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.889005,77.44706
+QNCPTRRGLCVTSGLTACRNHCRSCHRGDVGCVRCSNAQCTGFLGTTCTCINPCPRC,Bacillus subtilis 168,0.6564877798738703,-0.1827733536304661,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.22395177,1.6747569
+RWKIFKKVVKKG,Bacillus subtilis KCTC 3068,24.335839999999994,1.3862463413774992,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3635341,23.095858
+RWRRFWRR,Bacillus cereus AS1.126,4.127187,0.6156541469070341,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.7534889,5.668771
+INWKKIKKKVAGML,Bacillus cereus ATCC 11778,18.707173772687202,1.2720081804642491,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.7796797,60.21153
+INWKKIKKKVAGML,Bacillus thuringiensis ATCC 10792,18.707173772687202,1.2720081804642491,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.6943111,49.466496
+AAKAAAKAAAKAA,Bacillus subtilis CMCC 63501,142.76736000000005,2.154628928783442,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6369746,43.34855
+LLKAAAKAAAKLL,Bacillus subtilis CMCC 63501,41.07807999999999,1.613610136364091,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4797015,30.178768
+WWKAAAKAAAKWW,Bacillus subtilis CMCC 63501,6.30372,0.7995969143235714,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.84898907,7.062998
+VKLFPVKLFP,Bacillus subtilis NBRC 3513,5.263090970380082,0.7212408766850801,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3546985,22.63073
+VKLFPVKLFP,Bacillus megaterium ATCC 19213,5.263090970380082,0.7212408766850801,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.4994946,31.585995
+KAAKAAKKAAKAAWK,Bacillus subtilis ATCC 6633,129.7115953475564,2.1129788008363515,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3128823,20.553335
+RLCRIWWIRWCR,Bacillus subtilis KCTC 3068,55.91104,1.7474975706357152,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.8284991,6.7375045
+RRSIFRKLRRKIKKGLKKGIQHLLAGGRQGLPQGGRPGMI,Bacillus cereus,16.639082395870787,1.221129372351453,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.2502941,17.79484
+RRSIFRKLRRKIKKGLKKGIQHLLAGGRQGLPQGGRPGMI,Bacillus subtilis,4.159770598967698,0.6190693810234906,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.8009515,6.323412
+CVWLVVV,Bacillus subtilis 168,4.895663017806627,0.6898115164610773,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.7305934,53.77661
+ITKVIAKLLNRLTKILSK,Bacillus subtilis ATCC 6633,9.666349,0.9852624711295722,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1707432,14.816418
+RVRRFPWWWPFLRRR,Bacillus subtilis KCTC 3068,1.8061742078503735,0.2567596362650682,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.42578363,2.6655304
+IAGLAANFLPQILCKIARK,Bacillus coagulans ATCC 7050,12.251792167654703,1.0881996210755829,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Heyndrickxia,val,Bacillus,1.070043,11.750138
+IAGLAANFLPQILCKIARK,Bacillus subtilis MTCC 14416,24.503584335309398,1.389229616739564,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.566537,36.858448
+SRSSRAGLQFPVGRIHRLLRK,Bacillus cereus MCCB 101,121.79549999999996,2.0856312426378127,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.2069806,16.105736
+LRWLGTKVGILK,Bacillus subtilis 168 HT,127.49084000000002,2.1054789825710563,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.81376016,6.5126863
+KWKSFIKKLTSVLKKVVTTALPALIS,Bacillus subtilis,5.5161267412860715,0.7416342361856136,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.71364295,5.171815
+NVIGDCWDDWSRCTRQTDWFTNIFWQSCQNRCKCKGQPGGNCIEVPSKCFLWKDKRWMCDCYGPTSGSKPWWCGF,Bacillus subtilis ATCC 6633,2.8001642,0.44718349886474257,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.8442961,6.9870863
+KWKSFIKNLTKVLKKVVTTALPALIS,Bacillus subtilis,2.732603197699093,0.436576572211846,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.8962318,7.874659
+KIVPAMICAVTKKC,Bacillus megaterium DSM 32,2.6578671772075135,0.42453327395541024,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.6955383,4.9606466
+KIVPAMICAVTKKC,Bacillus subtilis DSM 10,5.315734354415027,0.7255632696193914,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.53059185,3.3930624
+GLLKSLCRKFVKVHLPELIEELTTTD,Bacillus cereus,149.33150000000003,2.174151427505462,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.879765,75.81673
+GLLKSLCRKFVKVHLPELIEELTTTD,Bacillus subtilis,149.33150000000003,2.174151427505462,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.8017617,63.352207
+GIIKKIIKKIIKK,Bacillus subtilis 168,3.8203,0.5820974684689874,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.5715964,3.7290344
+IIKKIIKKIIKK,Bacillus subtilis 168,7.3553500000000005,0.8666033432025184,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.6963494,4.9699197
+RVKRVWPLVIRTVIAGYNL,Bacillus subtilis KCTC 3068,18.038400000000003,1.256198013140094,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1953373,15.679684
+KRVWPLVIRTVIAGYNLYR,Bacillus subtilis KCTC 3068,18.550799999999995,1.268362643228362,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.8811922,7.6066284
+ELLSRVD,Bacillus amyloliquefaciens ATCC 23842,77.02251187500595,1.8866176778243116,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.1074798,128.07956
+ELLSRVD,Bacillus cereus ATCC 14579,77.02251187500595,1.8866176778243116,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.9919508,98.16366
+ELLSRVD,Bacillus licheniformis ATCC 14580,77.02251187500595,1.8866176778243116,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.042379,110.25008
+ELLSRVD,Bacillus subtilis ATCC 6051,77.02251187500595,1.8866176778243116,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.9971232,99.33979
+RFGRFLRKIRRFRPKVTITIQGSARFG,Bacillus subtilis ATCC 11060,15.988347741172667,1.2038035854493425,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.443862,2.77883
+LSRVDEL,Bacillus amyloliquefaciens ATCC 23842,154.04502375001192,2.187647673488293,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.227924,169.01456
+LSRVDEL,Bacillus cereus ATCC 14579,154.04502375001192,2.187647673488293,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.1739626,149.26659
+LSRVDEL,Bacillus licheniformis ATCC 14580,154.04502375001192,2.187647673488293,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.1789038,150.97458
+LSRVDEL,Bacillus subtilis ATCC 6051,154.04502375001192,2.187647673488293,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.244123,175.43773
+VDELLSR,Bacillus amyloliquefaciens ATCC 23842,154.04502375001192,2.187647673488293,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.1966827,157.28333
+VDELLSR,Bacillus cereus ATCC 14579,154.04502375001192,2.187647673488293,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.129936,134.8764
+VDELLSR,Bacillus licheniformis ATCC 14580,154.04502375001192,2.187647673488293,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.1337667,136.07133
+VDELLSR,Bacillus subtilis ATCC 6051,154.04502375001192,2.187647673488293,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.2336106,171.24213
+ELLSRVN,Bacillus amyloliquefaciens ATCC 23842,154.22781207003734,2.1881626975761956,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.1936367,156.18404
+ELLSRVN,Bacillus cereus ATCC 14579,154.22781207003734,2.1881626975761956,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.0691354,117.256096
+ELLSRVN,Bacillus licheniformis ATCC 14580,154.22781207003734,2.1881626975761956,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.1060104,127.64695
+ELLSRVN,Bacillus subtilis ATCC 6051,154.22781207003734,2.1881626975761956,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.099035,125.61313
+GIIKGIIKIIKA,Bacillus subtilis ATCC 23857,5.07484,0.7054223543266316,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.159864,14.44987
+GIIAGIIIKIKK,Bacillus subtilis ATCC 23857,40.59871999999999,1.6085123413185751,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5301542,33.89645
+GIKRGIIKIIKR,Bacillus subtilis ATCC 23857,44.69919999999999,1.6502997504542047,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6639199,46.123253
+AIIAGIIIKIKK,Bacillus subtilis ATCC 23857,10.26192,1.0112286246543905,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5297024,33.861206
+GIIAGIIIKIAK,Bacillus subtilis ATCC 23857,154.9580799999999,2.190214226641287,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3174899,20.772552
+GIIAGIIIKIKA,Bacillus subtilis ATCC 23857,154.9580799999999,2.190214226641287,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6239014,42.06311
+KWKKLLKKPLLKKLLK,Bacillus subtilis KCTC 2217,3.1399212,0.49691874908130534,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.54033315,3.4700294
+KWKKLLKKPLLK,Bacillus subtilis KCTC 2217,9.550563,0.9800289737393878,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.6626892,4.599273
+LLKKPLLKKLLKKL,Bacillus subtilis KCTC 2217,2.622906,0.41878272657479426,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.5259816,3.357234
+GLLSRLRDFLSDIGRRLGEKIERIGQKIKDLSEFFQS,Bacillus subtilis CICC 24434,0.3609494274914031,-0.4425536426926456,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-0.42553136,0.37537786
+GIVKKIVKKIVKKI,Bacillus subtilis ATCC 23857,2.718623,0.43434898678148254,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2529112,17.902397
+GLLKKIGKKAKKAGKKLGY,Bacillus megaterium Bm11,65.17279999999998,1.8140663798635923,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.4501305,28.192297
+RAKIAKKIEKVGRNVRDGIIKA,Bacillus subtilis KCTC 3068,315.9116800000001,2.4995656830934214,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.8315816,67.85496
+GRWRWWWRWRI,Bacillus cereus CGMCC 1.932,13.944800000000004,1.1444122898807167,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.0680279,11.695744
+GRWRWWWRWRI,Bacillus subtilis CMCC 63501,6.972400000000001,0.8433822942167355,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.8310701,6.777509
+FLSGIVGMLAKLF,Bacillus subtilis ATCC 6633,4.3548956,0.638977748118107,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.6977874,4.9864035
+ILLKIWEGIKSLF,Bacillus megaterium ATCC 10778,1.21758,0.08549750575289794,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.21529037,1.641687
+ILLKIWEGIKSLF,Bacillus subtilis ATCC 6633,1.21758,0.08549750575289794,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.14562681,1.3983852
+ALGKFWEKIKSLF,Bacillus megaterium ATCC 10778,1.2237887,0.08770643876886451,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.9085039,8.100352
+ALGKFWEKIKSLF,Bacillus subtilis ATCC 6633,1.2237887,0.08770643876886451,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5371287,34.445198
+ILGKIWEPIKSLF,Bacillus megaterium ATCC 10778,4.835725,0.6844615952535845,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.9644574,9.214195
+ILGKIWEPIKSLF,Bacillus subtilis ATCC 6633,38.623999999999995,1.5868572484172552,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4732821,29.73597
+FLRALWNVAKSVF,Bacillus megaterium ATCC 10778,2.481456,0.3947065788979933,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.43915984,2.7489057
+FLRALWNVAKSVF,Bacillus subtilis ATCC 6633,1.240728,0.09367658323401214,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0969197,12.5002775
+FLGALWNVAKSLF,Bacillus megaterium ATCC 10778,4.54398,0.6574364111913531,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.47872755,3.0111165
+FLGALWNVAKSLF,Bacillus subtilis ATCC 6633,1.17264,0.06916470434902391,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.7196082,5.243342
+FLQKIIGALGKLF,Bacillus subtilis ATCC 6633,18.110749999999996,1.2579364356325,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3327672,21.516283
+KIAKIAGKIAKIAGKIA,Bacillus subtilis DSM 347,9.444225620425122,0.9751663537280784,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.9957273,9.9021
+KIAKIAGKIAKIAGKIAKIAGKIA,Bacillus subtilis DSM 347,0.8417424101559926,-0.07482079087956091,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.13493097,1.3643663
+IAGKIAKIAGKIAKIAGKIA,Bacillus subtilis DSM 347,2.06670956122361,0.31527944865410523,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.40888646,2.5638137
+CVWGGDCTDFLGCGTAWICV,Bacillus megaterium,2.633125,0.42047147647092303,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.5078464,32.199295
+FLPLIGGLLSKLL,Bacillus subtilis,2.8256351156924144,0.4511160791429021,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.48791033,3.0754619
+KFFKKLKKSVKKHVKKFFKKPKVIGVSIPF,Bacillus cereus,1.306215919496771,0.11601497241774941,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.38861322,2.4468832
+KFFKKLKKSVKKHVKKFFKKPKVIGVSIPF,Bacillus subtilis,5.222078569416729,0.7178434017664038,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.5023147,3.1791768
+RWKKIGWVWKWI,Bacillus subtilis CMCC 63501,1.68814,0.22740846048052957,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.4573221,2.866303
+KRFWPLVPVAINTVA,Bacillus subtilis CMCC 63501,219.02464000000003,2.3404929751784107,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.9911869,97.99115
+KLKLKLKLKLKLKL,Bacillus subtilis DSM 347,2.342846814249616,0.3697438934194169,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.28290877,1.9182657
+GRVKRSPWHGGTWGCKPIWACQNSPPYLG,Bacillus subtilis,38.90171999999999,1.589968803639204,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6233222,42.007057
+RKLDLKLDLKLDL,Bacillus subtilis ATCC 6633,47.579400000000014,1.6774189610654313,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5904304,38.94309
+RRRRKLDLKLDLKLDL,Bacillus subtilis ATCC 6633,8.2182,0.9147767061445752,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2650614,18.410322
+GFGCNIFGGNDYRCHRHCKSIRGYKGGYCKLGGICKCY,Bacillus cereus BNCC 103930,16.9602,1.2294309692876906,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.4375463,27.387114
+GFGCNIFGGNDYRCHRHCKSIRGYKGGYCKLGGICKCY,Bacillus subtilis BNCC 109047,16.9602,1.2294309692876906,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5138309,32.64607
+FVKSFWKKLGRIL,Bacillus subtilis ATCC 6633,6.171503999999999,0.7903910148118851,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.89957017,7.9354243
+FVKWFSKKLGRIL,Bacillus subtilis ATCC 6633,24.686016000000002,1.3924510061398476,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4199314,26.298527
+FLIGKAIKRKFCLRSVWNA,Bacillus subtilis 168 HT,16.227648,1.210255578689941,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.8255072,66.91248
+RWKYPKPLKR,Bacillus subtilis ATCC 6633,27.338843531924887,1.436780139407874,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.9303513,85.18267
+RWRFKWKK,Bacillus subtilis ATCC 6633,81.00463897366473,1.9085098907672278,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.571573,37.288338
+VKRWKKWFRKWKKWV,Bacillus subtilis,9.437683,0.9748653858419758,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.84346175,6.9736757
+RIIDRLWRVRRPQKPKFVTVWVR,Bacillus subtilis CICC 24434,0.5190284824864818,-0.28480880891975374,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-0.34383443,0.45307028
+GILDTLKQFAKGVGKFLVKGAAQ,Bacillus subtilis KCTC 1021,10.46098156394269,1.0195724367113532,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5961878,39.462795
+ATLTAKDLTFLQDYKKTKKRVK,Bacillus subtilis CMCC 63501,26.031699999999997,1.4155025306336826,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2051284,16.037195
+LNLKALLAVAKKAL,Bacillus subtilis ATCC 23857,11.743440000000001,1.0697953332132988,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2721628,18.713835
+LNLKALLAVAKKI,Bacillus subtilis ATCC 23857,22.349600000000002,1.3492697547902237,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4073393,25.546967
+LNLKALLAVAK,Bacillus subtilis ATCC 23857,147.7772799999999,2.169607668638621,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.7890383,61.523113
+FLGALWNVKKSVF,Bacillus megaterium ATCC 10778,75.49349999999998,1.8779095604284528,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.1013119,12.627341
+KLGALWNVAKSKF,Bacillus megaterium ATCC 10778,9.222066000000002,0.9648282260305626,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.0466925,11.135058
+FLKALWKVAKSVF,Bacillus megaterium ATCC 10778,0.615588,-0.21070985470244677,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.12631094,1.3375528
+PIMYKVPLIRKKSLRRTLSERGLLKDPFLKKHNLNPARKYFPQWKAPTL,Bacillus subtilis ATCC 6633,73.716125,1.8675624977984135,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.113681,12.992148
+GLFDIVKKVAG,Bacillus cereus ATCC 11778,218.07800353600402,2.338611862622726,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.0989337,125.583824
+I,Bacillus subtilis,38.1176294798697,1.5811258842059692,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.523674,33.39443
+GFCWYVCARRNGARVCYRRCN,Bacillus subtilis ATCC 6051,1.566188434943528,0.19484401272379978,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.20588744,1.6065248
+GFCWYVCARRNGARVCYRRCN,Bacillus licheniformis VKM B-511,20.432559999999995,1.310322782893941,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.9824592,9.604156
+GFCWYVCARRNGARVCYRRCN,Bacillus subtilis VKM B-886,20.432559999999995,1.310322782893941,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.89467776,7.8465323
+SPRVCIRVCRNGVCYRRCWG,Bacillus subtilis VKM B-886,38.14287999999999,1.5814134816016152,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5364087,34.388138
+RVQGRWKVRASFFKGGGGSGFAWNVCVYRNGVRVCHRRAN,Bacillus subtilis ATCC 6633,1.7620486740837025,0.24601790100792195,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.20376447,1.5986907
+VCVYRGFAWNCHRRANNGVRV,Bacillus subtilis ATCC 6633,25.829048906214442,1.4121084145981089,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.44159588,2.764368
+CRGATPMSC,Bacillus subtilis ATCC 6633,138.3621638285849,2.141017345272549,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6550009,45.18569
+CLKLGEKWC,Bacillus subtilis ATCC 6633,29.647854824831665,1.471993275391954,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.7233648,52.888935
+CDNIMTPVC,Bacillus subtilis ATCC 6633,64.30901769181268,1.8082718758666512,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6874067,48.686287
+GAAKRAKTAL,Bacillus subtilis ATCC 23857,505.4566300000001,2.7036838974943245,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.403187,253.03876
+GWWKRWKTWW,Bacillus subtilis ATCC 23857,6.08336,0.7841435178252915,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.830559,6.769538
+GLWKRWKKFW,Bacillus subtilis ATCC 23857,11.494479999999998,1.0604893289555581,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1103384,12.892539
+GFFRRIRTFF,Bacillus subtilis ATCC 23857,10.765119999999998,1.0320188753157864,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1499453,14.123595
+WRIWRIWRIWRI,Bacillus subtilis ATCC 23857,14.714480000000004,1.1677449190267994,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.8923396,7.8044014
+WRLWRLWRLWRL,Bacillus subtilis ATCC 23857,7.357240000000001,0.8667149233628182,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.7938661,6.2210846
+WRWWRWWRW,Bacillus subtilis ATCC 23857,3.20584,0.5059418433920845,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.9515722,8.944832
+KLQGRNEDEEKGAIVKVKGGL,Bacillus subtilis ATCC 6051,2272.6400000000003,3.3565306462855027,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.9399784,870.92017
+NPQAGRIKTVTSFDLPALRFLKL,Bacillus subtilis ATCC 6051,323.51624,2.509896086443235,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.7971448,62.682278
+RIKTVTSFDLPALRWLKL,Bacillus subtilis ATCC 6051,33.69101,1.527514030596788,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6416008,43.812782
+RIKTVTSFDLPALRWLKL,Bacillus cereus DSM 4222,2159.6800000000007,3.334389406461295,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,3.3334413,2154.9702
+RIKTVTSFDLPALRWLKL,Bacillus cereus DSM 4312,2159.6800000000007,3.334389406461295,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,3.2256486,1681.3132
+RIKTVTSFDLPALRWLKL,Bacillus subtilis ATCC 6633,2502.421099999999,3.39836039329429,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6957705,49.632996
+FKRIVQRIKDLLR,Bacillus subtilis DELTA,118.68951582273671,2.0744123582012115,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6852596,48.446186
+FKRIVQIIKKFLR,Bacillus subtilis DELTA,11.840332173414929,1.073363886428923,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.7014513,50.286488
+GKKPGGWKAK,Bacillus megaterium,236.68383602771044,2.3741685994429265,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,2.0627677,115.549416
+GKKPGGWKAK,Bacillus subtilis ATCC 23857,236.68383602771044,2.3741685994429265,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.4592648,287.9153
+GRRWWWWRAR,Bacillus megaterium,2.573022884267608,0.4104436488092382,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.07621643,1.1918358
+GRRWWWWRAR,Bacillus subtilis ATCC 23857,5.146045768535217,0.7114736444732195,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.53981656,3.4659042
+GKKWWWWKAK,Bacillus megaterium,2.7784242957389016,0.44379856797734063,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.021933764,1.0518014
+GKKWWWWKAK,Bacillus subtilis ATCC 23857,5.556848591477802,0.7448285636413218,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.64581245,4.4239726
+WRWWWRW,Bacillus subtilis ATCC 23857,5.04204,0.7026062867411348,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.9183477,8.286053
+GWRWWWRWG,Bacillus subtilis ATCC 23857,5.4984399999999996,0.7402394903139397,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0742666,11.864967
+ARWWWRA,Bacillus subtilis ATCC 23857,16.483680000000003,1.2170541749144796,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2027149,15.948319
+VRRWWWRRV,Bacillus subtilis ATCC 23857,5.59484,0.7477876711841751,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.6835085,4.8251243
+FRWWRR,Bacillus subtilis PY22,16.337099999999996,1.2131749673877186,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1466482,14.016777
+GWKRKRFGLLPIVGNLLKSLL,Bacillus subtilis,9.64424,0.9842680093971145,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.9480729,8.87305
+RSFIFGCTKSIPPICFVGFK,Bacillus cereus ATCC 11778,66.73423433744185,1.824348682037088,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.3060071,20.230524
+RSVIFGCTKSKIPPICFVGFK,Bacillus cereus ATCC 11778,42.95806854337868,1.6330447466251656,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.047149,11.146768
+KWKSFLKTKKSLKKTVKHTLLKAISS,Bacillus subtilis ATCC 6633,2.640519538062231,0.4216893853224198,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.3576733,2.2786272
+KWKSKLKTFKSAKKTVLHTALKAISS,Bacillus subtilis ATCC 6633,2.729879110374711,0.43614341522403277,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.32789826,2.1276405
+INLKAIAASAKKLL,Bacillus subtilis 168,176.0888291103999,2.245731805657262,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.8174832,65.68757
+INLRAIAALAKKLL,Bacillus subtilis 168,84.88596167902843,1.9288358731716018,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.7519842,56.491646
+FVQWLSKFLGRIL,Bacillus subtilis ATCC 6633,24.12,1.3823773034681137,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4158573,26.052975
+FLQLWSKGVLRIL,Bacillus subtilis ATCC 6633,94.43880000000001,1.9751504600173488,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.9271001,84.54736
+GRWLRKIRRWRPKRW,Bacillus subtilis ATCC 6633,10.521514721441914,1.0220782671760107,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.94006133,8.710866
+RKIRRWRPKRWGRWL,Bacillus subtilis ATCC 6633,10.521514721441914,1.0220782671760107,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1248921,13.3319025
+CRWGRWLRKIRRWRPK,Bacillus subtilis ATCC 6633,4.347444426370414,0.6382340390991481,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.97410023,9.42107
+RWGRWLRKIRRWRPKC,Bacillus subtilis ATCC 6633,3.5496735099047427,0.5501884095713075,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.9047909,8.031393
+CKRIGWRWRRWPRLRK,Bacillus subtilis ATCC 6633,10.039992839407587,1.0017334030672793,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.6899135,4.896813
+KAIHRLIRRRRR,Bacillus subtilis ATCC 9372,63.975967,1.80601685899205,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6622148,45.942513
+KAIHRLIRRRRR,Bacillus pumilus ATCC 63202,128.11514,2.1076004555052457,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.7836579,60.765617
+GILGKLWEGVKSIK,Bacillus cereus KCTC 1012,38.24775000000001,1.582605892004003,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.573646,37.466743
+GILGKLWEGVKSIV,Bacillus cereus KCTC 1012,37.4965,1.573990731684363,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.4910736,30.979443
+GILGKLWEGVKSII,Bacillus cereus KCTC 1012,37.847249999999995,1.5780343289295193,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.468476,29.408716
+GSKKPVPIIYCNRRTGKCQRF,Bacillus subtilis,2.45402,0.38987809785889227,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3907114,24.587334
+FVPWFSKKLGREL,Bacillus megaterium Bm11,80.44850000000001,1.9055179508863096,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.8428149,69.63297
+FVPWFKKFLERIL,Bacillus megaterium Bm11,2.6912806,0.42995898081039924,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.74218845,5.5231705
+FVPWFKKFLGRIE,Bacillus megaterium Bm11,20.863375,1.319384564172762,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.5025392,3.180821
+FVPWFEKFLKRIL,Bacillus megaterium Bm11,2.6912806,0.42995898081039924,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,1.1195332,13.168406
+FVPWFCKFLCRIL,Bacillus megaterium Bm11,2.6101606,0.41666722977046655,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Priestia,val,Bacillus,0.7556602,5.697183
+WA,Bacillus subtilis ATCC 23857,58.11776184140318,1.764308880941803,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.4148388,259.91946
+RRWWWWRRW,Bacillus subtilis CMCC 63501,1.57289,0.19669835131785096,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.4136611,2.5921557
+WPF,Bacillus subtilis ATCC 6633,5.573959531270135,0.7461638112718187,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6811724,47.99239
+SIFSLFKMGAKALGKTLLKQAGKAGAEYAACKATNQC,Bacillus subtilis MTCC 14416,38.26649999999999,1.582818741811684,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3766975,23.806608
+SIFSLFKMGAKALGKTLLKQAGKAGAEYAACKATNQC,Bacillus coagulans ATCC 7050,57.399750000000004,1.7589100008673653,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Heyndrickxia,val,Bacillus,0.38794369,2.4431138
+SILSLFKMGAKALGKTLIKQAGKAGAEYVACKATNQC,Bacillus subtilis MTCC 14416,57.310199999999995,1.7582319240526687,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4772122,30.006283
+SILSLFKMGAKALGKTLIKQAGKAGAEYVACKATNQC,Bacillus coagulans ATCC 7050,38.20680000000001,1.5821406649969876,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Heyndrickxia,val,Bacillus,0.39785504,2.499511
+KAIAAFAKKFFI,Bacillus subtilis ATCC 6633,36.909074642255106,1.5671331570135887,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.5579896,36.14012
+KAIAAFAAKLFI,Bacillus subtilis ATCC 6633,39.57042974594677,1.5973707668513155,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.7187495,52.329853
+GWINKIQKKIEKIGNKILGGMAKAGPVVHKLAKGEFQ,Bacillus subtilis TISTR 008,1.984704773428336,0.29769591421924524,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.67061365,4.683965
+PG,Bacillus subtilis ATCC 6633,1161.5629526465627,3.0650427520149837,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.171091,148.2829
+PD,Bacillus subtilis ATCC 6633,868.7421786055731,2.938890907608264,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.8268626,671.21643
+KQKTLKKVWKLSEKVLIFASAFAKKAGAAEATLVL,Bacillus subtilis ATCC 23857,47.821876999999986,1.679626618093948,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2253238,16.800562
+AMTLRKRKFAWYVLSSSLKWLIKKAKKIGVQVCGFE,Bacillus subtilis ATCC 23857,21.111400000000003,1.3245170344499628,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3638996,23.115303
+GVPMGSVIKKRRKRMAKKKHRKLLRKTRHQRRNKK,Bacillus subtilis ATCC 23857,21.73245,1.3371086891140067,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0328095,10.784736
+RGTCYNRVGLIIRNFSKLKGKKV,Bacillus subtilis ATCC 23857,13.2764,1.123080328639835,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2531558,17.912485
+NKGLAKLLKIGLKALESVIQ,Bacillus cereus KCCM 21366,68.50208,1.835703758628306,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.1204587,13.196499
+CLGIGSCNDFAGCGYAIVCFW,Bacillus subtilis ATCC 6633,0.7274216172519311,-0.1382137968835507,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.052387804,1.1282045
+AIPFIFIFRLLRKG,Bacillus subtilis ATCC 6051,3.1812797,0.502601854214713,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.5729298,3.7405012
+AIPWIFIFRLLRKG,Bacillus subtilis ATCC 6051,1.6273375,0.21147763233899078,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.35060605,2.2418475
+RRIRRPRLPRPRVPRPRIPPRI,Bacillus subtilis VKM B-886,89.96896000000001,1.9540927002627653,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1691755,14.76303
+RRIRRPRLPRPRVPRPRIPPRI,Bacillus licheniformis VKM B-511,44.98448,1.653062704598784,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.48989284,3.089533
+FVKELWDKVKKMGSAAWSAAKGAFA,Bacillus subtilis ATCC 6051,32.24102,1.508408773001671,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3560144,22.6994
+KIPKPLKKFAKKT,Bacillus cereus AS1.126,153.20400000000006,2.1852701044300673,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.2456703,176.0639
+IIPLPLKKFLKKL,Bacillus cereus AS1.126,2.4244428,0.3846119422410224,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.4709351,29.575705
+IILLLLKKFWKKW,Bacillus cereus AS1.126,1.3512174,0.13072522912906376,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.81698596,6.5612407
+FRFRRRRFRFRF,Bacillus subtilis ATCC 23857,3.6925200000000005,0.5673228562835444,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.82195055,6.636675
+ARARRRRFRARA,Bacillus subtilis ATCC 23857,98.67904000000001,1.9942249158001606,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.8993958,79.322395
+WKWKWKRRRFKWKWKW,Bacillus subtilis ATCC 23857,10.100719,1.0043522892894243,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.81327057,6.5053487
+KWKWKRRRFKWKWK,Bacillus subtilis ATCC 23857,8.61096,0.9350515718324326,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.6686106,4.662411
+GYCFTACYLRNGARICYRRCN,Bacillus licheniformis VKM B-511,20.032080000000004,1.3017260459297555,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.393937,24.770626
+GYCFTACYLRNGARICYRRCN,Bacillus subtilis VKM B-886,20.032080000000004,1.3017260459297555,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1079584,12.822079
+LKLKLKLKLKLKL,Bacillus subtilis DSM 347,5.066009149339173,0.7046659698019291,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.21701011,1.6482008
+LKLKLKLKLKLKLKL,Bacillus subtilis DSM 347,8.788880220855772,0.9439335457356302,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.41690782,2.611607
+KLKLKLKLKLKLKLKLKLKL,Bacillus subtilis DSM 347,13.161605638563472,1.11930887388522,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2618471,18.274569
+KLKLKLKLKLKLKLKLKLKLKLKLKL,Bacillus subtilis DSM 347,10.141653545902392,1.0061087703143177,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.444395,27.822422
+KLKLKLKLKLKLKLKLKLKLKLKL,Bacillus subtilis DSM 347,10.981566376996971,1.04066429096729,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.416687,26.102795
+SPRVCIRVCRNGVCYRRCW,Bacillus subtilis VKM B-886,74.46016000000002,1.8719239650954067,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6067629,40.435505
+RALRKALKAWRKLAKKLQ,Bacillus cereus ATCC 11778,43.6562,1.640045930391578,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.1638068,14.581655
+FLPIVAKELSGLL,Bacillus subtilis ATCC 23857,179.17055999999997,2.253266651085535,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.7528505,56.604446
+FLPKVKKLLEKLL,Bacillus subtilis ATCC 23857,50.307199999999995,1.701630146020054,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0475245,11.156409
+RGLFKKLRRKIKKGFKK,Bacillus cereus,4.400240840474146,0.643476447583107,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.7955364,6.245057
+LGLFKKLLRLIKKGFKL,Bacillus cereus,4.653664420884951,0.6677950627898827,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.44360086,2.7771597
+AGLFKKLARAIKKGFKA,Bacillus cereus,5.077688911004082,0.7056660899262693,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.0075835,10.17615
+AGLFKKLARAIAKGFKA,Bacillus cereus,10.473674293977998,1.0200990642640093,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.1926064,15.581399
+KRRKFWKKVLKKAKKIA,Bacillus cereus,2.174567409456855,0.33737287491300283,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.7047559,5.067058
+GRWRRRWRG,Bacillus subtilis ATCC 23857,20.55232,1.3128608532839947,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.2450235,17.580187
+LRWRRRWRL,Bacillus subtilis ATCC 23857,11.173919999999999,1.048205557691505,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.124585,13.322478
+WRWRRRWRW,Bacillus subtilis ATCC 23857,6.171439999999999,0.7903865110489511,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.80691457,6.4108343
+KWLLKWLKKL,Bacillus subtilis ATCC 6633,1.4751931156867832,0.16884887698353865,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.21925268,1.6567336
+KWLKKLLKWL,Bacillus subtilis ATCC 6633,0.7375965578433916,-0.13218111868044255,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.1752012,1.496929
+WLKKLLKWL,Bacillus subtilis ATCC 6633,1.6292185355541102,0.21197934239301564,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.16938207,1.4770054
+RLKRFKRVALRREKTARNFRSIVS,Bacillus subtilis 168 HT,32.01065400000001,1.5052945471741135,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6523644,44.912205
+EKRWRRLIFNYF,Bacillus subtilis 168 HT,16.080443999999996,1.2062980359601845,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6684744,46.6095
+CGKKPWWWKCKL,Bacillus subtilis ATCC 23857,5.11854518661288,0.7091465415995499,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.36378527,2.310922
+CGRRPWWWRCRL,Bacillus subtilis ATCC 23857,2.3880629806237943,0.3780457763001695,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.41826487,2.6197803
+KKRRCFFRHIYVA,Bacillus subtilis CGMCC 1.3358,41.42759999999999,1.617289774308488,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.85702455,7.1948967
+RRRRRRWWWWW,Bacillus subtilis ATCC 6633,0.5301723749442657,-0.27558290527480306,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.25323772,1.7915863
+RRRRRRWWWWW,Bacillus cereus ATCC 13061,8.48275799910825,0.9285370773811217,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.6328161,4.2935457
+RLFRRVKKVAGK,Bacillus cereus ATCC 11778,171.48988837311595,2.2342385176544575,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.0027316,100.63095
+VRTTFF,Bacillus subtilis ATCC 6633,41.56451969469821,1.618722766309165,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6507685,44.747475
+FVRTF,Bacillus subtilis ATCC 6633,47.84807041441663,1.6798644285231379,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,2.0463572,111.26463
+RLRLRLRLL,Bacillus subtilis CGMCC 63501,3.2846448,0.5164884120265301,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.59141207,3.9031215
+WWWRRRRWW,Bacillus subtilis CMCC 63501,1.57289,0.19669835131785096,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.38490212,2.4260633
+RWWWWRRWR,Bacillus subtilis CMCC 63501,3.14578,0.49772834698183216,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.63933694,4.358499
+WRRWRWWRW,Bacillus subtilis CMCC 63501,1.57289,0.19669835131785096,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.44877565,2.8104486
+RRLLLLRRL,Bacillus subtilis CMCC 63501,9.66072,0.9850094949842749,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0786699,11.98588
+GCSANDACYFCDTRDNCKACDASDFCIKSDT,Bacillus subtilis 168,428.2572600000001,2.631704734045518,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.7531502,56.64352
+GCSANDACYFCDTRDNCKACDASDFCIKSDT,Bacillus anthracis Sterne,428.2572600000001,2.631704734045518,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.7869785,61.232006
+GHYCNFSVTPKFKRW,Bacillus subtilis ATCC 11774,1.4603316,0.16445148297514245,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.8403795,69.243576
+MKQPSKTKTHFKYFLLFLKSVKKVAGFKKKKKKYHWRSYKEGSCFRKRT,Bacillus anthracis Sterne,151.83799999999997,2.181380474622968,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.7597331,57.508636
+MKQPSKTKTHFKYFLLFLKSVKKVAGFKKKKKKYHWRSYKEGSCFRKRT,Bacillus subtilis PY79,9.717631999999998,0.9875604486068551,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.92715085,8.455725
+MGWWFPPKTGNGAGKAFKKAAAAKWGGLFLKAAWFANKGEWGGGFPKGY,Bacillus subtilis PY79,16.294343999999995,1.2120368807315132,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3120495,20.51396
+MWFDRKKFFWPGVCLFLLFFPKRFYKKGPEKVFSFRKKYKFARKCKCKL,Bacillus subtilis PY79,39.45639800000001,1.5961174357026415,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.56900585,3.7068572
+SLWKKIFKPVEKLGQRVRDAGIQGIAIAQQGANVLATVRGGPPQQG,Bacillus subtilis BNCC 109047,6.553848849116493,0.8164964210635057,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.26082876,1.8231767
+GWWKRVFKPVERLGQRVRDAGIQGLEIAQQGANVLATVRGGPPQQG,Bacillus subtilis BNCC 109047,1.5918213175795553,0.20189431645164693,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.2984958,1.9883636
+SWWKKVFKPVERAGQRIRDASIKGLAVAQQGANVLSTIRGGPPVVAPPPQV,Bacillus subtilis BNCC 109047,0.7322898983391226,-0.135316956749174,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.3326945,2.151268
+GWWKRVFKPVEKLGQRVRDAGIQGLQIAQQGANVLATVRGGPPQQG,Bacillus subtilis BNCC 109047,127.99513999999998,2.1071934797162055,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.22210573,1.6676532
+RSLWKKIFKPVEKLGQRVRDAGIQGIAIAQQGANVLATIRGGPPQ,Bacillus subtilis BNCC 109047,1.643500533695983,0.21576984944665611,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.17748713,1.5048289
+FTPNTDIITRTTGGGLKKLLLLLKKLG,Bacillus subtilis ATCC 6633,87.89662450524244,1.943972197179629,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6819263,48.07577
+RLRLRRLLL,Bacillus subtilis ATCC 63501,9.66072,0.9850094949842749,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0602372,11.487808
+LRRLRLLRL,Bacillus subtilis ATCC 63501,19.321440000000003,1.2860394906482562,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.115859,13.057469
+WGRRGWGPGRRYVRW,Bacillus subtilis KCTC 3068,10.998452011660548,1.0413315642398415,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.7341769,5.422217
+FLPIVGGLLSKLL,Bacillus subtilis,5.701840745470778,0.7560150831366945,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.6174774,4.1445503
+FLPLIGGLLGKLL,Bacillus subtilis,5.769229206600973,0.7611177934536544,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.5093848,3.2313561
+RRKWW,Bacillus subtilis ATCC 23857,53.18592000000001,1.7257966759861514,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.7396059,54.904243
+RRRRKWWW,Bacillus subtilis ATCC 23857,10.637040000000002,1.026820792384652,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.7487734,5.607553
+RRRRRRKWWWWW,Bacillus subtilis ATCC 23857,16.1156,1.2072464793698126,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.9052937,8.040697
+RRRRRRKWWWWWWW,Bacillus subtilis ATCC 23857,19.09512,1.2809223919669472,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.041709,11.008014
+WWWWKRRR,Bacillus subtilis ATCC 23857,10.877279999999999,1.0365203081677203,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.98597646,9.682254
+WWWWWWKRRRRRRR,Bacillus subtilis ATCC 23857,37.70976000000001,1.5764537683905755,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0904245,12.31472
+GVFYPWRFRLLCLLRRWLPRPRAWFIR,Bacillus atrophaeus BM013,17.877300000000005,1.2523019281262906,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.6923859,4.9247694
+GVFYPWRFRLLCLLRRWLPRPRAWFIR,Bacillus licheniformis ATCC 21424,17.877300000000005,1.2523019281262906,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.4861266,3.0628562
+GWWKKWWKKWWKKWWKKI,Bacillus subtilis ATCC 23857,5.42088,0.734069793571933,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.933318,8.576656
+FLSGIVGMLYKLF,Bacillus subtilis ATCC 6633,9.299375,0.9684537611160463,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.8670678,7.3632207
+MRGGRLCYCRRRFCVCVGR,Bacillus cereus ATCC 10876,40.108074,1.6032318075499559,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.4455486,2.7896428
+RRSGSRRCRCAWWRGVRCRRSPSRA,Bacillus subtilis BL-4,306.26399999999995,2.486095950380839,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1626562,14.543073
+FCDGISSVLGWCRYPHRRFRCTCR,Bacillus subtilis BL-4,291.95000000000005,2.465308479587306,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1208624,13.20877
+FFRRSRERIGREFRRIVQRI,Bacillus subtilis,11.201921771827386,1.0492925354651694,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,-0.031739593,0.9295236
+AVRVTRICNLRTRRCVYIIRRI,Bacillus subtilis VKM B-886,0.4828531759051607,-0.31618490773276486,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.49501148,3.126162
+AVRVTRICNLRTRRCVYIIRRI,Bacillus licheniformis VKM B-511,0.33453048840651284,-0.4755642954049289,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.30399072,2.0136812
+KWAGKIAKIAGKIA,Bacillus subtilis DSM 347,21.996129506061795,1.3423462680021327,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4825029,30.374067
+KWAKIAGKIAKIAGKWA,Bacillus subtilis DSM 347,2.173604131804094,0.33718045096099963,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.73445714,5.425717
+KIAGKIAKIAGKIAKIAGKWA,Bacillus subtilis DSM 347,1.8720734519251305,0.2723228845409528,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.4233837,2.6508412
+KWAGKIAKIAGKIAKIAGKIAKWA,Bacillus subtilis DSM 347,1.5859620786951212,0.20029279886409077,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.25345844,1.792497
+CASALLGA,Bacillus cereus DMST 5040,2819.44,3.450162856879266,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,3.144603,1395.0925
+KVLPLPFGGRSPGGGA,Bacillus cereus DMST 5040,6043.159999999999,3.781264092874506,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,3.2123935,1630.7731
+FLVKLIL,Bacillus cereus ATCC 11778,295.8149987197127,2.471020190269622,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,2.082457,120.90856
+GKIMYILTKKS,Bacillus cereus MTCC 8733,97.53382219365741,1.9891552438516777,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,1.995049,98.86646
+FFVLKRRRRRRRRR,Bacillus subtilis ATCC 6051,5.146425,0.7115056480875698,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0009416,10.021706
+FFKLVFFRRRRRRRRR,Bacillus subtilis ATCC 6051,11.76465,1.0705790113820188,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.6265932,4.232463
+RRWFRRWERWFE,Bacillus subtilis ATCC 23857,7.63696,0.8829205159103413,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6624333,45.965633
+LFKKILKWLKK,Bacillus cereus ATCC 11778,23.183520000000005,1.3651793764298372,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.84348255,6.97401
+WLKKLFKKILK,Bacillus cereus ATCC 11778,5.79588,0.7631193851018747,gram_positive,Bacillota,Bacilli,Caryophanales,Bacillaceae,Bacillus,val,Bacillus,0.6966697,4.9735866
+AKLVALVNKFIGYLKQNTYC,Bacillus subtilis ATCC 6633,13.99376254272963,1.1459345001851564,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.3532863,22.557257
+KLAKLLKLLLWAQNELDQKK,Bacillus subtilis ATCC 6633,3.341815836622968,0.5239825127799326,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.176883,15.02737
+GLRKVLRKFVNKIKR,Bacillus subtilis ATCC 6633,11.877687000000002,1.0747318765931426,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1065327,12.780054
+GLRKLLRKFLNKIKR,Bacillus subtilis ATCC 6633,6.026530999999999,0.7800673948796562,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.76330364,5.7983394
+KFKIKFKI,Bacillus subtilis ATCC 23857,30.436556282471404,1.4833955130090088,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.4964231,31.3634
+KFKLKFKL,Bacillus subtilis ATCC 23857,30.436556282471404,1.4833955130090088,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.1925731,15.580201
+KFKLKFKLKFKL,Bacillus subtilis ATCC 23857,10.203799856802426,1.0087619315196075,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0326713,10.781305
+KKFLKKFLKKFLKKFL,Bacillus subtilis ATCC 23857,1.9187235423013544,0.2830124042809374,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.30678958,2.0267005
+KFKWKFKWKFKWKFKW,Bacillus subtilis ATCC 23857,26.92550491106484,1.4301638560009686,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0702131,11.754742
+RRFIRRFIRRFIRRFI,Bacillus subtilis ATCC 23857,3.464963694760087,0.5396986885155136,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.7594396,5.7469788
+DTFGRCRAWWAALGACRR,Bacillus subtilis 168,7.632129088304974,0.8826457073281682,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.94848716,8.881517
+DTFGRCRRAWAALGACRR,Bacillus subtilis 168,7.7430230039406185,0.8889105495217816,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0999322,12.587289
+DTFGRCRRWWAALGACAR,Bacillus subtilis 168,7.632129088304974,0.8826457073281682,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.83358294,6.8168373
+DRFGRCRRWWAALGACRR,Bacillus subtilis 168,14.307493612374762,1.1555635606883412,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.0137793,10.322367
+DTFRRCRRWWAALGACRR,Bacillus subtilis 168,14.031131924736307,1.1470927080089417,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.83616793,6.8575335
+DTFGRCRRWWAALRACRR,Bacillus subtilis 168,14.031131924736307,1.1470927080089417,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.89021796,7.766368
+DTFGRCRRWWAALGRCRR,Bacillus subtilis 168,14.117961391081563,1.1497719898798833,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.6295099,4.2609844
+RTFGRCRRWWAALGRCRR,Bacillus subtilis 168,6.933266658418969,0.8409379037979132,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.5909679,3.8991315
+RTFGRCRRWWRALRACRR,Bacillus subtilis 168,6.647696080962955,0.822671156176498,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.6692364,4.669135
+WRWKGRWRRKLKKLRWKLKKKLKLG,Bacillus subtilis ATCC 6633,3.38637,0.5297344080491784,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.6850967,48.428024
+GIKKWIKGWAKKLIKKVAKKIAKQ,Bacillus subtilis ATCC 6633,0.700665,-0.15448957607929067,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.13124928,1.3528489
+RKRVVWGKIFFRRR,Bacillus subtilis ATCC 6633,122.00831599999997,2.086389432886444,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,1.157893,14.384439
+WIPKRFGIVIKRFYYRPFYPLFQ,Bacillus subtilis ATCC 6633,388.8307199999998,2.5897605695243993,gram_positive,Bacillota,Bacilli,Bacillales,Bacillaceae,Bacillus,val,Bacillus,0.6966668,4.973553
