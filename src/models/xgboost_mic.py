@@ -593,6 +593,51 @@ def xgboost_taxonomy_gram_artifact_metadata(df: pd.DataFrame) -> dict:
     }
 
 
+def build_xgboost_esm2_genome_features(df: pd.DataFrame) -> pd.DataFrame:
+    """Build ESM-2 peptide embeddings + genome oligonucleotide features for XGBoost."""
+    from src.features.genome import GenomeEncoder
+
+    embeddings = embeddings_for_sequences(
+        df["sequence"].astype(str).tolist(),
+        DEFAULT_MIC_EMBEDDING_PATH,
+    )
+    embedding_features = pd.DataFrame(
+        embeddings,
+        columns=[f"esm2_{index}" for index in range(embeddings.shape[1])],
+    )
+
+    genome_encoder = GenomeEncoder()
+    genome_features = genome_encoder.encode(df["target_activity_name"])
+    genome_feature_names = genome_encoder.feature_names()
+    genome_df = pd.DataFrame(
+        genome_features,
+        columns=genome_feature_names,
+    )
+
+    return pd.concat(
+        [
+            embedding_features.reset_index(drop=True),
+            genome_df.reset_index(drop=True),
+        ],
+        axis=1,
+    )
+
+
+def xgboost_esm2_genome_artifact_metadata(df: pd.DataFrame) -> dict:
+    """Return metadata for ESM-2 plus genome oligonucleotide features."""
+    metadata = load_embedding_cache_metadata(DEFAULT_MIC_EMBEDDING_PATH)
+    _, embeddings = load_embedding_cache(DEFAULT_MIC_EMBEDDING_PATH)
+    return {
+        "embedding_model": metadata.get("model_name", DEFAULT_ESM2_MODEL),
+        "embedding_path": str(DEFAULT_MIC_EMBEDDING_PATH),
+        "embedding_dim": int(embeddings.shape[1]),
+        "genome_features": "oligonucleotide_k3_k4_k5_ddh_gyrb",
+        "genome_feature_dim": 1364,
+        "target": "log10_mic",
+        "target_features": "frozen_esm2_plus_genome_oligo",
+    }
+
+
 def xgboost_esm2_context_artifact_metadata(df: pd.DataFrame) -> dict:
     """Return metadata for frozen ESM2 plus target-context features."""
     metadata = load_embedding_cache_metadata(DEFAULT_MIC_EMBEDDING_PATH)
@@ -616,6 +661,7 @@ __all__ = [
     "build_regularized_esm2_model",
     "build_huber_esm2_model",
     "build_xgboost_esm2_context_features",
+    "build_xgboost_esm2_genome_features",
     "build_xgboost_features",
     "build_xgboost_features_with_sequence_set",
     "build_xgboost_interaction_features",
@@ -631,6 +677,7 @@ __all__ = [
     "xgboost_artifact_metadata",
     "xgboost_basic_sequence_artifact_metadata",
     "xgboost_esm2_context_artifact_metadata",
+    "xgboost_esm2_genome_artifact_metadata",
     "xgboost_interaction_artifact_metadata",
     "xgboost_motif_sequence_artifact_metadata",
     "xgboost_sequence_only_artifact_metadata",

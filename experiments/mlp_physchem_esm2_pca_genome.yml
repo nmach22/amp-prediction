@@ -1,0 +1,58 @@
+# Experiment: MLP MIC with Physicochemical + PCA-ESM2 + Genome Oligo Features
+# Based on best-performing mlp_mic_physchem_esm2_pca_context_regularized,
+# replacing one-hot taxonomy/gram context with genome oligonucleotide vectors.
+#
+# Feature pipeline:
+#   [sequence] → physicochemical descriptors (motif_core + engineered)
+#   [sequence] → ESM-2 embeddings → PCA (128d)
+#   [target_activity_name] → GenomeEncoder oligo+dDDH+gyrB (1364d)
+#   All concatenated → MLP → log10(MIC)
+experiment_name: mlp_physchem_esm2_pca_genome
+wandb_project: mlp-mic
+
+tags:
+  author: nika
+  approach: physchem-esm2-genome-oligo
+  peptide_encoding: esm2_t12_35M_UR50D
+  genome_encoding: oligonucleotide_ddh_gyrb
+  model_type: mlp
+
+model: mlp_mic_physchem_esm2_pca_genome_regularized
+
+# Data source (raw MIC activities — no taxonomy/gram columns required)
+data:
+  train: data/raw/amp_mic_activities.csv
+
+# PLM settings
+plm:
+  model_name: facebook/esm2_t12_35M_UR50D
+  embedding_cache: data/processed/embeddings/facebook_esm2_t12_35M_UR50D_mic_embeddings.npz
+
+# Genome feature settings
+genome:
+  genome_dir: data/processed/embeddings/genome
+  n_pca_components: null
+  landmarks:
+    - Escherichia coli
+    - Staphylococcus aureus
+    - Pseudomonas aeruginosa
+    - Klebsiella pneumoniae
+    - Acinetobacter baumannii
+    - Bacillus subtilis
+    - Salmonella enterica
+    - Staphylococcus epidermidis
+    - Enterococcus faecalis
+    - Enterococcus faecium
+
+# MLP architecture (same as best-performing model)
+model_params:
+  hidden_layers: [192, 96, 48]
+  dropout: 0.35
+  learning_rate: 0.0005
+  weight_decay: 0.0007
+  max_epochs: 450
+  patience: 30
+  batch_size: 64
+  noise_std: 0.01
+
+seed: 42

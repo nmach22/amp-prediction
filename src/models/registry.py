@@ -26,6 +26,7 @@ MIC_EXPERIMENT_NAMES = (
     "xgboost_mic_esm2_context_huber_slope05",
     "xgboost_mic_esm2_context_huber_slope20",
     "xgboost_mic_interactions",
+    "xgboost_mic_esm2_genome",
     "catboost_mic_physchem",
     "catboost_mic_tuned",
     "mlp_mic_physchem",
@@ -35,8 +36,12 @@ MIC_EXPERIMENT_NAMES = (
     "mlp_mic_physchem_esm2_context_regularized",
     "mlp_mic_physchem_esm2_pca_context_regularized",
     "mlp_mic_physchem_esm2_pca_context_strong_regularized",
+    "mlp_mic_physchem_esm2_pca_genome_regularized",
     "xgboost_mic_per_genus",
     "mlp_mic_per_genus",
+    "genome_mlp_mic",
+    "genome_mlp_mic_combined",
+    "genome_transformer_mic",
 )
 
 PREDICTION_COLUMNS = (
@@ -74,6 +79,7 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
         build_regularized_esm2_model as build_regularized_esm2_xgboost_model,
         build_huber_esm2_model as build_huber_esm2_xgboost_model,
         build_xgboost_esm2_context_features,
+        build_xgboost_esm2_genome_features,
         build_xgboost_features,
         build_xgboost_interaction_features,
         build_xgboost_motif_sequence_features,
@@ -87,6 +93,7 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
         xgboost_artifact_metadata,
         xgboost_basic_sequence_artifact_metadata,
         xgboost_esm2_context_artifact_metadata,
+        xgboost_esm2_genome_artifact_metadata,
         xgboost_interaction_artifact_metadata,
         xgboost_motif_sequence_artifact_metadata,
         xgboost_sequence_only_artifact_metadata,
@@ -104,15 +111,18 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
         build_mlp_esm2_context_features,
         build_mlp_features,
         build_mlp_physchem_esm2_context_features,
+        build_mlp_physchem_esm2_genome_features,
         build_mild_regularized_model as build_mild_regularized_mlp_model,
         build_model as build_mlp_model,
         build_physchem_esm2_context_regularized_model as build_physchem_esm2_context_mlp_model,
         build_physchem_esm2_context_strong_regularized_model as build_physchem_esm2_context_strong_mlp_model,
+        build_physchem_esm2_genome_regularized_model as build_physchem_esm2_genome_mlp_model,
         build_regularized_model as build_regularized_mlp_model,
         load_mlp_mic_data,
         mlp_esm2_context_artifact_metadata,
         mlp_artifact_metadata,
         mlp_physchem_esm2_context_artifact_metadata,
+        mlp_physchem_esm2_genome_artifact_metadata,
     )
     from src.models.per_genus_mic import (
         build_per_genus_features,
@@ -122,6 +132,37 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
         mlp_per_genus_artifact_metadata,
         per_genus_artifact_metadata,
     )
+    from src.models.genome_mlp_mic import (
+        load_genome_mic_data,
+        build_genome_features as _build_genome_features,
+        build_combined_features as _build_combined_features,
+        GenomeMlpMicRegressor,
+    )
+    from src.models.transformer_mic import (
+        load_transformer_mic_data,
+        build_transformer_mic_features,
+        GenomeTransformerMicRegressor,
+    )
+    from src.features.genome import GenomeEncoder
+
+    # Genome MLP helper closures
+    _genome_encoder_only = GenomeEncoder()
+    _genome_encoder_combined = GenomeEncoder()
+
+    def build_genome_only_features(df):
+        return _build_genome_features(df, _genome_encoder_only, fitted=False)
+
+    def build_genome_combined_features(df):
+        return _build_combined_features(df, _genome_encoder_combined, fitted=False)
+
+    def build_genome_mlp_model(**kwargs):
+        return GenomeMlpMicRegressor(mode="genome_only", **kwargs)
+
+    def build_genome_combined_mlp_model(**kwargs):
+        return GenomeMlpMicRegressor(mode="combined", **kwargs)
+
+    def build_transformer_mic_model(**kwargs):
+        return GenomeTransformerMicRegressor(**kwargs)
 
     return {
         "mic_baseline": MicExperimentSpec(
@@ -527,6 +568,41 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
                 "early_stopping_rounds": 50,
             },
         ),
+        "xgboost_mic_esm2_genome": MicExperimentSpec(
+            name="xgboost_mic_esm2_genome",
+            default_project="xgboost-mic",
+            default_run_name="xgboost_mic_esm2_genome",
+            load_data=load_genome_mic_data,
+            build_features=build_xgboost_esm2_genome_features,
+            evaluate_predictions=evaluate_taxonomy_predictions,
+            prediction_columns=PREDICTION_COLUMNS,
+            build_model=build_regularized_esm2_xgboost_model,
+            use_estimator_checkpoints=False,
+            use_validation_fit=True,
+            artifact_metadata=xgboost_esm2_genome_artifact_metadata,
+            run_config={
+                "model_name": "xgboost_regressor",
+                "target": "log10_mic",
+                "target_features": "frozen_esm2_plus_genome_oligo",
+                "plm_model": "facebook/esm2_t12_35M_UR50D",
+                "embedding_cache": (
+                    "data/processed/embeddings/"
+                    "facebook_esm2_t12_35M_UR50D_mic_embeddings.npz"
+                ),
+                "genome_features": "oligonucleotide_k3_k4_k5_ddh_gyrb",
+                "genome_feature_dim": 1364,
+                "duplicate_measurements": "median_log_mic_by_sequence_target",
+                "n_estimators": 5000,
+                "learning_rate": 0.01,
+                "max_depth": 2,
+                "min_child_weight": 20.0,
+                "subsample": 0.65,
+                "colsample_bytree": 0.35,
+                "reg_alpha": 1.0,
+                "reg_lambda": 25.0,
+                "early_stopping_rounds": 100,
+            },
+        ),
         "catboost_mic_physchem": MicExperimentSpec(
             name="catboost_mic_physchem",
             default_project="catboost-mic",
@@ -839,6 +915,48 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
                 "early_stopping_metric": "validation_mae",
             },
         ),
+        "mlp_mic_physchem_esm2_pca_genome_regularized": MicExperimentSpec(
+            name="mlp_mic_physchem_esm2_pca_genome_regularized",
+            default_project="mlp-mic",
+            default_run_name="mlp_mic_physchem_esm2_pca_genome_regularized",
+            load_data=load_genome_mic_data,
+            build_features=build_mlp_physchem_esm2_genome_features,
+            evaluate_predictions=evaluate_taxonomy_predictions,
+            prediction_columns=PREDICTION_COLUMNS,
+            build_model=build_physchem_esm2_genome_mlp_model,
+            transform_features=pca_reduce_esm2_features,
+            use_estimator_checkpoints=False,
+            use_validation_fit=True,
+            artifact_metadata=mlp_physchem_esm2_genome_artifact_metadata,
+            run_config={
+                "model_name": "pytorch_mlp_regressor",
+                "target": "log10_mic",
+                "target_features": (
+                    "physicochemical_engineered_pca_frozen_esm2_genome_oligo"
+                ),
+                "sequence_descriptor_library": "modlamp_plus_reduced_alphabet_kmers",
+                "sequence_feature_set": "motif_core",
+                "plm_model": "facebook/esm2_t12_35M_UR50D",
+                "embedding_cache": (
+                    "data/processed/embeddings/"
+                    "facebook_esm2_t12_35M_UR50D_mic_embeddings.npz"
+                ),
+                "feature_transform": "train_only_standard_scaler_pca_on_esm2",
+                "esm2_pca_components": 128,
+                "genome_features": "oligonucleotide_k3_k4_k5_ddh_gyrb",
+                "genome_feature_dim": 1364,
+                "duplicate_measurements": "median_log_mic_by_sequence_target",
+                "hidden_layers": [192, 96, 48],
+                "dropout": 0.35,
+                "weight_decay": 7e-4,
+                "learning_rate": 5e-4,
+                "loss_function": "HuberLoss",
+                "max_epochs": 450,
+                "patience": 30,
+                "noise_std": 0.01,
+                "early_stopping_metric": "validation_mae",
+            },
+        ),
         "xgboost_mic_per_genus": MicExperimentSpec(
             name="xgboost_mic_per_genus",
             default_project="xgboost-mic-per-genus",
@@ -914,10 +1032,100 @@ def mic_experiment_specs() -> dict[str, MicExperimentSpec]:
                 "early_stopping_metric": "validation_mae",
             },
         ),
+        "genome_mlp_mic": MicExperimentSpec(
+            name="genome_mlp_mic",
+            default_project="genome-mlp-mic",
+            default_run_name="genome_mlp_mic_genome_only",
+            load_data=load_genome_mic_data,
+            build_features=build_genome_only_features,
+            evaluate_predictions=evaluate_taxonomy_predictions,
+            prediction_columns=PREDICTION_COLUMNS,
+            build_model=build_genome_mlp_model,
+            use_estimator_checkpoints=False,
+            use_validation_fit=True,
+            run_config={
+                "model_name": "pytorch_mlp_regressor",
+                "target": "log10_mic",
+                "target_features": "oligonucleotide_ddh_gyrb",
+                "genome_mode": "genome_only",
+                "kmer_sizes": [3, 4, 5],
+                "genome_feature_dim": 1364,
+                "hidden_layers": [512, 256, 128],
+                "dropout": 0.25,
+                "learning_rate": 5e-4,
+                "weight_decay": 1e-4,
+                "loss_function": "HuberLoss",
+                "max_epochs": 400,
+                "patience": 40,
+                "noise_std": 0.01,
+            },
+        ),
+        "genome_mlp_mic_combined": MicExperimentSpec(
+            name="genome_mlp_mic_combined",
+            default_project="genome-mlp-mic",
+            default_run_name="genome_mlp_mic_combined",
+            load_data=load_genome_mic_data,
+            build_features=build_genome_combined_features,
+            evaluate_predictions=evaluate_taxonomy_predictions,
+            prediction_columns=PREDICTION_COLUMNS,
+            build_model=build_genome_combined_mlp_model,
+            use_estimator_checkpoints=False,
+            use_validation_fit=True,
+            run_config={
+                "model_name": "pytorch_mlp_regressor",
+                "target": "log10_mic",
+                "target_features": "oligonucleotide_ddh_gyrb_plus_esm2",
+                "genome_mode": "combined",
+                "kmer_sizes": [3, 4, 5],
+                "hidden_layers": [512, 256, 128],
+                "dropout": 0.25,
+                "learning_rate": 5e-4,
+                "weight_decay": 1e-4,
+                "loss_function": "HuberLoss",
+                "max_epochs": 400,
+                "patience": 40,
+                "noise_std": 0.01,
+                "plm_model": "facebook/esm2_t12_35M_UR50D",
+            },
+        ),
+        "genome_transformer_mic": MicExperimentSpec(
+            name="genome_transformer_mic",
+            default_project="genome-transformer-mic",
+            default_run_name="genome_transformer_mic",
+            load_data=load_transformer_mic_data,
+            build_features=build_transformer_mic_features,
+            evaluate_predictions=evaluate_taxonomy_predictions,
+            prediction_columns=PREDICTION_COLUMNS,
+            build_model=build_transformer_mic_model,
+            use_estimator_checkpoints=False,
+            use_validation_fit=True,
+            run_config={
+                "model_name": "cross_attention_transformer",
+                "target": "log10_mic",
+                "target_features": "esm2_peptide_plus_oligonucleotide_genome",
+                "architecture": "cross_attention_transformer",
+                "peptide_encoding": "esm2_t12_35M_UR50D (480d)",
+                "genome_encoding": "oligonucleotide_k3_k4_k5 (1344d)",
+                "d_model": 256,
+                "n_heads": 8,
+                "n_self_layers": 2,
+                "n_cross_layers": 2,
+                "n_tokens_peptide": 8,
+                "n_tokens_genome": 16,
+                "dropout": 0.15,
+                "learning_rate": 3e-4,
+                "weight_decay": 1e-4,
+                "scheduler": "OneCycleLR_cosine",
+                "loss_function": "HuberLoss",
+                "max_epochs": 300,
+                "patience": 35,
+                "batch_size": 128,
+            },
+        ),
     }
 
 
-def get_mic_experiment_spec(name: str) -> MicExperimentSpec:
+def get_mic_experiment_spec(name: str) -> "MicExperimentSpec":
     """Return one MIC baseline spec by name."""
     specs = mic_experiment_specs()
     if name not in specs:

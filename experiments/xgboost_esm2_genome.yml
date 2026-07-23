@@ -1,0 +1,53 @@
+# Experiment: XGBoost MIC with ESM-2 + Genome Oligonucleotide Features
+# Peptide sequences encoded with frozen ESM-2 mean-pooled embeddings (480d)
+# Bacteria encoded with genome oligonucleotide composition (k=3,4,5 → 1344d) + dDDH/gyrB similarity
+experiment_name: xgboost_esm2_genome
+wandb_project: xgboost-mic
+
+tags:
+  author: nika
+  approach: esm2-genome-oligo
+  peptide_encoding: esm2_t12_35M_UR50D
+  genome_encoding: oligonucleotide_ddh_gyrb
+  model_type: xgboost
+
+model: xgboost_mic_esm2_genome
+
+# Data source (raw MIC activities — no taxonomy/gram required)
+data:
+  train: data/raw/amp_mic_activities.csv
+
+# PLM settings
+plm:
+  model_name: facebook/esm2_t12_35M_UR50D
+  embedding_cache: data/processed/embeddings/facebook_esm2_t12_35M_UR50D_mic_embeddings.npz
+
+# Genome feature settings
+genome:
+  genome_dir: data/processed/embeddings/genome
+  n_pca_components: null
+  landmarks:
+    - Escherichia coli
+    - Staphylococcus aureus
+    - Pseudomonas aeruginosa
+    - Klebsiella pneumoniae
+    - Acinetobacter baumannii
+    - Bacillus subtilis
+    - Salmonella enterica
+    - Staphylococcus epidermidis
+    - Enterococcus faecalis
+    - Enterococcus faecium
+
+# XGBoost hyperparameters (regularized for dense embeddings)
+xgboost:
+  n_estimators: 5000
+  learning_rate: 0.01
+  max_depth: 2
+  min_child_weight: 20.0
+  subsample: 0.65
+  colsample_bytree: 0.35
+  reg_alpha: 1.0
+  reg_lambda: 25.0
+  early_stopping_rounds: 100
+
+seed: 42
