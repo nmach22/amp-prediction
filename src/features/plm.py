@@ -9,8 +9,12 @@ import numpy as np
 
 CACHE_DIR = Path(__file__).parents[2] / "data" / "processed" / "embeddings"
 DEFAULT_ESM2_MODEL = "facebook/esm2_t12_35M_UR50D"
+ESM2_150M_MODEL = "facebook/esm2_t30_150M_UR50D"
 DEFAULT_MIC_EMBEDDING_PATH = (
     CACHE_DIR / "facebook_esm2_t12_35M_UR50D_mic_embeddings.npz"
+)
+ESM2_150M_MIC_EMBEDDING_PATH = (
+    CACHE_DIR / "facebook_esm2_t30_150M_UR50D_mic_embeddings.npz"
 )
 
 

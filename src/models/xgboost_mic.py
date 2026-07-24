@@ -623,6 +623,55 @@ def build_xgboost_esm2_genome_features(df: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def build_xgboost_physchem_esm2_genome_features(df: pd.DataFrame) -> pd.DataFrame:
+    """Build physicochemical + ESM-2 + genome oligo features for XGBoost."""
+    from src.features.genome import GenomeEncoder
+
+    descriptor_encoder = SequenceDescriptorEncoder(feature_set="full_modlamp")
+    sequence_features = descriptor_encoder.encode(df["sequence"])
+
+    embeddings = embeddings_for_sequences(
+        df["sequence"].astype(str).tolist(),
+        DEFAULT_MIC_EMBEDDING_PATH,
+    )
+    embedding_features = pd.DataFrame(
+        embeddings,
+        columns=[f"esm2_{index}" for index in range(embeddings.shape[1])],
+    )
+
+    genome_encoder = GenomeEncoder()
+    genome_features = genome_encoder.encode(df["target_activity_name"])
+    genome_df = pd.DataFrame(
+        genome_features,
+        columns=[f"genome_{n}" for n in genome_encoder.feature_names()],
+    )
+
+    return pd.concat(
+        [
+            sequence_features.reset_index(drop=True),
+            embedding_features.reset_index(drop=True),
+            genome_df.reset_index(drop=True),
+        ],
+        axis=1,
+    )
+
+
+def build_xgboost_esm2_genome_model(random_state: int = 42) -> XGBoostMicRegressor:
+    """XGBoost for ESM2 + genome + physchem: moderate regularization."""
+    return XGBoostMicRegressor(
+        random_state=random_state,
+        n_estimators=4000,
+        learning_rate=0.015,
+        max_depth=5,
+        min_child_weight=10.0,
+        subsample=0.8,
+        colsample_bytree=0.5,
+        reg_alpha=0.5,
+        reg_lambda=10.0,
+        early_stopping_rounds=80,
+    )
+
+
 def xgboost_esm2_genome_artifact_metadata(df: pd.DataFrame) -> dict:
     """Return metadata for ESM-2 plus genome oligonucleotide features."""
     metadata = load_embedding_cache_metadata(DEFAULT_MIC_EMBEDDING_PATH)
@@ -662,6 +711,8 @@ __all__ = [
     "build_huber_esm2_model",
     "build_xgboost_esm2_context_features",
     "build_xgboost_esm2_genome_features",
+    "build_xgboost_physchem_esm2_genome_features",
+    "build_xgboost_esm2_genome_model",
     "build_xgboost_features",
     "build_xgboost_features_with_sequence_set",
     "build_xgboost_interaction_features",

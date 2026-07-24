@@ -568,6 +568,103 @@ def build_mlp_physchem_esm2_genome_features(df: pd.DataFrame) -> pd.DataFrame:
     ).astype(float)
 
 
+def pca_reduce_esm2_and_genome_features(
+    X_train: pd.DataFrame,
+    validation_features: dict[str, pd.DataFrame],
+    y_train: np.ndarray,
+    esm2_n_components: int = 128,
+    genome_n_components: int = 64,
+) -> tuple[pd.DataFrame, dict[str, pd.DataFrame], dict]:
+    """PCA-reduce both ESM2 and genome feature blocks on train set only."""
+    from sklearn.decomposition import PCA
+    from sklearn.preprocessing import StandardScaler
+
+    del y_train
+
+    esm2_cols = [c for c in X_train.columns if c.startswith("esm2_")]
+    genome_cols = [c for c in X_train.columns if c.startswith("genome_")]
+    passthrough_cols = [
+        c for c in X_train.columns if c not in esm2_cols and c not in genome_cols
+    ]
+
+    # ESM2 PCA
+    esm2_components = min(esm2_n_components, len(esm2_cols), len(X_train))
+    esm2_scaler = StandardScaler()
+    esm2_pca = PCA(n_components=esm2_components, random_state=42)
+    train_esm2_scaled = esm2_scaler.fit_transform(X_train[esm2_cols].astype(float))
+    train_esm2_pca = esm2_pca.fit_transform(train_esm2_scaled)
+
+    # Genome PCA
+    genome_components = min(genome_n_components, len(genome_cols), len(X_train))
+    genome_scaler = StandardScaler()
+    genome_pca = PCA(n_components=genome_components, random_state=42)
+    train_genome_scaled = genome_scaler.fit_transform(
+        X_train[genome_cols].astype(float)
+    )
+    train_genome_pca = genome_pca.fit_transform(train_genome_scaled)
+
+    X_train_reduced = _join_esm2_genome_pca(
+        train_esm2_pca, train_genome_pca,
+        X_train[passthrough_cols],
+        esm2_components, genome_components,
+    )
+
+    transformed_validation = {}
+    for split_name, X_split in validation_features.items():
+        split_esm2 = esm2_scaler.transform(X_split[esm2_cols].astype(float))
+        split_esm2_pca = esm2_pca.transform(split_esm2)
+        split_genome = genome_scaler.transform(X_split[genome_cols].astype(float))
+        split_genome_pca = genome_pca.transform(split_genome)
+        transformed_validation[split_name] = _join_esm2_genome_pca(
+            split_esm2_pca, split_genome_pca,
+            X_split[passthrough_cols],
+            esm2_components, genome_components,
+        )
+
+    metadata = {
+        "feature_transform": "train_only_pca_on_esm2_and_genome",
+        "esm2_original_dim": len(esm2_cols),
+        "esm2_pca_components": esm2_components,
+        "esm2_pca_explained_variance_total": float(
+            np.sum(esm2_pca.explained_variance_ratio_)
+        ),
+        "genome_original_dim": len(genome_cols),
+        "genome_pca_components": genome_components,
+        "genome_pca_explained_variance_total": float(
+            np.sum(genome_pca.explained_variance_ratio_)
+        ),
+        "passthrough_feature_columns": passthrough_cols,
+    }
+    return X_train_reduced, transformed_validation, metadata
+
+
+def _join_esm2_genome_pca(
+    esm2_pca_values: np.ndarray,
+    genome_pca_values: np.ndarray,
+    passthrough: pd.DataFrame,
+    esm2_n: int,
+    genome_n: int,
+) -> pd.DataFrame:
+    esm2_df = pd.DataFrame(
+        esm2_pca_values,
+        columns=[f"esm2_pca_{i}" for i in range(esm2_n)],
+        index=passthrough.index,
+    )
+    genome_df = pd.DataFrame(
+        genome_pca_values,
+        columns=[f"genome_pca_{i}" for i in range(genome_n)],
+        index=passthrough.index,
+    )
+    return pd.concat(
+        [
+            esm2_df.reset_index(drop=True),
+            genome_df.reset_index(drop=True),
+            passthrough.reset_index(drop=True).astype(float),
+        ],
+        axis=1,
+    )
+
+
 def build_physchem_esm2_genome_regularized_model(
     random_state: int = 42,
 ) -> MlpMicRegressor:
@@ -645,4 +742,5 @@ __all__ = [
     "mlp_artifact_metadata",
     "mlp_physchem_esm2_context_artifact_metadata",
     "mlp_physchem_esm2_genome_artifact_metadata",
+    "pca_reduce_esm2_and_genome_features",
 ]

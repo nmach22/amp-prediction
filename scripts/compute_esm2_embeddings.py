@@ -7,7 +7,11 @@ no gram_status or taxonomy needed. Shows progress and saves incrementally.
 Usage:
     python scripts/compute_esm2_embeddings.py \
         --input data/raw/amp_mic_activities.csv \
-        --device mps --batch-size 16
+        --model esm2_t12_35M --device mps --batch-size 16
+
+    python scripts/compute_esm2_embeddings.py \
+        --input data/raw/amp_mic_activities.csv \
+        --model esm2_t30_150M --device mps --batch-size 8
 """
 
 from __future__ import annotations
@@ -26,30 +30,48 @@ sys.path.insert(0, str(ROOT))
 from src.features.plm import (
     DEFAULT_ESM2_MODEL,
     DEFAULT_MIC_EMBEDDING_PATH,
+    ESM2_150M_MODEL,
+    ESM2_150M_MIC_EMBEDDING_PATH,
     PLMEncoder,
     load_embedding_cache,
+    model_slug,
     save_embedding_cache,
 )
+
+MODEL_CHOICES = {
+    "esm2_t12_35M": DEFAULT_ESM2_MODEL,
+    "esm2_t30_150M": ESM2_150M_MODEL,
+}
+DEFAULT_OUTPUT_PATHS = {
+    DEFAULT_ESM2_MODEL: DEFAULT_MIC_EMBEDDING_PATH,
+    ESM2_150M_MODEL: ESM2_150M_MIC_EMBEDDING_PATH,
+}
 
 
 def main():
     parser = argparse.ArgumentParser(description="Compute ESM-2 embeddings")
     parser.add_argument("--input", required=True, help="CSV with 'sequence' column")
-    parser.add_argument("--output", default=str(DEFAULT_MIC_EMBEDDING_PATH))
+    parser.add_argument("--output", default=None,
+                        help="Output .npz path (auto-determined from model if omitted)")
+    parser.add_argument("--model", default="esm2_t12_35M",
+                        choices=list(MODEL_CHOICES.keys()),
+                        help="ESM2 model variant to use")
     parser.add_argument("--device", default="cpu", choices=["cpu", "cuda", "mps"])
     parser.add_argument("--batch-size", type=int, default=16)
     args = parser.parse_args()
 
+    model_name = MODEL_CHOICES[args.model]
+    output_path = Path(args.output) if args.output else DEFAULT_OUTPUT_PATHS[model_name]
     # Load sequences
     df = pd.read_csv(args.input)
     all_seqs = sorted(df["sequence"].dropna().str.upper().str.strip().unique().tolist())
     # Filter non-standard amino acids
     import re
     all_seqs = [s for s in all_seqs if s and not re.search(r"[^ACDEFGHIKLMNPQRSTVWY]", s)]
+    print(f"Model: {model_name}")
     print(f"Total unique valid sequences: {len(all_seqs)}")
 
     # Load existing cache
-    output_path = Path(args.output)
     cached_seqs, cached_embs = [], np.empty((0, 0))
     cache_index = {}
     if output_path.exists():
@@ -66,8 +88,8 @@ def main():
         return
 
     # Compute missing embeddings in batches with progress
-    print(f"\nComputing ESM-2 embeddings on {args.device} (batch_size={args.batch_size})...")
-    encoder = PLMEncoder(model_name=DEFAULT_ESM2_MODEL, cache_dir=None, device=args.device)
+    print(f"\nComputing embeddings on {args.device} (batch_size={args.batch_size})...")
+    encoder = PLMEncoder(model_name=model_name, cache_dir=None, device=args.device)
 
     # Process in chunks and save incrementally
     chunk_size = 200  # save every 200 sequences
@@ -98,7 +120,7 @@ def main():
             merged_embs = all_new_embs
 
         save_embedding_cache(
-            output_path, merged_seqs, merged_embs, model_name=DEFAULT_ESM2_MODEL
+            output_path, merged_seqs, merged_embs, model_name=model_name
         )
 
     total_time = time.time() - t0
